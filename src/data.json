@@ -1,0 +1,104 @@
+{
+  "pricingData": [
+    {
+      "id": 1,
+      "name": "Premium",
+      "price": "149",
+      "features": [
+        "unlimited build minutes",
+        "Lorem, ipsum dolor.",
+        "10TB Lorem, ipsum dolor."
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Enterprise",
+      "price": "299",
+      "features": [
+        "unlimited build minutes",
+        "Lorem, ipsum dolor.",
+        "50TB Lorem, ipsum dolor."
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Hobby",
+      "price": "179",
+      "features": [
+        "unlimited build minutes",
+        "Lorem, ipsum dolor.",
+        "5TB Lorem, ipsum dolor."
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Premium",
+      "price": "149",
+      "features": [
+        "unlimited build minutes",
+        "Lorem, ipsum dolor.",
+        "10TB Lorem, ipsum dolor."
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Enterprise",
+      "price": "299",
+      "features": [
+        "unlimited build minutes",
+        "Lorem, ipsum dolor.",
+        "50TB Lorem, ipsum dolor."
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Enterprise",
+      "price": "299",
+      "features": [
+        "unlimited build minutes",
+        "Lorem, ipsum dolor.",
+        "50TB Lorem, ipsum dolor."
+      ]
+    },
+    {
+      "id": 1,
+      "name": "Enterprise",
+      "price": "299",
+      "features": [
+        "unlimited build minutes",
+        "Lorem, ipsum dolor.",
+        "50TB Lorem, ipsum dolor."
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Enterprise",
+      "price": "299",
+      "features": [
+        "unlimited build minutes",
+        "Lorem, ipsum dolor.",
+        "50TB Lorem, ipsum dolor."
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Enterprise",
+      "price": "299",
+      "features": [
+        "unlimited build minutes",
+        "Lorem, ipsum dolor.",
+        "50TB Lorem, ipsum dolor."
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Enterprise",
+      "price": "299",
+      "features": [
+        "unlimited build minutes",
+        "Lorem, ipsum dolor.",
+        "50TB Lorem, ipsum dolor."
+      ]
+    }
+  ]
+}
