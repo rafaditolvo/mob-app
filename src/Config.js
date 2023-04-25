@@ -30,8 +30,7 @@ import ChakraCarousel from "./ChakraCarousel";
 
 import { v4 as uuidv4 } from "uuid";
 
-function App() {
-  const [isOpen, setIsOpen] = useState(false);
+function App({ setInvalidAuth, token }) {
   const [data, setData] = useState({});
   const [plan, setPlan] = useState(null);
   const [save, setSave] = useState(true);
@@ -135,11 +134,9 @@ function App() {
     }
 
     function handleEditPlan(plan) {
-      console.log(plan, "handleEditPlan");
       setPlan(plan);
     }
     function handleAddNewPlan() {
-      console.log("handleAddNewPlan");
       const newData = { ...data };
       const newPlan = {
         id: uuidv4(),
@@ -150,7 +147,6 @@ function App() {
       newData.pricingData.push(newPlan);
       setData(newData);
       setPlan(newPlan);
-      // console.log(data);
     }
 
     const pricingData = data?.pricingData ?? [];
@@ -272,7 +268,6 @@ function App() {
     }
 
     function handleAddFeaturePlan() {
-      console.log("handleAddFeaturePlan");
       const newPlan = { ...planEdited };
       newPlan.features.push("");
       setPlanEdited((prev) => newPlan);
@@ -283,18 +278,13 @@ function App() {
 
     // todo: ajustar remoção, deleta mais na renderização nao ajusta
     function handleRemoveFeaturePlan(featIndex) {
-      console.log(featIndex, "handleRemoveFeaturePlan");
       const newPlan = { ...planEdited };
-      console.log(newPlan);
       newPlan.features = newPlan.features.filter(
         (_, index) => index != featIndex
       );
-      console.log(newPlan);
       setPlanEdited(newPlan);
     }
     function handleSaveForm() {
-      console.log("handleSaveForm", planEdited);
-
       const newData = { ...data };
 
       newData.pricingData = newData.pricingData.map((planReg) =>
@@ -308,7 +298,6 @@ function App() {
       handleClearForm();
     }
     function handleClearForm() {
-      console.log("handleClearForm");
       setPlan(null);
     }
     return (
@@ -393,7 +382,6 @@ function App() {
       </>
     );
   }
-  //console.log(data);
 
   function BoxSaveAlert() {
     return (
@@ -424,8 +412,34 @@ function App() {
     );
   }
 
-  function salvarJSON() {
-    console.log("salvarJSON", data);
+  async function fetchJson(json) {
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(json),
+    };
+    const response = await fetch(
+      "https://owa4t6eb4mlyrrvmxnn4vtusm40mjjih.lambda-url.us-east-2.on.aws/save",
+      options
+    );
+    const status = await response.status;
+    if (status == 403) {
+      setInvalidAuth();
+      return;
+    } else if (status == 200) {
+      setSave(true);
+    }
+    return;
+  }
+
+  async function salvarJSON() {
+    if (!token || token == "") {
+      setInvalidAuth();
+    }
+    await fetchJson(data);
   }
 
   useEffect(() => {
