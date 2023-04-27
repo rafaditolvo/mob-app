@@ -14,6 +14,7 @@ import {
   Flex,
   HStack,
   IconButton,
+  Image,
   Input,
   List,
   ListIcon,
@@ -211,6 +212,7 @@ function App({ setInvalidAuth, token }) {
                           onClick={() => handleEditPlan(item)}
                         />
                         <Box py={4} px={9}>
+                          {item.srcImage && <Image src={item.srcImage} />}
                           <Text fontWeight="500" fontSize="2xl">
                             {item.name}
                           </Text>
@@ -305,18 +307,26 @@ function App({ setInvalidAuth, token }) {
       );
       setPlanEdited(newPlan);
     }
-    function handleSaveForm() {
+    const handleSaveForm = async () => {
       if (!token) {
         setInvalidAuth();
         return;
       }
-      upload();
-      // console.log(image);
-      return;
+
       const newData = { ...data };
 
+      const newPlanEdited = { ...planEdited };
+
+      console.log("fora upload", image.currentFile);
+      if (image.currentFile) {
+        console.log("entrou upload");
+        const srcImage = await upload();
+        newPlanEdited.srcImage = srcImage;
+        console.log(srcImage, "srcImage");
+      }
+
       newData.pricingData = newData.pricingData.map((planReg) =>
-        planReg.id == planEdited.id ? planEdited : planReg
+        planReg.id == planEdited.id ? newPlanEdited : planReg
       );
       const newGlobal = isPersonal
         ? { ...global, ...{ personal: newData } }
@@ -328,7 +338,7 @@ function App({ setInvalidAuth, token }) {
         setSave(false);
       }
       handleClearForm();
-    }
+    };
     function handleClearForm() {
       setPlan(null);
     }
@@ -340,38 +350,24 @@ function App({ setInvalidAuth, token }) {
         message: "",
       });
     }
-    function upload() {
-      // this.setState({
-      //   progress: 0,
-      // });
-
-      console.log(image.currentFile);
-
-      UploadService.upload(image.currentFile, token, (event) => {
-        console.log(
-          Math.round((100 * event.loaded) / event.total),
-          event.loaded,
-          event.total
-        );
-        // this.setState({
-        //   progress: Math.round((100 * event.loaded) / event.total),
-        // });
-      })
-        .then((response) => {
-          console.log("end");
-          // this.setState({
-          //   message: response.data.message,
-          // });
-          // return UploadService.getFiles();
+    const upload = async () =>
+      new Promise((resolve, reject) => {
+        UploadService.upload(image.currentFile, token, (event) => {
+          console.log(Math.round((100 * event.loaded) / event.total));
         })
-        .catch((err) => {
-          // this.setState({
-          //   progress: 0,
-          //   message: "Could not upload the image!",
-          //   currentFile: undefined,
-          // });
-        });
-    }
+          .then((response) => {
+            resolve(response.data);
+            setImage({
+              currentFile: null,
+              previewImage: null,
+              progress: 0,
+              message: "",
+            });
+          })
+          .catch((err) => {
+            reject();
+          });
+      });
     return (
       <>
         <Stack spacing={3} width={"100%"} alignItems="center">
@@ -512,7 +508,7 @@ function App({ setInvalidAuth, token }) {
     if (!token || token == "") {
       setInvalidAuth();
     }
-    await fetchJson(data);
+    await fetchJson(global);
   }
 
   useEffect(() => {
@@ -535,6 +531,7 @@ function App({ setInvalidAuth, token }) {
     fetchData();
   }, []);
 
+  console.log("global", global);
   return (
     <Flex direction="column" height="100vh">
       <BoxSaveAlert />

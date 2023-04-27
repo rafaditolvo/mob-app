@@ -1,18 +1,28 @@
 import api from "./apiAxios";
 
 class UploadService {
-  upload(file, token, onUploadProgress) {
-    let formData = new FormData();
+  async upload(file, token, onUploadProgress) {
+    const imageType = file.type;
+    const imageName = file.name;
 
-    formData.append("file", file);
-
-    return api.post("/upload", formData, {
-      headers: {
-        "Content-Type": "application/octet-stream",
-        Authorization: `Bearer ${token}`,
-      },
-      onUploadProgress,
-    });
+    const toBase64 = (file) =>
+      new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+      });
+    const base64 = await toBase64(file);
+    return await api.post(
+      "/upload",
+      { file: base64, imageType, imageName },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        onUploadProgress,
+      }
+    );
   }
 }
 
