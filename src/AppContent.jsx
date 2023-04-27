@@ -15,7 +15,17 @@ import {
 } from '@chakra-ui/react';
 import mobcel from '../src/img/minha-mob-cellphone.png';
 
-export default function AppContent() {
+export default function AppContent(props) {
+  if (!props?.data?.personal?.appDescription) {
+    return <div>Error: Invalid props a</div>;
+  }
+
+  const { h1, appName, h3 } = props.data.personal.appDescription;
+
+  if (!h1 || !appName || !h3) {
+    return <div>Error: Invalid props </div>;
+  }
+
   return (
     <Container maxW={'7xl'}>
       <Stack
@@ -31,19 +41,16 @@ export default function AppContent() {
             fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}
           >
             <Text as={'span'} position={'relative'}>
-              Baixe o App
+              {props.data.personal.appDescription.h1}
             </Text>
 
             <br />
             <Text as={'span'} color={'red.600'}>
-              Minha Mob
+              {props.data.personal.appDescription.appName}
             </Text>
           </Heading>
           <Text color={'gray.500'}>
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book.
+            {props.data.personal.appDescription.h3}
           </Text>
           <Stack
             spacing={{ base: 4, sm: 6 }}
@@ -78,33 +85,14 @@ export default function AppContent() {
           position={'relative'}
           w={'full'}
         >
-          {/*  <Blob
-            w={'90%'}
-            h={'100%'}
-            position={'absolute'}
-            top={'5%'}
-            right={85}
-            zIndex={-1}
-            color={useColorModeValue('white.50', 'white.400')}
-  /> */}
           <Box
             position={'relative'}
             height={'300px'}
             rounded={'2xl'}
-            //left="1em"
-            // boxShadow={'2xl'}
             mb="12em"
             width={'full'}
-            //overflow={'hidden'}
           >
-            <Image
-              // alt={'Hero Image'}
-              // fit={'cover'}
-              align={'center'}
-              //w={'100%'}
-              //h={'100%'}
-              src={mobcel}
-            />
+            <Image align={'center'} src={mobcel} />
           </Box>
         </Flex>
       </Stack>

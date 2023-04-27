@@ -11,7 +11,18 @@ import {
 } from '@chakra-ui/react';
 import bg from '../src/img/mob-img.png';
 
-export default function CardFooter() {
+export default function CardFooter(props) {
+  if (!props?.data?.enterprise?.description) {
+    return <div>Error: Invalid props</div>;
+  }
+
+  const { h1, h2, h3, items } = props.data.enterprise.description;
+
+  if (!h1 || !h2 || !h3 || !items) {
+    return <div>Error: Invalid props</div>;
+  }
+
+  console.log(props.data.enterprise.description.items);
   return (
     <Box bg={'gray.800'} position={'relative'}>
       <Flex
@@ -49,20 +60,17 @@ export default function CardFooter() {
                 fontSize={'xl'}
                 color={'gray.500'}
               >
-                Lorem
+                {props.data.enterprise.description.h2}
               </Text>
               <Heading
                 color={'white'}
                 mb={5}
                 fontSize={{ base: '3xl', md: '5xl' }}
               >
-                Para Sua Empresa
+                {props.data.enterprise.description.h1}
               </Heading>
               <Text fontSize={'xl'} color={'gray.400'}>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book.
+                {props.data.enterprise.description.h3}
               </Text>
             </Box>
             <Flex flex={1}>
@@ -70,18 +78,18 @@ export default function CardFooter() {
             </Flex>
 
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-              {stats.map((stat) => (
-                <Box key={stat.title}>
+              {props.data.enterprise.description.items.map((item, index) => (
+                <Box key={index}>
                   <Text
                     fontFamily={'heading'}
                     fontSize={'3xl'}
                     color={'white'}
                     mb={3}
                   >
-                    {stat.title}
+                    {item.title}
                   </Text>
                   <Text fontSize={'xl'} color={'gray.400'}>
-                    {stat.content}
+                    {item.text}
                   </Text>
                 </Box>
               ))}

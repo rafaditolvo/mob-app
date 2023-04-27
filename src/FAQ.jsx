@@ -20,7 +20,8 @@ const features = Array.apply(null, Array(8)).map(function (x, i) {
   };
 });
 
-export default function FAQ() {
+export default function FAQ(props) {
+  console.log(props);
   return (
     <Box p={4} mt="2em" mb="6em">
       <Stack spacing={4} as={Container} maxW={'3xl'} textAlign={'center'}>

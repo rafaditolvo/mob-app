@@ -17,7 +17,6 @@ import {
   Button,
   Flex,
   Box,
-  Center,
 } from '@chakra-ui/react';
 
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons';
@@ -65,7 +64,7 @@ const ChakraCarousel = ({ children, gap }) => {
     if (isBetweenBaseAndMd) {
       setItemWidth(sliderWidth - gap);
       setMultiplier(0.65);
-      setConstraint(5);
+      setConstraint(1);
     }
     if (isBetweenMdAndXl) {
       setItemWidth(sliderWidth / 2 - gap);
@@ -136,7 +135,7 @@ const Slider = ({
   itemWidth,
   positions,
   children,
-  gap = 10,
+  gap,
 }) => {
   const [ref, { width }] = useBoundingRect();
 
@@ -161,45 +160,43 @@ const Slider = ({
 
   return (
     <>
-      <Center>
-        <Box
-          ref={ref}
-          w={{ base: '100%', md: `calc(100% + ${gap}px)` }}
-          //ml={{ base: 0, md: `-${gap / 2}px` }}
-          px={`${gap / 5}px`}
-          position="relative"
-          overflow="hidden"
-          _before={{
-            bgGradient: 'linear(to-r, base.d400, transparent)',
-            position: 'absolute',
-            w: `${gap / 2}px`,
-            content: "''",
-            zIndex: 1,
-            h: '100%',
-            left: 0,
-            top: 0,
-          }}
-          _after={{
-            bgGradient: 'linear(to-l, base.d400, transparent)',
-            position: 'absolute',
-            w: `${gap / 2}px`,
-            content: "''",
-            zIndex: 1,
-            h: '100%',
-            right: 0,
-            top: 0,
-          }}
-        >
-          {children}
-        </Box>
-      </Center>
+      <Box
+        ref={ref}
+        w={{ base: '100%', md: `calc(100% + ${gap}px)` }}
+        ml={{ base: 0, md: `-${gap / 2}px` }}
+        px={`${gap / 2}px`}
+        position="relative"
+        overflow="hidden"
+        _before={{
+          bgGradient: 'linear(to-r, base.d400, transparent)',
+          position: 'absolute',
+          w: `${gap / 2}px`,
+          content: "''",
+          zIndex: 1,
+          h: '100%',
+          left: 0,
+          top: 0,
+        }}
+        _after={{
+          bgGradient: 'linear(to-l, base.d400, transparent)',
+          position: 'absolute',
+          w: `${gap / 2}px`,
+          content: "''",
+          zIndex: 1,
+          h: '100%',
+          right: 0,
+          top: 0,
+        }}
+      >
+        {children}
+      </Box>
 
-      <Flex w={`${itemWidth}px`} mb="3em" mt={`${gap / 2}px`} mx="auto">
+      <Flex w={`${itemWidth}px`} mt={`${gap / 2}px`} mx="auto">
         <Button
           onClick={handleDecrementClick}
           onFocus={handleFocus}
-          mr={`${gap / 2}px`}
-          color="red.200"
+          mr={`${gap / 3}px`}
+          color="gray.200"
           variant="link"
           minW={0}
         >
@@ -223,8 +220,8 @@ const Slider = ({
         <Button
           onClick={handleIncrementClick}
           onFocus={handleFocus}
-          ml={`${gap / 2}px`}
-          color="red.200"
+          ml={`${gap / 3}px`}
+          color="gray.200"
           variant="link"
           zIndex={2}
           minW={0}
@@ -243,20 +240,18 @@ const Track = ({
   activeItem,
   constraint,
   multiplier,
+  itemWidth,
   positions,
   children,
-  itemWidth = 300,
-  gap = 10,
 }) => {
   const [dragStartPosition, setDragStartPosition] = useState(0);
   const controls = useAnimation();
   const x = useMotionValue(0);
   const node = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
+
   const handleDragStart = () => setDragStartPosition(positions[activeItem]);
 
   const handleDragEnd = (_, info) => {
-    console.log(info);
     const distance = info.offset.x;
     const velocity = info.velocity.x * multiplier;
     const direction = velocity < 0 || distance < 0 ? 1 : -1;
@@ -345,17 +340,6 @@ const Track = ({
     };
   }, [handleClick, handleResize, handleKeyDown, positions]);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   return (
     <>
       {itemWidth && (
@@ -367,7 +351,6 @@ const Track = ({
             animate={controls}
             style={{ x }}
             drag="x"
-            gap="1px"
             _active={{ cursor: 'grabbing' }}
             minWidth="min-content"
             flexWrap="nowrap"
@@ -386,25 +369,15 @@ const Item = ({
   setActiveItem,
   activeItem,
   constraint,
-  itemWidth = 300,
+  itemWidth,
   positions,
   children,
   index,
   gap,
 }) => {
   const [userDidTab, setUserDidTab] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+
   const handleFocus = () => setTrackIsActive(true);
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   const handleBlur = () => {
     userDidTab && index + 1 === positions.length && setTrackIsActive(false);
@@ -424,17 +397,11 @@ const Item = ({
       onBlur={handleBlur}
       onKeyUp={handleKeyUp}
       onKeyDown={handleKeyDown}
-      //justifyContent={isMobile ? 'center' : 'flex-start'}
-      textAlign="center"
-      // w={`${isMobile ? '100%' : `${itemWidth}px`}`}
-      direction="row"
-      flexWrap="wrap"
-      gap="1px"
+      w={`${itemWidth}px`}
       _notLast={{
         mr: `${gap}px`,
       }}
-      py={{ base: '2em', lg: '5em' }}
-      px={{ base: '1em', lg: '12em' }}
+      py="4px"
     >
       {children}
     </Flex>

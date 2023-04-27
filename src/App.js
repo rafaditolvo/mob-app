@@ -9,19 +9,46 @@ import {
   DrawerHeader,
   DrawerBody,
   Container,
+  StackDivider,
   Heading,
+  Stack,
+  SimpleGrid,
+  Badge,
   Text,
   HStack,
   Tag,
   VStack,
   useColorModeValue,
+  Spinner,
+  Skeleton,
+  useColorMode,
   List,
+  useToast,
   ListItem,
   Center,
   ListIcon,
   Image,
   useMediaQuery,
   Divider,
+  InputRightElement,
+  IconButton,
+  Modal,
+  InputGroup,
+  InputLeftElement,
+  ModalOverlay,
+  useDisclosure,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Input,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  SkeletonCircle,
+  SkeletonText,
+  Spacer,
 } from '@chakra-ui/react';
 import { CheckCircleIcon, PhoneIcon } from '@chakra-ui/icons';
 import { useState, useEffect } from 'react';
@@ -42,13 +69,619 @@ import PriceCarousel from './PriceCarousel';
 import ChakraCarousel from './ChakraCarousel';
 import { motion } from 'framer-motion';
 import AppContent from './AppContent';
+import ImageCarousel from './ImageCarousel';
+import imgteste from './img/img-teste-mob.png';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import axios from 'axios';
+import { FaMapMarkerAlt } from 'react-icons/fa';
 
-function App() {
+function App(props) {
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState('TESTE');
+  //const [pricingData, setPricingData] = useState([]);
+  const [isResidencial, setIsResidencial] = useState(false);
+  const [isEmpresa, setIsEmpresa] = useState(false);
+  const { colorMode, toggleColorMode } = useColorMode();
+  const isLight = colorMode === 'light';
+  const [isMobile, setIsMobile] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  //const { ref, inView } = useInView();
+  useEffect(() => {
+    setIsLoading(true); // define o estado de carregamento como verdadeiro
+    Promise.all([
+      new Promise((resolve) => setTimeout(resolve, 1500)), // aguarda
+      fetch('https://reacts3teste.s3.amazonaws.com/data.json')
+        .then((res) => res.json())
+        .then((res) => res),
+    ]).then(([_, data]) => {
+      setData(data); // atualiza os dados
+      setIsLoading(false); // define o estado de carregamento como falso
+    });
+  }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMobile, Carrosel]);
+
+  const handleStatusChange = (residencial, empresa) => {
+    setIsResidencial(residencial);
+    setIsEmpresa(empresa);
+  };
+
+  function BotaoEmpresa(id, values) {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const toast = useToast();
+    const [planoId, setPlanoId] = useState(id.id);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const validationSchema = Yup.object().shape({
+      name: Yup.string().required('Campo obrigatório'),
+      cnpj: Yup.string()
+        .required('Campo obrigatório')
+        .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/, 'CNPJ inválido'),
+      endereco: Yup.string().required('Campo obrigatório'),
+      bairro: Yup.string().required('Campo obrigatório'),
+
+      addressNumber: Yup.string().required('Campo obrigatório'), // nova validação
+      phone: Yup.string().required('Campo obrigatório'),
+      cep: Yup.string()
+        .required('Campo obrigatório')
+        .matches(/^\d{8}$/, 'CEP inválido'),
+    });
+
+    const handleSubmit = (values, actions) => {
+      console.log(values);
+      actions.setSubmitting(false);
+      onClose();
+      toast({
+        title: 'Dados enviados!',
+        description: 'Seus dados foram enviados com sucesso.',
+        status: 'success',
+        duration: 5000,
+        position: 'top-right',
+        isClosable: true,
+      });
+    };
+
+    const [autoPreenchido, setAutoPreenchido] = useState(false);
+
+    const buscarEndereco = async (cep, setFieldValue) => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get(
+          `https://viacep.com.br/ws/${cep}/json/`,
+        );
+        const { logradouro, bairro, localidade, uf } = response.data;
+        const endereco = `${logradouro}`;
+        const bairroVar = `${bairro}`;
+        console.log(endereco);
+        setFieldValue('endereco', endereco);
+        setFieldValue('bairro', bairroVar);
+        setAutoPreenchido(true);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    return (
+      <>
+        <Center>
+          <Button
+            w="100%"
+            mt="2em"
+            mb="1em"
+            colorScheme="red"
+            onClick={() => {
+              onOpen();
+            }}
+          >
+            Para Empresa
+          </Button>
+        </Center>
+
+        <Modal isOpen={isOpen} isCentered onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent w="90%">
+            <ModalHeader color="red">Confirme seus Dados!</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Formik
+                initialValues={{
+                  name: '',
+                  cnpj: '',
+                  bairro: '',
+                  endereco: '',
+                  addressNumber: '',
+                  phone: '',
+                  planoId: planoId,
+                }}
+                validationSchema={validationSchema}
+                onSubmit={(values, props) => {
+                  console.log(values, 'DADOS FORMULARIO');
+                  //props.setSubmitting(false);
+                  onClose();
+                  toast({
+                    title: 'Dados enviados!',
+                    description: 'Seus dados foram enviados com sucesso.',
+                    status: 'success',
+                    duration: 5000,
+                    position: 'top-right',
+                    isClosable: true,
+                  });
+                }}
+                values={values}
+                //setFieldValue={setFieldValue}
+              >
+                {({ errors, touched, values, setFieldValue }) => (
+                  <Form spacing={2}>
+                    <Field name="name">
+                      {({ field }) => (
+                        <FormControl isInvalid={errors.name && touched.name}>
+                          <FormLabel htmlFor="name">Razão Social</FormLabel>
+                          <Input
+                            {...field}
+                            id="name"
+                            placeholder="Digite o nome"
+                          />
+                          <FormErrorMessage>{errors.name}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Field name="cnpj">
+                      {({ field }) => (
+                        <FormControl isInvalid={errors.cnpj && touched.cnpj}>
+                          <FormLabel htmlFor="cnpj">CNPJ</FormLabel>
+                          <Input
+                            {...field}
+                            id="cnpj"
+                            placeholder="Digite o CNPJ"
+                          />
+                          <FormErrorMessage>{errors.cnpj}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Field name="cep">
+                      {({ field }) => (
+                        <FormControl isInvalid={errors.cep && touched.cep}>
+                          <FormLabel htmlFor="cep">CEP</FormLabel>
+                          <InputGroup>
+                            <Input
+                              {...field}
+                              type="text"
+                              onChange={(e) => {
+                                setAutoPreenchido(false);
+                                setFieldValue('cep', e.target.value);
+                              }}
+                            />
+                            <InputRightElement>
+                              <IconButton
+                                icon={<FaMapMarkerAlt />}
+                                type="button"
+                                isLoading={isLoading}
+                                colorScheme={isLoading ? 'teal' : 'blue'}
+                                onClick={() =>
+                                  buscarEndereco(values.cep, setFieldValue)
+                                }
+                                variant="solid"
+                                // colorScheme="blue"
+                              />
+                            </InputRightElement>
+                          </InputGroup>
+                          <FormErrorMessage>{errors.cep}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Field name="endereco">
+                      {({ field }) => (
+                        <FormControl
+                          isInvalid={errors.address && touched.address}
+                        >
+                          <FormLabel htmlFor="address">Endereço</FormLabel>
+                          <Input
+                            {...field}
+                            id="address"
+                            placeholder="Digite o endereço"
+                            // defaultValue={values.address}
+                          />
+                          <FormErrorMessage>{errors.address}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Field name="bairro">
+                      {({ field }) => (
+                        <FormControl
+                          isInvalid={errors.bairro && touched.bairro}
+                        >
+                          <FormLabel htmlFor="bairro">Bairro</FormLabel>
+                          <Input
+                            {...field}
+                            id="bairro"
+                            placeholder="Digite o Bairro"
+                            // defaultValue={values.address}
+                          />
+                          <FormErrorMessage>{errors.address}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Field name="addressNumber">
+                      {({ field }) => (
+                        <FormControl
+                          isInvalid={
+                            errors.addressNumber && touched.addressNumber
+                          }
+                        >
+                          <FormLabel htmlFor="addressNumber">Número</FormLabel>
+                          <Input
+                            {...field}
+                            id="addressNumber"
+                            placeholder="Digite o número do endereço"
+                          />
+                          <FormErrorMessage>
+                            {errors.addressNumber}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Field name="phone">
+                      {({ field }) => (
+                        <FormControl isInvalid={errors.phone && touched.phone}>
+                          <FormLabel htmlFor="phone">Telefone</FormLabel>
+                          <Input
+                            {...field}
+                            id="phone"
+                            placeholder="Digite o telefone"
+                          />
+                          <FormErrorMessage>{errors.phone}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <ModalFooter>
+                      <Button
+                        colorScheme="blue"
+                        mr={3}
+                        type="submit"
+                        onClick={handleSubmit}
+                      >
+                        Enviar
+                      </Button>
+                      <Button variant="ghost" onClick={onClose}>
+                        Cancelar
+                      </Button>
+                    </ModalFooter>
+                  </Form>
+                )}
+              </Formik>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  }
+  function BotaoResidencial(id, values) {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const toast = useToast();
+    const [planoId, setPlanoId] = useState(id.id);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const validationSchema = Yup.object().shape({
+      name: Yup.string().required('Campo obrigatório'),
+      cpf: Yup.string()
+        .required('Campo obrigatório')
+        .matches(/^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}$/, 'CPF inválido')
+        .test('cpf', 'CPF inválido', function (value) {
+          const cpf = value?.replace(/[^\d]+/g, '');
+          if (!cpf) return false;
+
+          // Elimina CPFs invalidos conhecidos
+          if (
+            cpf.length !== 11 ||
+            cpf === '00000000000' ||
+            cpf === '11111111111' ||
+            cpf === '22222222222' ||
+            cpf === '33333333333' ||
+            cpf === '44444444444' ||
+            cpf === '55555555555' ||
+            cpf === '66666666666' ||
+            cpf === '77777777777' ||
+            cpf === '88888888888' ||
+            cpf === '99999999999'
+          ) {
+            return false;
+          }
+
+          // Valida 1o digito
+          let add = 0;
+          for (let i = 0; i < 9; i++) {
+            add += parseInt(cpf.charAt(i)) * (10 - i);
+          }
+          let rev = 11 - (add % 11);
+          if (rev === 10 || rev === 11) {
+            rev = 0;
+          }
+          if (rev !== parseInt(cpf.charAt(9))) {
+            return false;
+          }
+
+          // Valida 2o digito
+          add = 0;
+          for (let i = 0; i < 10; i++) {
+            add += parseInt(cpf.charAt(i)) * (11 - i);
+          }
+          rev = 11 - (add % 11);
+          if (rev === 10 || rev === 11) {
+            rev = 0;
+          }
+          if (rev !== parseInt(cpf.charAt(10))) {
+            return false;
+          }
+
+          return true;
+        }),
+
+      endereco: Yup.string().required('Campo obrigatório'),
+      bairro: Yup.string().required('Campo obrigatório'),
+      addressNumber: Yup.string().required('Campo obrigatório'),
+      phone: Yup.string().required('Campo obrigatório'),
+      cep: Yup.string()
+        .required('Campo obrigatório')
+        .matches(/^\d{8}$/, 'CEP inválido'),
+    });
+
+    const handleSubmitResidencial = (values, actions) => {
+      console.log(values);
+      actions.setSubmitting(false);
+      onClose();
+      toast({
+        title: 'Dados enviados!',
+        description: 'Seus dados foram enviados com sucesso.',
+        status: 'success',
+        duration: 5000,
+        position: 'top-right',
+        isClosable: true,
+      });
+    };
+
+    const [autoPreenchido, setAutoPreenchido] = useState(false);
+
+    const buscarEndereco = async (cep, setFieldValue) => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get(
+          `https://viacep.com.br/ws/${cep}/json/`,
+        );
+        const { logradouro, bairro, localidade, uf } = response.data;
+        const endereco = `${logradouro}`;
+        const bairroVar = `${bairro}`;
+        console.log(endereco);
+        setFieldValue('endereco', endereco);
+        setFieldValue('bairro', bairroVar);
+        setAutoPreenchido(true);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    return (
+      <>
+        <Center>
+          <Button
+            w="100%"
+            mt="2em"
+            mb="1em"
+            colorScheme="red"
+            onClick={() => {
+              onOpen();
+            }}
+          >
+            Para Você
+          </Button>
+        </Center>
+
+        <Modal isOpen={isOpen} isCentered onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent w="90%">
+            <ModalHeader color="red">Confirme seus Dados!</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Formik
+                initialValues={{
+                  name: '',
+                  cpf: '',
+                  bairro: '',
+                  endereco: '',
+                  addressNumber: '',
+                  phone: '',
+                  planoId: planoId,
+                }}
+                validationSchema={validationSchema}
+                onSubmit={(values, props) => {
+                  console.log(values, 'DADOS FORMULARIO');
+                  props.setSubmitting(false);
+                  onClose();
+                  toast({
+                    title: 'Dados enviados!',
+                    description: 'Seus dados foram enviados com sucesso.',
+                    status: 'success',
+                    duration: 5000,
+                    position: 'top-right',
+                    isClosable: true,
+                  });
+                }}
+                values={values}
+                //setFieldValue={setFieldValue}
+              >
+                {({ errors, touched, values, setFieldValue }) => (
+                  <Form spacing={2}>
+                    <Field name="name">
+                      {({ field }) => (
+                        <FormControl isInvalid={errors.name && touched.name}>
+                          <FormLabel htmlFor="name">Nome</FormLabel>
+                          <Input
+                            {...field}
+                            id="name"
+                            placeholder="Digite o nome"
+                          />
+                          <FormErrorMessage>{errors.name}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Field name="cpf">
+                      {({ field }) => (
+                        <FormControl isInvalid={errors.cpf && touched.cpf}>
+                          <FormLabel htmlFor="cpf">CPF</FormLabel>
+                          <Input
+                            {...field}
+                            id="cpf"
+                            placeholder="Digite o CPF"
+                            maxLength="11"
+                          />
+                          <FormErrorMessage>{errors.cpf}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Field name="cep">
+                      {({ field }) => (
+                        <FormControl isInvalid={errors.cep && touched.cep}>
+                          <FormLabel htmlFor="cep">CEP</FormLabel>
+                          <InputGroup>
+                            <Input
+                              {...field}
+                              type="text"
+                              onChange={(e) => {
+                                setAutoPreenchido(false);
+                                setFieldValue('cep', e.target.value);
+                              }}
+                            />
+                            <InputRightElement>
+                              <IconButton
+                                icon={<FaMapMarkerAlt />}
+                                type="button"
+                                isLoading={isLoading}
+                                colorScheme={isLoading ? 'teal' : 'blue'}
+                                onClick={() =>
+                                  buscarEndereco(values.cep, setFieldValue)
+                                }
+                                variant="solid"
+                                // colorScheme="blue"
+                              />
+                            </InputRightElement>
+                          </InputGroup>
+                          <FormErrorMessage>{errors.cep}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Field name="endereco">
+                      {({ field }) => (
+                        <FormControl
+                          isInvalid={errors.address && touched.address}
+                        >
+                          <FormLabel htmlFor="address">Endereço</FormLabel>
+                          <Input
+                            {...field}
+                            id="address"
+                            placeholder="Digite o endereço"
+                            // defaultValue={values.address}
+                          />
+                          <FormErrorMessage>{errors.address}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Field name="bairro">
+                      {({ field }) => (
+                        <FormControl
+                          isInvalid={errors.bairro && touched.bairro}
+                        >
+                          <FormLabel htmlFor="bairro">Bairro</FormLabel>
+                          <Input
+                            {...field}
+                            id="bairro"
+                            placeholder="Digite o Bairro"
+                            // defaultValue={values.address}
+                          />
+                          <FormErrorMessage>{errors.address}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Field name="addressNumber">
+                      {({ field }) => (
+                        <FormControl
+                          isInvalid={
+                            errors.addressNumber && touched.addressNumber
+                          }
+                        >
+                          <FormLabel htmlFor="addressNumber">Número</FormLabel>
+                          <Input
+                            {...field}
+                            id="addressNumber"
+                            placeholder="Digite o número do endereço"
+                          />
+                          <FormErrorMessage>
+                            {errors.addressNumber}
+                          </FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <Field name="phone">
+                      {({ field }) => (
+                        <FormControl isInvalid={errors.phone && touched.phone}>
+                          <FormLabel htmlFor="phone">Telefone</FormLabel>
+                          <Input
+                            {...field}
+                            id="phone"
+                            placeholder="Digite o telefone"
+                          />
+                          <FormErrorMessage>{errors.phone}</FormErrorMessage>
+                        </FormControl>
+                      )}
+                    </Field>
+
+                    <ModalFooter>
+                      <Button
+                        colorScheme="blue"
+                        mr={3}
+                        type="submit"
+                        onClick={handleSubmitResidencial}
+                      >
+                        Enviar
+                      </Button>
+                      <Button variant="ghost" onClick={onClose}>
+                        Cancelar
+                      </Button>
+                    </ModalFooter>
+                  </Form>
+                )}
+              </Formik>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  }
   function WhatsAppButton() {
     return (
       <Box
@@ -80,276 +713,206 @@ function App() {
     );
   }
 
-  function Carrosel() {
-    function PriceWrapper({ children }) {
-      return (
-        <Box
-          mb={4}
-          //gap={2}
-          shadow="base"
-          borderWidth="1px"
-          borderColor={useColorModeValue('gray.200', 'gray.500')}
-          borderRadius="30px"
-          width="100%" // define a largura em porcentagem
-        >
-          {children}
-        </Box>
-      );
+  function Carrosel(props) {
+    const [idCard, setIdCard] = useState(null); // Inicializa o estado com o valor null
+
+    function handleClick(id) {
+      setIdCard(id);
     }
 
-    const pricingData = [
-      {
-        name: 'Premium',
-        price: '149',
-        features: [
-          'unlimited build minutes',
-          'Lorem, ipsum dolor.',
-          '10TB Lorem, ipsum dolor.',
-        ],
-      },
-      {
-        name: 'Enterprise',
-        price: '299',
-        features: [
-          'unlimited build minutes',
-          'Lorem, ipsum dolor.',
-          '50TB Lorem, ipsum dolor.',
-        ],
-      },
-      {
-        name: 'Hobby',
-        price: '179',
-        features: [
-          'unlimited build minutes',
-          'Lorem, ipsum dolor.',
-          '5TB Lorem, ipsum dolor.',
-        ],
-      },
-      {
-        name: 'Premium',
-        price: '149',
-        features: [
-          'unlimited build minutes',
-          'Lorem, ipsum dolor.',
-          '10TB Lorem, ipsum dolor.',
-        ],
-      },
-      {
-        name: 'Enterprise',
-        price: '299',
-        features: [
-          'unlimited build minutes',
-          'Lorem, ipsum dolor.',
-          '50TB Lorem, ipsum dolor.',
-        ],
-      },
-      {
-        name: 'Enterprise',
-        price: '299',
-        features: [
-          'unlimited build minutes',
-          'Lorem, ipsum dolor.',
-          '50TB Lorem, ipsum dolor.',
-        ],
-      },
-      {
-        name: 'Enterprise',
-        price: '299',
-        features: [
-          'unlimited build minutes',
-          'Lorem, ipsum dolor.',
-          '50TB Lorem, ipsum dolor.',
-        ],
-      },
-      {
-        name: 'Enterprise',
-        price: '299',
-        features: [
-          'unlimited build minutes',
-          'Lorem, ipsum dolor.',
-          '50TB Lorem, ipsum dolor.',
-        ],
-      },
-      {
-        name: 'Enterprise',
-        price: '299',
-        features: [
-          'unlimited build minutes',
-          'Lorem, ipsum dolor.',
-          '50TB Lorem, ipsum dolor.',
-        ],
-      },
-      {
-        name: 'Enterprise',
-        price: '299',
-        features: [
-          'unlimited build minutes',
-          'Lorem, ipsum dolor.',
-          '50TB Lorem, ipsum dolor.',
-        ],
-      },
-    ];
+    function formatCurrency(value) {
+      return `R$ ${value.toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+      })}`;
+    }
 
     return (
-      <>
+      <Box mt="4em">
         <Container
-          py={2}
-          px={12}
-          mt="1em"
-          alignItems="center"
+          py={5}
+          px={5}
           maxW={{
             base: '100%',
             sm: '35rem',
             md: '43.75rem',
             lg: '57.5rem',
             xl: '75rem',
-            xxl: '87.5rem',
+            xxl: '90.5rem',
           }}
         >
-          <VStack spacing={2} mt="2em" mb="3em" textAlign="center">
-            <Heading as="h1" fontSize="4xl">
+          <VStack spacing={2}>
+            <Heading as="h1" mb="2em" fontSize="2xl" fontWeight="hairline">
               TURBINE A SUA VIDA COM A MOB
             </Heading>
-
-            <Text fontSize="lg" mb="5em" mt="2em" color={'gray.500'}>
-              CONHEÇA OS BENEFÍCIOS DE TER UMA INTERNET TURBINADA
-            </Text>
-
-            <HStack mb="2em">
-              {/* <Button
-                colorScheme="facebook"
-                leftIcon={<CheckCircleIcon />}
-              ></Button>
-              <Button
-                colorScheme="twitter"
-                leftIcon={<CheckCircleIcon />}
-              ></Button>{' '}
-              <Button
-                colorScheme="facebook"
-                leftIcon={<CheckCircleIcon />}
-              ></Button>
-              <Button
-                colorScheme="twitter"
-                leftIcon={<CheckCircleIcon />}
-        ></Button> */}
-            </HStack>
+            <Spacer />
           </VStack>
-          <Divider />
-          <ChakraCarousel gap={3}>
-            {pricingData.length > 0 ? (
-              pricingData.map((item, index) => (
-                <motion.div
-                  key={index}
-                  whileHover={{ scale: 0.9 }}
-                  whileTap={{ scale: 0.8 }}
-                >
-                  <Center>
-                    <PriceWrapper>
-                      <Box position="relative">
-                        <Box py={4} px={9}>
-                          <Text fontWeight="500" fontSize="2xl">
-                            Plano
-                          </Text>
-                          <HStack justifyContent="center">
-                            <Text fontSize="3xl" fontWeight="600">
-                              $
-                            </Text>
-                            <Text fontSize="5xl" fontWeight="900">
-                              {item.price}
-                            </Text>
-                            <Text fontSize="3xl" color="gray.500">
-                              /mês
-                            </Text>
-                          </HStack>
-                        </Box>
-                        <VStack
-                          //bg={useColorModeValue('gray.50', 'gray.700')}
-                          py={4}
-                          borderBottomRadius={'xl'}
-                        >
-                          <List spacing={3} textAlign="start" px={12}>
-                            <ListItem>
-                              <ListIcon as={FaCheckCircle} color="green.500" />
-                              unlimited build minutes
-                            </ListItem>
-                            <ListItem>
-                              <ListIcon as={FaCheckCircle} color="green.500" />
-                              Lorem, ipsum dolor.
-                            </ListItem>
-                            <ListItem>
-                              <ListIcon as={FaCheckCircle} color="green.500" />
-                              5TB Lorem, ipsum dolor.
-                            </ListItem>
-                          </List>
-                          <Box w="80%" pt={7}>
-                            <Button w="full" colorScheme="red">
-                              Start trial
-                            </Button>
-                          </Box>
+          {props.isLoading ? ( // verifica se está carregando e exibe o Spinner
+            <Box padding="6" mt="2em" boxShadow="lg">
+              <SkeletonText
+                mt="4"
+                noOfLines={8}
+                spacing="4"
+                skeletonHeight="2"
+              />
+            </Box>
+          ) : (
+            <ChakraCarousel gap={32}>
+              {props.data.enterprise.pricingData
+                .filter((item) => !isEmpresa || item?.name === 'Enterprise')
+                .map((item, index) =>
+                  item ? (
+                    <Flex
+                      key={item.id}
+                      boxShadow="rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px"
+                      justifyContent="space-between"
+                      flexDirection="column"
+                      overflow="hidden"
+                      //backgroundColor="gray.100"
+                      rounded={20}
+                      h="100%"
+                      w="80%"
+                      flex={1}
+                      p={5}
+                    >
+                      <motion.div
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        maxW={{
+                          base: '100%',
+                          sm: '35rem',
+                          md: '43.75rem',
+                          lg: '57.5rem',
+                          xl: '75rem',
+                          xxl: '90.5rem',
+                        }}
+                      >
+                        <VStack mb={6}>
+                          <Center>
+                            <Image
+                              src={imgteste}
+                              alt="Green double couch with wooden legs"
+                              borderRadius="lg"
+                              //padding="2em"
+                              boxSize={200}
+                              mb="1em"
+                            />
+                          </Center>
+                          <Heading
+                            fontSize={{ base: '3xl', md: '5xl' }}
+                            textAlign="left"
+                            mb={2}
+                          >
+                            {item.name}
+                          </Heading>
+                          <Heading
+                            fontSize={{ base: '4xl', md: '4xl' }}
+                            textAlign="left"
+                            mb={2}
+                          >
+                            {formatCurrency(item.price)}
+                          </Heading>
                         </VStack>
-                      </Box>
-                    </PriceWrapper>
-                  </Center>
-                </motion.div>
-              ))
-            ) : (
-              <Text>No pricing data available.</Text>
-            )}
-          </ChakraCarousel>
+                      </motion.div>
+
+                      <Center>
+                        <Box maxW="100%" mt="1em">
+                          <List spacing={2} maxW="100%">
+                            {item.features.map((feature, index) => (
+                              <ListItem key={index}>
+                                <ListIcon
+                                  as={FaCheckCircle}
+                                  color="green.500"
+                                />
+                                {feature}
+                              </ListItem>
+                            ))}
+                          </List>
+                        </Box>
+                      </Center>
+
+                      <Flex justifyContent="center">
+                        {isEmpresa ? (
+                          <BotaoEmpresa id={item.id} />
+                        ) : (
+                          <BotaoResidencial id={item.id} />
+                        )}
+                      </Flex>
+                    </Flex>
+                  ) : (
+                    <Box padding="6" boxShadow="lg" bg="white"></Box>
+                  ),
+                )}
+            </ChakraCarousel>
+          )}{' '}
         </Container>
-      </>
+        <Spacer />
+      </Box>
     );
   }
 
-  //console.log(data);
-
   return (
-    <Flex direction="column" height="100vh">
-      <Drawer
-        isOpen={isOpen}
-        placement="right"
-        onClose={() => setIsOpen(false)}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader></DrawerHeader>
-          <DrawerBody>
-            <VStack mt="3em">
-              <Button variant="ghost" mb={4}>
-                Para Você
-              </Button>
-              <Button variant="ghost" mb={4}>
-                Para Empresa
-              </Button>
-              <Button variant="solid" colorScheme="red">
-                Assinar
-              </Button>
-            </VStack>
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
-      <Header />
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Banner />
+    <div style={{ touchAction: 'pan-y' }}>
+      <Flex direction="column" height="10vh">
+        <Drawer
+          isOpen={isOpen}
+          placement="right"
+          onClose={() => setIsOpen(false)}
+        >
+          <DrawerOverlay />
+          <DrawerContent>
+            <DrawerCloseButton />
 
-        <Carrosel />
-        <Divider />
-        <CardFooter />
-        <Divider />
-        <AppContent />
+            <DrawerBody>
+              <VStack mt="3em">
+                <Button variant="ghost" mb={4}>
+                  Para Você
+                </Button>
+                <Button variant="ghost" mb={4}>
+                  Para Empresa
+                </Button>
+                <Button variant="solid" colorScheme="red">
+                  Assinar
+                </Button>
+              </VStack>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
 
-        <WhatsAppButton />
-        <Divider />
-        <FAQ />
+        <Header onStatusChange={handleStatusChange} />
 
-        <Footer />
-      </motion.div>
-    </Flex>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <ImageCarousel data={data} />
+          <Divider />
+          {isLoading ? ( // verifica se está carregando e exibe o Spinner
+            <Box padding="6" boxShadow="lg">
+              <SkeletonText
+                mt="4"
+                noOfLines={8}
+                spacing="4"
+                skeletonHeight="20"
+              />
+            </Box>
+          ) : (
+            <Carrosel data={data} isLoading={isLoading} />
+          )}
+          <Divider />
+          <CardFooter data={data} />
+          <Divider />
+          <AppContent data={data} />
+
+          <WhatsAppButton />
+          <Divider />
+          <FAQ data={data} />
+
+          <Footer />
+        </motion.div>
+      </Flex>
+    </div>
   );
 }
 

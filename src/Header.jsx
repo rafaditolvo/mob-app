@@ -17,22 +17,36 @@ import {
   DrawerHeader,
   DrawerBody,
   VStack,
-} from "@chakra-ui/react";
-import { MoonIcon, SunIcon, HamburgerIcon } from "@chakra-ui/icons";
-import logoDark from "../src/img/mob_logo.svg";
-import logo from "../src/img/mob_logo_black.svg";
-import { motion } from "framer-motion";
-import { useState } from "react";
-import PrinceWrapper from "./PrinceWrapper";
-import SmallWithLogoLeft from "./SmallWithLogoLeft";
-import { FaWhatsapp } from "react-icons/fa";
-import { Icon } from "@chakra-ui/react";
+} from '@chakra-ui/react';
+import { MoonIcon, SunIcon, HamburgerIcon } from '@chakra-ui/icons';
+import logoDark from '../src/img/mob_logo.svg';
+import logo from '../src/img/mob_logo_black.svg';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import PrinceWrapper from './PrinceWrapper';
+import SmallWithLogoLeft from './SmallWithLogoLeft';
+import { FaWhatsapp } from 'react-icons/fa';
+import { Icon } from '@chakra-ui/react';
 
-function Main() {
+function Header({ onStatusChange }) {
   const { colorMode, toggleColorMode } = useColorMode();
-  const isLight = colorMode === "light";
+  const isLight = colorMode === 'light';
   const [isLogoLoaded, setIsLogoLoaded] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isResidencial, setIsResidencial] = useState(false);
+  const [isEmpresa, setIsEmpresa] = useState(false);
+
+  const handleResidencialClick = () => {
+    setIsResidencial(true);
+    setIsEmpresa(false);
+    onStatusChange(true, false);
+  };
+
+  const handleEmpresaClick = () => {
+    setIsResidencial(false);
+    setIsEmpresa(true);
+    onStatusChange(false, true);
+  };
 
   const handleLogoLoad = () => {
     setIsLogoLoaded(true);
@@ -46,11 +60,11 @@ function Main() {
         target="_blank"
         rel="noopener noreferrer"
         position="fixed"
-        bottom={{ base: "79", md: "8", lg: "12" }}
-        right={{ base: "10", md: "8", lg: "12" }}
-        width={{ base: "60px", md: "70px", lg: "80px" }}
-        height={{ base: "60px", md: "70px", lg: "80px" }}
-        padding={{ base: "10px", md: "14px", lg: "16px" }}
+        bottom={{ base: '79', md: '8', lg: '12' }}
+        right={{ base: '10', md: '8', lg: '12' }}
+        width={{ base: '60px', md: '70px', lg: '80px' }}
+        height={{ base: '60px', md: '70px', lg: '80px' }}
+        padding={{ base: '10px', md: '14px', lg: '16px' }}
         borderRadius="full"
         backgroundColor="green.500"
         color="white"
@@ -60,11 +74,11 @@ function Main() {
         boxShadow="0px 4px 8px rgba(0, 0, 0, 0.1)"
         transition="all 0.2s ease-out"
         _hover={{
-          transform: "scale(1.1)",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+          transform: 'scale(1.1)',
+          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
         }}
       >
-        <FaWhatsapp size={{ base: "24px", md: "28px", lg: "32px" }} />
+        <FaWhatsapp size={{ base: '24px', md: '28px', lg: '32px' }} />
       </Box>
     );
   }
@@ -78,13 +92,23 @@ function Main() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader></DrawerHeader>
+
           <DrawerBody>
             <VStack mt="3em">
-              <Button variant="ghost" mb={4}>
+              <Button
+                variant={isResidencial ? 'outline' : ''}
+                colorScheme={isResidencial ? 'red' : ''}
+                mb={4}
+                onClick={handleResidencialClick}
+              >
                 Para Você
               </Button>
-              <Button variant="ghost" mb={4}>
+              <Button
+                variant={isEmpresa ? 'outline' : ''}
+                colorScheme={isEmpresa ? 'red' : ''}
+                mb={4}
+                onClick={handleEmpresaClick}
+              >
                 Para Empresa
               </Button>
               <Button variant="solid" colorScheme="red">
@@ -101,20 +125,30 @@ function Main() {
         justify="space-between"
         px={16}
         py={8}
-        bg={isLight ? "white" : "gray.800"}
+        bg={isLight ? 'white' : 'gray.800'}
       >
         {!isLogoLoaded && <Spinner />}
         <Image
           src={isLight ? logo : logoDark}
           boxSize="5em"
           onLoad={handleLogoLoad}
-          style={isLogoLoaded ? {} : { display: "none" }}
+          style={isLogoLoaded ? {} : { display: 'none' }}
         />
-        <Flex display={{ base: "none", md: "flex" }}>
-          <Button variant="ghost" mr={4}>
+        <Flex display={{ base: 'none', md: 'flex' }}>
+          <Button
+            variant={isResidencial ? 'outline' : ''}
+            colorScheme={isResidencial ? 'red' : ''}
+            mr={4}
+            onClick={handleResidencialClick}
+          >
             Para Você
           </Button>
-          <Button variant="ghost" mr={4}>
+          <Button
+            variant={isEmpresa ? 'outline' : ''}
+            colorScheme={isEmpresa ? 'red' : ''}
+            mr={4}
+            onClick={handleEmpresaClick}
+          >
             Para Empresa
           </Button>
           <Button variant="solid" colorScheme="red">
@@ -125,7 +159,7 @@ function Main() {
           aria-label="Open Menu"
           icon={<HamburgerIcon />}
           onClick={() => setIsOpen(true)}
-          display={{ base: "block", md: "none" }}
+          display={{ base: 'block', md: 'none' }}
           ml={2}
         />
         <IconButton
@@ -138,4 +172,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default Header;
