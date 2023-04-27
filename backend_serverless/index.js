@@ -3,7 +3,8 @@ const S3 = new AWS.S3({ region: "us-east-1", apiVersion: "2012-10-17" });
 
 const jwt = require("jsonwebtoken");
 
-const TIME_JWT_EXPIRES = process.env.TIME_JWT_EXPIRES ?? 3600;
+const TIME_JWT_EXPIRES = process.env.TIME_JWT_EXPIRES ?? 36000;
+const S3_BUCKET = process.env.TIME_JWT_EXPIRES ?? 'reacts3teste';
 
 /**
  *
@@ -11,15 +12,15 @@ const TIME_JWT_EXPIRES = process.env.TIME_JWT_EXPIRES ?? 3600;
  * @param {string} nameOfFile
  * @returns Promise<void>
  */
-const putObjectToS3 = async (data, nameOfFile) =>
+const putObjectToS3 = async (data, nameOfFile, paramsFile = null) =>
   new Promise((resolve, reject) => {
     var s3 = new AWS.S3();
     var params = {
-      Bucket: "reacts3teste",
+      Bucket: S3_BUCKET,
       Key: nameOfFile + ".json",
       Body: data,
     };
-    s3.putObject(params, function (err, data) {
+    s3.putObject(paramsFile ? paramsFile : params, function (err, data) {
       if (err) {
         console.log(err, err.stack); // an error occurred
         reject();
@@ -136,10 +137,70 @@ const auth = async ({ login, pass }) => {
   return response;
 };
 
+const upload = async (body, headers) => {
+  
+  const responseUnauthorized = {
+    statusCode: 403,
+    body: body,
+  };
+  const responseSuccess = {
+    statusCode: 200,
+    body: null,
+  };
+  
+  const base64 = body?.file ?? false;
+
+  const bearerToken = headers?.authorization ?? false;
+  const imageType = body?.['imageType'] ?? false;
+  const imageName = body?.['imageName'] ?? false;
+  console.log('upload bearerToken', bearerToken)
+  // console.log('upload bearerToken', bearerToken, imageType, imageName)
+  // if (!bearerToken) {
+  if (!bearerToken || !imageType || !imageName) {
+    return responseUnauthorized;
+  }
+  const token = bearerToken.split(" ")[1];
+
+  try {
+    const tokenIsValid = await validJWT(token);
+    if (tokenIsValid) {
+      console.log("token is valid");
+      try {
+
+        const base64Data = new Buffer.from(base64.replace(/^data:image\/\w+;base64,/, ""), 'base64');
+        
+        const params = {
+          Bucket: S3_BUCKET,
+          Key: imageName, // type is not required
+          Body: base64Data,
+          ContentEncoding: 'base64', // required
+          ContentType: imageType // required. Notice the back ticks
+        }
+        console.log(params)
+        
+        await putObjectToS3(null, null, params);
+        
+      } catch (errPutObjectToS3) {
+        console.log("errorr S3", errPutObjectToS3);
+        return {
+          statusCode: 400,
+          body: JSON.stringify(errPutObjectToS3),
+        };
+      }
+    }
+  } catch (e) {
+    console.log(e);
+    return responseUnauthorized;
+  }
+  
+  
+}
+
 module.exports.handler = async (event) => {
   const rawPath = event?.rawPath ?? null;
   const body = JSON.parse(event.body);
   const headers = event.headers;
+  console.log(rawPath)
 
   if (rawPath == "/auth") {
     const response = await auth(body);
@@ -147,6 +208,9 @@ module.exports.handler = async (event) => {
   } else if (rawPath == "/save") {
     const response = await save({ headers, body });
     console.log("response", response);
+    return response;
+  } else if (rawPath == "/upload") {
+    const response = await upload(body,headers);
     return response;
   } else {
     const response = {
