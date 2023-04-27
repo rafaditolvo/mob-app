@@ -1,0 +1,320 @@
+{
+  "personal": {
+    "banners": [
+      {
+        "id": "fa3eab01-b788-4639-a7be-1",
+        "src": "https://reacts3teste.s3.amazonaws.com/static/media/minha-mob-cellphone.c7fe1a023964a3ae027f.png"
+      },
+      {
+        "id": "fa3eab01-b788-4639-a7be-2",
+        "src": "https://reacts3teste.s3.amazonaws.com/static/media/minha-mob-cellphone.c7fe1a023964a3ae027f.png"
+      },
+      {
+        "id": "fa3eab01-b788-4639-a7be-3",
+        "src": "https://reacts3teste.s3.amazonaws.com/static/media/minha-mob-cellphone.c7fe1a023964a3ae027f.png"
+      }
+    ],
+    "description": {
+      "h2": "LOREM",
+      "h1": "Para Sua Empresa",
+      "h3": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "items": [
+        {
+          "title": "10+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "24/7",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "13%",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "250M+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        }
+      ]
+    },
+    "appDescription": {
+      "h1": "Baixe o App",
+      "appName": "Minha Mob",
+      "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "appImage": "http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/minha-mob-cellphone.c7fe1a023964a3ae027f.png",
+      "downloadLink": "https://play.google.com/store/games?device=windows",
+      "supportDownload": "https://www.youtube.com/",
+      "h3": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "items": [
+        {
+          "title": "10+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "24/7",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "13%",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "250M+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        }
+      ]
+    },
+    "pricingData": [
+      {
+        "id": 1,
+        "name": "PremiumLite",
+        "price": "99",
+        "features": [
+          "unlimited build minutes",
+          "Lorem, ipsum dolor.",
+          "10TB Lorem, ipsum dolor."
+        ],
+        "srcImage": "static/media/aaatest (1)-2e3cbf01-e85b-4600-893c-2797354f6a3b.png"
+      },
+      {
+        "id": 2,
+        "name": "Enterprise",
+        "price": "299",
+        "features": [
+          "unlimited build minutes",
+          "Lorem, ipsum dolor.",
+          "50TB Lorem, ipsum dolor."
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Hobby",
+        "price": "179",
+        "features": [
+          "unlimited build minutes",
+          "Lorem, ipsum dolor.",
+          "5TB Lorem, ipsum dolor."
+        ]
+      }
+    ],
+    "FAQ": {
+      "h1": "Para Você",
+      "text": "FAQ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "items": [
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        }
+      ]
+    },
+    "footer": {
+      "whatsappNumber": "123123123123",
+      "logoSrc": "http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+      "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "socialMedia": [
+        {
+          "name": "Twitter",
+          "imageSrc": "http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+          "href": "https://twitter.com/"
+        },
+        {
+          "name": "Youtube",
+          "imageSrc": "http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+          "href": "https://www.youtube.com/"
+        },
+        {
+          "name": "Instagram",
+          "imageSrc": "http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+          "href": "https://www.instagram.com/"
+        }
+      ]
+    }
+  },
+  "enterprise": {
+    "banners": [
+      {
+        "id": "fa3eab01-b788-4639-a7be-1",
+        "src": "https://reacts3teste.s3.amazonaws.com/static/media/minha-mob-cellphone.c7fe1a023964a3ae027f.png"
+      },
+      {
+        "id": "fa3eab01-b788-4639-a7be-2",
+        "src": "https://reacts3teste.s3.amazonaws.com/static/media/minha-mob-cellphone.c7fe1a023964a3ae027f.png"
+      },
+      {
+        "id": "fa3eab01-b788-4639-a7be-3",
+        "src": "https://reacts3teste.s3.amazonaws.com/static/media/minha-mob-cellphone.c7fe1a023964a3ae027f.png"
+      }
+    ],
+    "description": {
+      "h2": "LOREM",
+      "h1": "Para Sua Empresa",
+      "h3": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "items": [
+        {
+          "title": "10+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "24/7",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "13%",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "250M+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        }
+      ]
+    },
+    "appDescription": {
+      "h1": "Baixe o App",
+      "appName": "Minha Mob",
+      "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "appImage": "http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/minha-mob-cellphone.c7fe1a023964a3ae027f.png",
+      "downloadLink": "https://play.google.com/store/games?device=windows",
+      "supportDownload": "https://www.youtube.com/",
+      "h3": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "items": [
+        {
+          "title": "10+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "24/7",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "13%",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "250M+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        }
+      ]
+    },
+    "pricingData": [
+      {
+        "id": 1,
+        "name": "PremiumLite",
+        "price": "99",
+        "features": [
+          "unlimited build minutes",
+          "Lorem, ipsum dolor.",
+          "10TB Lorem, ipsum dolor."
+        ],
+        "srcImage": "static/media/aaatest (1)-2e3cbf01-e85b-4600-893c-2797354f6a3b.png"
+      },
+      {
+        "id": 2,
+        "name": "Enterprise",
+        "price": "299",
+        "features": [
+          "unlimited build minutes",
+          "Lorem, ipsum dolor.",
+          "50TB Lorem, ipsum dolor."
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Hobby",
+        "price": "179",
+        "features": [
+          "unlimited build minutes",
+          "Lorem, ipsum dolor.",
+          "5TB Lorem, ipsum dolor."
+        ]
+      }
+    ],
+    "FAQ": {
+      "h1": "Para Você",
+      "text": "FAQ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "items": [
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        }
+      ]
+    },
+    "footer": {
+      "whatsappNumber": "123123123123",
+      "logoSrc": "http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+      "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "socialMedia": [
+        {
+          "name": "Twitter",
+          "imageSrc": "http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+          "href": "https://twitter.com/"
+        },
+        {
+          "name": "Youtube",
+          "imageSrc": "http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+          "href": "https://www.youtube.com/"
+        },
+        {
+          "name": "Instagram",
+          "imageSrc": "http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+          "href": "https://www.instagram.com/"
+        }
+      ]
+    }
+  }
+}
