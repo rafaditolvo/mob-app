@@ -1,4 +1,10 @@
-import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import {
+  AddIcon,
+  DeleteIcon,
+  EditIcon,
+  RepeatIcon,
+  TriangleDownIcon,
+} from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -22,10 +28,12 @@ import { useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import ChakraCarousel from "./ChakraCarousel";
 
-function App() {
-  const [isOpen, setIsOpen] = useState(false);
+import { v4 as uuidv4 } from "uuid";
+
+function App({ setInvalidAuth, token }) {
   const [data, setData] = useState({});
   const [plan, setPlan] = useState(null);
+  const [save, setSave] = useState(true);
 
   //const { ref, inView } = useInView();
 
@@ -126,8 +134,19 @@ function App() {
     }
 
     function handleEditPlan(plan) {
-      console.log(plan, "handleEditPlan");
       setPlan(plan);
+    }
+    function handleAddNewPlan() {
+      const newData = { ...data };
+      const newPlan = {
+        id: uuidv4(),
+        name: "Novo Plano",
+        price: 0,
+        features: [],
+      };
+      newData.pricingData.push(newPlan);
+      setData(newData);
+      setPlan(newPlan);
     }
 
     const pricingData = data?.pricingData ?? [];
@@ -153,6 +172,17 @@ function App() {
           }}
         >
           <Divider />
+          <IconButton
+            aria-label="Editar plano"
+            background={"gray.400"}
+            p={4}
+            icon={
+              <>
+                <AddIcon me={4} /> Adicionar novo plano
+              </>
+            }
+            onClick={() => handleAddNewPlan()}
+          />
           <ChakraCarousel gap={3}>
             {pricingData.length > 0 ? (
               pricingData.map((item, index) => (
@@ -217,17 +247,58 @@ function App() {
     );
   }
 
-  function Form(data) {
-    function handleAddFeaturePlan() {
-      console.log("handleAddFeaturePlan");
-      const newPlan = { ...plan };
+  function Form({ planItem }) {
+    const [planEdited, setPlanEdited] = useState(planItem);
 
-      console.log(newPlan.features, "1");
-      newPlan.features.push("");
-      setPlan((prev) => newPlan);
+    function changeValue(event) {
+      const target = event.target;
+      const inputName = target.name;
+      const value = target.value;
+      const id = target?.id ?? null;
+      const newPlan = { ...planEdited };
+
+      if (!id) {
+        newPlan[inputName] = value;
+      } else {
+        newPlan[inputName] = newPlan[inputName].map((reg, index) =>
+          index == id ? value : reg
+        );
+      }
+      setPlanEdited((prev) => newPlan);
     }
-    function handleRemoveFeaturePlan(feat) {
-      console.log(feat, "handleRemoveFeaturePlan");
+
+    function handleAddFeaturePlan() {
+      const newPlan = { ...planEdited };
+      newPlan.features.push("");
+      setPlanEdited((prev) => newPlan);
+      if (save) {
+        setSave(false);
+      }
+    }
+
+    // todo: ajustar remoção, deleta mais na renderização nao ajusta
+    function handleRemoveFeaturePlan(featIndex) {
+      const newPlan = { ...planEdited };
+      newPlan.features = newPlan.features.filter(
+        (_, index) => index != featIndex
+      );
+      setPlanEdited(newPlan);
+    }
+    function handleSaveForm() {
+      const newData = { ...data };
+
+      newData.pricingData = newData.pricingData.map((planReg) =>
+        planReg.id == planEdited.id ? planEdited : planReg
+      );
+
+      setData(newData);
+      if (save) {
+        setSave(false);
+      }
+      handleClearForm();
+    }
+    function handleClearForm() {
+      setPlan(null);
     }
     return (
       <>
@@ -237,11 +308,21 @@ function App() {
               <>
                 <Stack alignItems="left" width={"100%"}>
                   <Text>Plano</Text>
-                  <Input defaultValue={plan.name} />
+                  <Input
+                    key="planName"
+                    defaultValue={plan.name}
+                    name="name"
+                    onChange={(event) => changeValue(event)}
+                  />
                 </Stack>
                 <HStack justify={"center"} alignItems="left" width={"100%"}>
                   <Text>Preço</Text>
-                  <Input defaultValue={plan.price} />
+                  <Input
+                    key="preco"
+                    defaultValue={plan.price}
+                    name="price"
+                    onChange={(event) => changeValue(event)}
+                  />
                 </HStack>
                 <HStack alignItems="left" width={"100%"}>
                   <Text>Caracteristicas</Text>
@@ -252,17 +333,48 @@ function App() {
                     onClick={handleAddFeaturePlan}
                   />
                 </HStack>
-                {plan.features.map((feat, index) => (
+                {planEdited.features.map((feat, index) => (
                   <HStack alignItems="left" width={"100%"} key={index}>
-                    <Input defaultValue={feat} />
+                    <Input
+                      defaultValue={feat}
+                      name="features"
+                      id={index}
+                      onChange={(event) => changeValue(event)}
+                    />
                     <IconButton
-                      aria-label="Editar plano"
+                      aria-label="Features"
                       width={20}
                       icon={<DeleteIcon />}
-                      onClick={() => handleRemoveFeaturePlan(feat)}
+                      onClick={() => handleRemoveFeaturePlan(index)}
                     />
                   </HStack>
                 ))}
+                <HStack alignItems="left">
+                  <IconButton
+                    aria-label="Editar plano"
+                    background={"green.400"}
+                    px={10}
+                    icon={
+                      <>
+                        <Text mx={2}>Salvar</Text>
+                        <DeleteIcon />
+                      </>
+                    }
+                    onClick={handleSaveForm}
+                  />
+                  <IconButton
+                    aria-label="Editar plano"
+                    background={"gray.400"}
+                    px={10}
+                    icon={
+                      <>
+                        <Text mx={2}>Limpar</Text>
+                        <RepeatIcon />
+                      </>
+                    }
+                    onClick={handleClearForm}
+                  />
+                </HStack>
               </>
             )}
           </Stack>
@@ -270,7 +382,65 @@ function App() {
       </>
     );
   }
-  //console.log(data);
+
+  function BoxSaveAlert() {
+    return (
+      <Box
+        bg={save ? "green.400" : "red.300"}
+        w="100%"
+        p={4}
+        color="white"
+        display="flex"
+        justifyContent="flex-end"
+      >
+        {!save && (
+          <IconButton
+            aria-label="Salvar"
+            p={5}
+            background={"red.600"}
+            icon={
+              <>
+                <TriangleDownIcon me={5} />{" "}
+                <Text fontWeight={"bold"}>Salvar!</Text>
+              </>
+            }
+            onClick={() => salvarJSON()}
+          />
+        )}
+        {save && <Text fontWeight={"bold"}>Salvo!</Text>}
+      </Box>
+    );
+  }
+
+  async function fetchJson(json) {
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(json),
+    };
+    const response = await fetch(
+      "https://owa4t6eb4mlyrrvmxnn4vtusm40mjjih.lambda-url.us-east-2.on.aws/save",
+      options
+    );
+    const status = await response.status;
+    if (status == 403) {
+      setInvalidAuth();
+      return;
+    } else if (status == 200) {
+      setSave(true);
+    }
+    return;
+  }
+
+  async function salvarJSON() {
+    if (!token || token == "") {
+      setInvalidAuth();
+    }
+    await fetchJson(data);
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -280,7 +450,7 @@ function App() {
       const jsonData = await response.json();
       setTimeout(() => {
         setData(jsonData);
-      }, 1000);
+      }, 1);
     };
     //
     fetchData();
@@ -288,7 +458,9 @@ function App() {
 
   return (
     <Flex direction="column" height="100vh">
-      <Form />
+      <BoxSaveAlert />
+      <Form planItem={plan} />
+
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
