@@ -14,6 +14,7 @@ import {
   Flex,
   HStack,
   IconButton,
+  Image,
   Input,
   List,
   ListIcon,
@@ -30,10 +31,24 @@ import ChakraCarousel from "./ChakraCarousel";
 
 import { v4 as uuidv4 } from "uuid";
 
+import UploadService from "./services/fileUpload.js";
+
 function App({ setInvalidAuth, token }) {
+  const [isPersonal, setIsPersonal] = useState(true);
+  const [global, setGlobal] = useState({});
   const [data, setData] = useState({});
   const [plan, setPlan] = useState(null);
   const [save, setSave] = useState(true);
+
+  function handleCategoryPlan(category) {
+    if (category == "personal") {
+      setIsPersonal(true);
+      setData(global.personal);
+      return;
+    }
+    setIsPersonal(false);
+    setData(global.enterprise);
+  }
 
   //const { ref, inView } = useInView();
 
@@ -171,11 +186,12 @@ function App({ setInvalidAuth, token }) {
             xxl: "87.5rem",
           }}
         >
-          <Divider />
+          <Divider mb={4} />
           <IconButton
             aria-label="Editar plano"
             background={"gray.400"}
             p={4}
+            mb={4}
             icon={
               <>
                 <AddIcon me={4} /> Adicionar novo plano
@@ -196,6 +212,7 @@ function App({ setInvalidAuth, token }) {
                           onClick={() => handleEditPlan(item)}
                         />
                         <Box py={4} px={9}>
+                          {item.srcImage && <Image src={item.srcImage} />}
                           <Text fontWeight="500" fontSize="2xl">
                             {item.name}
                           </Text>
@@ -249,6 +266,12 @@ function App({ setInvalidAuth, token }) {
 
   function Form({ planItem }) {
     const [planEdited, setPlanEdited] = useState(planItem);
+    const [image, setImage] = useState({
+      currentFile: null,
+      previewImage: null,
+      progress: 0,
+      message: "",
+    });
 
     function changeValue(event) {
       const target = event.target;
@@ -284,28 +307,74 @@ function App({ setInvalidAuth, token }) {
       );
       setPlanEdited(newPlan);
     }
-    function handleSaveForm() {
+    const handleSaveForm = async () => {
+      if (!token) {
+        setInvalidAuth();
+        return;
+      }
+
       const newData = { ...data };
 
-      newData.pricingData = newData.pricingData.map((planReg) =>
-        planReg.id == planEdited.id ? planEdited : planReg
-      );
+      const newPlanEdited = { ...planEdited };
 
+      console.log("fora upload", image.currentFile);
+      if (image.currentFile) {
+        console.log("entrou upload");
+        const srcImage = await upload();
+        newPlanEdited.srcImage = srcImage;
+        console.log(srcImage, "srcImage");
+      }
+
+      newData.pricingData = newData.pricingData.map((planReg) =>
+        planReg.id == planEdited.id ? newPlanEdited : planReg
+      );
+      const newGlobal = isPersonal
+        ? { ...global, ...{ personal: newData } }
+        : { ...global, ...{ enterprise: newData } };
       setData(newData);
+      setGlobal(newGlobal);
+
       if (save) {
         setSave(false);
       }
       handleClearForm();
-    }
+    };
     function handleClearForm() {
       setPlan(null);
     }
+    function selectFile(event) {
+      setImage({
+        currentFile: event.target.files[0],
+        previewImage: URL.createObjectURL(event.target.files[0]),
+        progress: 0,
+        message: "",
+      });
+    }
+    const upload = async () =>
+      new Promise((resolve, reject) => {
+        UploadService.upload(image.currentFile, token, (event) => {
+          console.log(Math.round((100 * event.loaded) / event.total));
+        })
+          .then((response) => {
+            resolve(response.data);
+            setImage({
+              currentFile: null,
+              previewImage: null,
+              progress: 0,
+              message: "",
+            });
+          })
+          .catch((err) => {
+            reject();
+          });
+      });
     return (
       <>
         <Stack spacing={3} width={"100%"} alignItems="center">
           <Stack alignItems="center" width={300}>
             {!!plan && (
               <>
+                <input type="file" accept="image/*" onChange={selectFile} />
                 <Stack alignItems="left" width={"100%"}>
                   <Text>Plano</Text>
                   <Input
@@ -439,7 +508,7 @@ function App({ setInvalidAuth, token }) {
     if (!token || token == "") {
       setInvalidAuth();
     }
-    await fetchJson(data);
+    await fetchJson(global);
   }
 
   useEffect(() => {
@@ -449,16 +518,41 @@ function App({ setInvalidAuth, token }) {
       );
       const jsonData = await response.json();
       setTimeout(() => {
-        setData(jsonData);
+        if (isPersonal) {
+          setData(jsonData.personal);
+        } else {
+          setData(jsonData.enterprise);
+        }
+
+        setGlobal(jsonData);
       }, 1);
     };
     //
     fetchData();
   }, []);
 
+  console.log("global", global);
   return (
     <Flex direction="column" height="100vh">
       <BoxSaveAlert />
+      <HStack justifyContent="center" my={4}>
+        <Button
+          colorScheme={!isPersonal ? "gray" : "red"}
+          onClick={() => {
+            handleCategoryPlan("personal");
+          }}
+        >
+          Para Você
+        </Button>
+        <Button
+          colorScheme={isPersonal ? "gray" : "red"}
+          onClick={() => {
+            handleCategoryPlan("enterprise");
+          }}
+        >
+          Para Empresa
+        </Button>
+      </HStack>
       <Form planItem={plan} />
 
       <motion.div

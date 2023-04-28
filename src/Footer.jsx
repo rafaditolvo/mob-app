@@ -18,17 +18,10 @@ import {
   DrawerBody,
   VStack,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon, HamburgerIcon } from "@chakra-ui/icons";
-import logoDark from "../src/img/mob_logo.svg";
-import logo from "../src/img/mob_logo_black.svg";
-import { motion } from "framer-motion";
-import { useState } from "react";
 
 import SmallWithLogoLeft from "./SmallWithLogoLeft";
-import { FaWhatsapp } from "react-icons/fa";
-import { Icon } from "@chakra-ui/react";
 
-function Footer() {
+function Footer(props) {
   const { colorMode, toggleColorMode } = useColorMode();
   const isLight = colorMode === "light";
 
@@ -39,7 +32,7 @@ function Footer() {
       bg={isLight ? "white" : "gray.800"}
       justify="center"
     >
-      <SmallWithLogoLeft />
+      <SmallWithLogoLeft props={props} />
     </Flex>
   );
 }

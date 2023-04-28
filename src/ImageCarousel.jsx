@@ -1,23 +1,30 @@
-import { Box, Image, useBreakpointValue } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { useSwipeable } from 'react-swipeable';
+import {
+  Box,
+  Image,
+  useBreakpointValue,
+  Spinner,
+  Center,
+} from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { useSwipeable } from "react-swipeable";
 
-const PREV = 'PREV';
-const NEXT = 'NEXT';
+const PREV = "PREV";
+const NEXT = "NEXT";
 
 export default function ImageCarousel(props) {
   const [currentImage, setCurrentImage] = useState(0);
   const [images, setImages] = useState([]);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-  // Intervalo de tempo em milissegundos
   const interval = 5000;
 
+  let status = props?.statusEmpresa ? "enterprise" : "personal";
   useEffect(() => {
     // Verifica se props.data.enterprise.banners existe antes de mapeá-lo
-    if (props?.data?.personal?.banners) {
-      const bannerImages = props.data.enterprise.banners.map(
-        (banner) => banner.src,
+    if (props?.data[status]?.banners) {
+      const bannerImages = props?.data[status].banners.map(
+        (banner) => banner.src
       );
       setImages(bannerImages);
     }
@@ -51,7 +58,7 @@ export default function ImageCarousel(props) {
 
   return (
     <div {...handlers}>
-      <Box position="relative" h={{ base: '200px', md: '400px' }}>
+      <Box position="relative" h={{ base: "200px", md: "400px" }}>
         {showChevrons && (
           <>
             <Box
@@ -76,13 +83,28 @@ export default function ImageCarousel(props) {
             </Box>
           </>
         )}
-        <Image
-          src={images[currentImage]}
-          alt="Carousel"
-          objectFit="cover"
-          h={{ base: '200px', md: '400px' }}
-          w="full"
-        />
+
+        {images.length <= 1 ? (
+          <Center>
+            <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="red.500"
+              size="lg"
+            />
+          </Center>
+        ) : (
+          <Image
+            src={images[currentImage]}
+            alt="Carousel"
+            objectFit="cover"
+            h={{ base: "200px", md: "400px" }}
+            w="full"
+            onLoad={() => setIsImageLoaded(true)}
+          />
+        )}
+
         <Box
           position="absolute"
           bottom="10px"
@@ -98,8 +120,8 @@ export default function ImageCarousel(props) {
               h="10px"
               w="10px"
               borderRadius="full"
-              bg={index === currentImage ? 'white' : 'gray.300'}
-              ml={index !== 0 ? '10px' : '0'}
+              bg={index === currentImage ? "white" : "gray.300"}
+              ml={index !== 0 ? "10px" : "0"}
               cursor="pointer"
               onClick={() => setCurrentImage(index)}
             />

@@ -39,10 +39,23 @@ const SocialButton = ({ children, label, href }) => {
   );
 };
 
-export default function SmallWithLogoLeft() {
+export default function SmallWithLogoLeft(props) {
   const { colorMode, toggleColorMode } = useColorMode();
   const [isLogoLoaded, setIsLogoLoaded] = useState(false);
   const isLight = colorMode === "light";
+
+  //console.log(props.props.data.enterprise.footer);
+  let status = props?.statusEmpresa ? "enterprise" : "personal";
+
+  if (!props?.props?.data[status]?.footer?.socialMedia) {
+    return <div>Error: Invalid props</div>;
+  }
+
+  const { socialMedia, logoSrc } = props.props?.data[status]?.footer;
+
+  if (!socialMedia || !logoSrc) {
+    return <div>Error: Invalid props</div>;
+  }
 
   const handleLogoLoad = () => {
     setIsLogoLoaded(true);
@@ -50,9 +63,9 @@ export default function SmallWithLogoLeft() {
 
   return (
     <Box
-      bg={useColorModeValue("gray.50", "gray.900")}
+      //bg={useColorModeValue("gray.50", "gray.900")}
       borderRadius="20px"
-      color={useColorModeValue("gray.700", "gray.200")}
+      //color={useColorModeValue("gray.700", "gray.200")}
     >
       <Container
         as={Stack}
@@ -64,20 +77,29 @@ export default function SmallWithLogoLeft() {
         align={{ base: "center", md: "center" }}
       >
         <Image
-          src={isLight ? logo : logoDark}
+          src={isLight ? logoSrc : logoDark}
           boxSize="5em"
           onLoad={handleLogoLoad}
           style={isLogoLoaded ? {} : { display: "none" }}
         />
         <Text>© Copyright Mob Telecom 2023. Todos os direitos reservados.</Text>
         <Stack direction={"row"} spacing={6}>
-          <SocialButton label={"Twitter"} href={"#"}>
+          <SocialButton
+            label={props.props.data[status]?.footer.socialMedia[0].name}
+            href={props.props.data[status]?.footer.socialMedia[0].href}
+          >
             <FaTwitter />
           </SocialButton>
-          <SocialButton label={"YouTube"} href={"#"}>
+          <SocialButton
+            label={props.props.data[status]?.footer.socialMedia[1].name}
+            href={props.props.data[status]?.footer.socialMedia[1].href}
+          >
             <FaYoutube />
           </SocialButton>
-          <SocialButton label={"Instagram"} href={"#"}>
+          <SocialButton
+            label={props.props.data[status]?.footer.socialMedia[2].name}
+            href={props.props.data[status]?.footer.socialMedia[2].href}
+          >
             <FaInstagram />
           </SocialButton>
         </Stack>
