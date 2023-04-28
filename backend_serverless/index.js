@@ -1,10 +1,16 @@
 const AWS = require("aws-sdk");
 const S3 = new AWS.S3({ region: "us-east-1", apiVersion: "2012-10-17" });
+// Create the DynamoDB service object
+var DynamoDB = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 
 const jwt = require("jsonwebtoken");
+const { randomUUID } = require("crypto");
+const { hash, compare } = require("bcryptjs");
 
 const TIME_JWT_EXPIRES = process.env.TIME_JWT_EXPIRES ?? 36000;
-const S3_BUCKET = process.env.TIME_JWT_EXPIRES ?? 'reacts3teste';
+const S3_BUCKET = process.env.TIME_JWT_EXPIRES ?? "reacts3teste";
+const DYNAMODB_TABLE_USERS = process.env.DYNAMODB_TABLE_USERS ?? "mob_users";
+const DIRECTORY_STATIC = process.env.DIRECTORY_STATIC ?? "static/media/";
 
 /**
  *
@@ -90,15 +96,48 @@ const validJWT = async (token) =>
   });
 
 /**
+ * Get DynamoDB credentials
+ * @param {string} objeto {login}
+ * @returns boolean
+ */
+const getCredentialDynamoDB = async (login) =>
+  new Promise((resolve, reject) => {
+    const params = {
+      TableName: DYNAMODB_TABLE_USERS,
+      Key: {
+        login: { S: login },
+      },
+      ProjectionExpression: "pass",
+    };
+    DynamoDB.getItem(params, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(data.Item);
+      }
+    });
+  });
+
+/**
  * Validar login e senha do usuário
  * @param {string} objeto {login , senha}
  * @returns boolean
  */
 const authCredentials = async ({ login, pass }) => {
-  if (login === "admin" && pass === "admin") {
-    return true;
+  try {
+    const passDynDB = await getCredentialDynamoDB(login);
+    console.log("passDynDB", passDynDB.pass.S);
+    const passwordMatch = await compare(pass, passDynDB.pass.S);
+    console.log("passwordMatch", passwordMatch);
+    if (passwordMatch) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    console.log("authCredentials err", err);
+    return false;
   }
-  return false;
 };
 
 /**
@@ -138,25 +177,27 @@ const auth = async ({ login, pass }) => {
 };
 
 const upload = async (body, headers) => {
-  
+  const base64 = body?.file ?? false;
+
+  const bearerToken = headers?.authorization ?? false;
+  const imageType = body?.["imageType"] ?? false;
+  const imageName = body?.["imageName"] ?? false;
+
+  const fileSplitedName = imageName.split(".");
+  const fileName = `${DIRECTORY_STATIC}${fileSplitedName[0]}-${randomUUID()}.${
+    fileSplitedName[fileSplitedName.length - 1]
+  }`;
+
   const responseUnauthorized = {
     statusCode: 403,
     body: body,
   };
   const responseSuccess = {
     statusCode: 200,
-    body: null,
+    body: fileName,
   };
-  
-  const base64 = body?.file ?? false;
 
-  const bearerToken = headers?.authorization ?? false;
-  const imageType = body?.['imageType'] ?? false;
-  const imageName = body?.['imageName'] ?? false;
-  console.log('upload bearerToken', bearerToken)
-  // console.log('upload bearerToken', bearerToken, imageType, imageName)
-  // if (!bearerToken) {
-  if (!bearerToken || !imageType || !imageName) {
+  if (!bearerToken || !imageType || !imageName || !base64) {
     return responseUnauthorized;
   }
   const token = bearerToken.split(" ")[1];
@@ -164,22 +205,23 @@ const upload = async (body, headers) => {
   try {
     const tokenIsValid = await validJWT(token);
     if (tokenIsValid) {
-      console.log("token is valid");
       try {
+        const base64Data = new Buffer.from(
+          base64.replace(/^data:image\/\w+;base64,/, ""),
+          "base64"
+        );
 
-        const base64Data = new Buffer.from(base64.replace(/^data:image\/\w+;base64,/, ""), 'base64');
-        
         const params = {
           Bucket: S3_BUCKET,
-          Key: imageName, // type is not required
+          Key: fileName, // type is not required
           Body: base64Data,
-          ContentEncoding: 'base64', // required
-          ContentType: imageType // required. Notice the back ticks
-        }
-        console.log(params)
-        
+          ContentEncoding: "base64", // required
+          ContentType: imageType, // required. Notice the back ticks
+        };
+        console.log(params);
+
         await putObjectToS3(null, null, params);
-        
+        return responseSuccess;
       } catch (errPutObjectToS3) {
         console.log("errorr S3", errPutObjectToS3);
         return {
@@ -192,15 +234,14 @@ const upload = async (body, headers) => {
     console.log(e);
     return responseUnauthorized;
   }
-  
-  
-}
+};
 
 module.exports.handler = async (event) => {
   const rawPath = event?.rawPath ?? null;
   const body = JSON.parse(event.body);
   const headers = event.headers;
-  console.log(rawPath)
+
+  // console.log("hash", await hash("admin", 10));
 
   if (rawPath == "/auth") {
     const response = await auth(body);
@@ -210,11 +251,11 @@ module.exports.handler = async (event) => {
     console.log("response", response);
     return response;
   } else if (rawPath == "/upload") {
-    const response = await upload(body,headers);
+    const response = await upload(body, headers);
     return response;
   } else {
     const response = {
-      statusCode: 403,
+      statusCode: 404,
       body: JSON.stringify(event),
     };
     return response;
