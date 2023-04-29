@@ -5,6 +5,8 @@ function Auth() {
   const [auth, setAuth] = useState(false);
   const [credentials, setCredentials] = useState({ user: "", pass: "" });
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
 
   function changeValue(e) {
     const prop = e.target.name;
@@ -16,6 +18,7 @@ function Auth() {
     setCredentials(newCredentials);
   }
   async function login() {
+    setIsLoading(true);
     let options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -26,14 +29,15 @@ function Auth() {
       options
     );
     const status = await response.status;
+    setIsLoading(false);
     if (status == 403) {
       setError("Autenticação inválida");
       return;
     }
 
     const jsonData = await response.json();
-
-    setAuth(jsonData);
+    console.log("setAuth ##### login", jsonData);
+    setAuth((prev) => jsonData.token);
     localStorage.setItem(
       "@mob_landpage_f0552434361ccf7da13bdece6f1efddc",
       JSON.stringify(jsonData.token)
@@ -45,21 +49,21 @@ function Auth() {
       "@mob_landpage_f0552434361ccf7da13bdece6f1efddc",
       null
     );
+    console.log("setAuth ##### setInvalidToken");
     setAuth(false);
   }
 
   useEffect(() => {
-    // localStorage.setItem("items", JSON.stringify(items));
     const authStorage = JSON.parse(
       localStorage.getItem("@mob_landpage_f0552434361ccf7da13bdece6f1efddc")
     );
     if (authStorage && authStorage != "") {
-      setAuth(authStorage);
+      setAuth((prev) => authStorage);
     }
   }, []);
 
   if (auth) {
-    return <Config setInvalidAuth={setInvalidToken} token={auth?.token} />;
+    return <Config setInvalidAuth={setInvalidToken} token={auth} />;
   }
   return (
     <Stack spacing={3} width={"100%"} alignItems="center">
@@ -81,7 +85,14 @@ function Auth() {
             onChange={(event) => changeValue(event)}
           />
         </Stack>
-        <Button w="full" colorScheme="red" onClick={login}>
+
+        <Button
+          w="full"
+          colorScheme="red"
+          onClick={login}
+          isDisabled={isLoading}
+          colorScheme={isLoading ? "gray" : "red"}
+        >
           Login
         </Button>
         <Text color="red">{error}</Text>

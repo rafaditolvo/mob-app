@@ -2,6 +2,7 @@ import {
   AddIcon,
   DeleteIcon,
   EditIcon,
+  LockIcon,
   RepeatIcon,
   TriangleDownIcon,
 } from "@chakra-ui/icons";
@@ -19,19 +20,29 @@ import {
   List,
   ListIcon,
   ListItem,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  Spacer,
   Stack,
   Text,
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import ChakraCarousel from "./ChakraCarousel";
 
 import { v4 as uuidv4 } from "uuid";
 
+import ImageCarousel from "./ImageCarousel";
 import UploadService from "./services/fileUpload.js";
+
+const DEBUG = true;
 
 function App({ setInvalidAuth, token }) {
   const [isPersonal, setIsPersonal] = useState(true);
@@ -39,6 +50,10 @@ function App({ setInvalidAuth, token }) {
   const [data, setData] = useState({});
   const [plan, setPlan] = useState(null);
   const [save, setSave] = useState(true);
+
+  const [banner, setBanner] = useState(null);
+
+  const intervalIsAuth = useRef();
 
   function handleCategoryPlan(category) {
     if (category == "personal") {
@@ -49,8 +64,41 @@ function App({ setInvalidAuth, token }) {
     setIsPersonal(false);
     setData(global.enterprise);
   }
+  function loopIsAuth() {
+    const idInterval = setInterval(() => {
+      isAuth();
+    }, 120000000);
+    // }, 120000);
+    intervalIsAuth.current = idInterval;
+  }
+  async function isAuth() {
+    console.log("isAuth?", token);
+    let options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: "{}",
+    };
+    const response = await fetch(
+      "https://owa4t6eb4mlyrrvmxnn4vtusm40mjjih.lambda-url.us-east-2.on.aws/isauth",
+      options
+    );
+    const status = await response.status;
+    console.log(status);
+    if (status == 403) {
+      logout();
+      return;
+    }
+  }
 
-  //const { ref, inView } = useInView();
+  function logout() {
+    clearInterval(intervalIsAuth.current);
+    setTimeout(() => {
+      setInvalidAuth();
+    }, 1);
+  }
 
   function Carrosel({ data }) {
     function PriceWrapper({ children }) {
@@ -149,6 +197,7 @@ function App({ setInvalidAuth, token }) {
     }
 
     function handleEditPlan(plan) {
+      console.log(plan);
       setPlan(plan);
     }
     function handleAddNewPlan() {
@@ -188,7 +237,7 @@ function App({ setInvalidAuth, token }) {
         >
           <Divider mb={4} />
           <IconButton
-            aria-label="Editar plano"
+            aria-label="add plano"
             background={"gray.400"}
             p={4}
             mb={4}
@@ -202,7 +251,7 @@ function App({ setInvalidAuth, token }) {
           <ChakraCarousel gap={3}>
             {pricingData.length > 0 ? (
               pricingData.map((item, index) => (
-                <motion.div key={index}>
+                <motion.div key={`carousel_${index}`}>
                   <Center>
                     <PriceWrapper>
                       <Box position="relative">
@@ -212,7 +261,17 @@ function App({ setInvalidAuth, token }) {
                           onClick={() => handleEditPlan(item)}
                         />
                         <Box py={4} px={9}>
-                          {item.srcImage && <Image src={item.srcImage} />}
+                          {item.srcImage && (
+                            <Image
+                              src={
+                                (DEBUG
+                                  ? "https://reacts3teste.s3.amazonaws.com/"
+                                  : "") + item.srcImage
+                              }
+                              height="200"
+                              width="200"
+                            />
+                          )}
                           <Text fontWeight="500" fontSize="2xl">
                             {item.name}
                           </Text>
@@ -268,9 +327,6 @@ function App({ setInvalidAuth, token }) {
     const [planEdited, setPlanEdited] = useState(planItem);
     const [image, setImage] = useState({
       currentFile: null,
-      previewImage: null,
-      progress: 0,
-      message: "",
     });
 
     function changeValue(event) {
@@ -370,84 +426,114 @@ function App({ setInvalidAuth, token }) {
       });
     return (
       <>
-        <Stack spacing={3} width={"100%"} alignItems="center">
-          <Stack alignItems="center" width={300}>
-            {!!plan && (
-              <>
-                <input type="file" accept="image/*" onChange={selectFile} />
-                <Stack alignItems="left" width={"100%"}>
-                  <Text>Plano</Text>
-                  <Input
-                    key="planName"
-                    defaultValue={plan.name}
-                    name="name"
-                    onChange={(event) => changeValue(event)}
-                  />
+        <Modal isOpen={!!plan} isCentered onClose={handleClearForm}>
+          <ModalOverlay />
+          <ModalContent w="90%">
+            <ModalCloseButton />
+            <ModalHeader>Alteração plano</ModalHeader>
+            <ModalBody>
+              <Stack spacing={3} width={"100%"} alignItems="center">
+                <Stack alignItems="center" width={300}>
+                  {!!plan && (
+                    <>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={selectFile}
+                      />
+                      {plan.srcImage && (
+                        <Image
+                          src={
+                            (DEBUG
+                              ? "https://reacts3teste.s3.amazonaws.com/"
+                              : "") + plan.srcImage
+                          }
+                          height="200"
+                          width="200"
+                        />
+                      )}
+                      <Stack alignItems="left" width={"100%"}>
+                        <Text>Plano</Text>
+                        <Input
+                          key="planName"
+                          defaultValue={plan.name}
+                          name="name"
+                          onChange={(event) => changeValue(event)}
+                        />
+                      </Stack>
+                      <HStack
+                        justify={"center"}
+                        alignItems="left"
+                        width={"100%"}
+                      >
+                        <Text>Preço</Text>
+                        <Input
+                          key="preco"
+                          defaultValue={plan.price}
+                          name="price"
+                          onChange={(event) => changeValue(event)}
+                        />
+                      </HStack>
+                      <HStack alignItems="left" width={"100%"}>
+                        <Text>Caracteristicas</Text>
+                        <IconButton
+                          aria-label="Editar plano"
+                          width={20}
+                          icon={<AddIcon />}
+                          onClick={handleAddFeaturePlan}
+                        />
+                      </HStack>
+                      {planEdited.features.map((feat, index) => (
+                        <HStack alignItems="left" width={"100%"} key={uuidv4()}>
+                          <Input
+                            defaultValue={feat}
+                            name="features"
+                            id={index}
+                            onChange={(event) => changeValue(event)}
+                          />
+                          <IconButton
+                            aria-label="Features"
+                            width={20}
+                            icon={<DeleteIcon />}
+                            onClick={() => handleRemoveFeaturePlan(index)}
+                          />
+                        </HStack>
+                      ))}
+
+                      <Divider my={8} />
+                      <HStack alignItems="left">
+                        <IconButton
+                          aria-label="salvar plano"
+                          background={"green.400"}
+                          px={10}
+                          icon={
+                            <>
+                              <Text mx={2}>Salvar</Text>
+                              <EditIcon />
+                            </>
+                          }
+                          onClick={handleSaveForm}
+                        />
+                        <IconButton
+                          aria-label="Limpar plano"
+                          background={"gray.400"}
+                          px={10}
+                          icon={
+                            <>
+                              <Text mx={2}>Voltar</Text>
+                              <RepeatIcon />
+                            </>
+                          }
+                          onClick={handleClearForm}
+                        />
+                      </HStack>
+                    </>
+                  )}
                 </Stack>
-                <HStack justify={"center"} alignItems="left" width={"100%"}>
-                  <Text>Preço</Text>
-                  <Input
-                    key="preco"
-                    defaultValue={plan.price}
-                    name="price"
-                    onChange={(event) => changeValue(event)}
-                  />
-                </HStack>
-                <HStack alignItems="left" width={"100%"}>
-                  <Text>Caracteristicas</Text>
-                  <IconButton
-                    aria-label="Editar plano"
-                    width={20}
-                    icon={<AddIcon />}
-                    onClick={handleAddFeaturePlan}
-                  />
-                </HStack>
-                {planEdited.features.map((feat, index) => (
-                  <HStack alignItems="left" width={"100%"} key={index}>
-                    <Input
-                      defaultValue={feat}
-                      name="features"
-                      id={index}
-                      onChange={(event) => changeValue(event)}
-                    />
-                    <IconButton
-                      aria-label="Features"
-                      width={20}
-                      icon={<DeleteIcon />}
-                      onClick={() => handleRemoveFeaturePlan(index)}
-                    />
-                  </HStack>
-                ))}
-                <HStack alignItems="left">
-                  <IconButton
-                    aria-label="Editar plano"
-                    background={"green.400"}
-                    px={10}
-                    icon={
-                      <>
-                        <Text mx={2}>Salvar</Text>
-                        <DeleteIcon />
-                      </>
-                    }
-                    onClick={handleSaveForm}
-                  />
-                  <IconButton
-                    aria-label="Editar plano"
-                    background={"gray.400"}
-                    px={10}
-                    icon={
-                      <>
-                        <Text mx={2}>Limpar</Text>
-                        <RepeatIcon />
-                      </>
-                    }
-                    onClick={handleClearForm}
-                  />
-                </HStack>
-              </>
-            )}
-          </Stack>
-        </Stack>
+              </Stack>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
       </>
     );
   }
@@ -460,24 +546,315 @@ function App({ setInvalidAuth, token }) {
         p={4}
         color="white"
         display="flex"
-        justifyContent="flex-end"
+        justifyContent="justify-between"
       >
-        {!save && (
+        <IconButton
+          aria-label="Sair"
+          p={5}
+          background={"gray.700"}
+          icon={
+            <>
+              <LockIcon me={5} /> <Text fontWeight={"bold"}>Sair</Text>
+            </>
+          }
+          onClick={logout}
+        />
+        <Spacer />
+        <Box display="flex" justifyContent="flex-end">
+          {!save && (
+            <IconButton
+              aria-label="Salvar"
+              p={5}
+              background={"red.600"}
+              icon={
+                <>
+                  <TriangleDownIcon me={5} />{" "}
+                  <Text fontWeight={"bold"}>Salvar!</Text>
+                </>
+              }
+              onClick={() => salvarJSON()}
+            />
+          )}
+          {save && <Text fontWeight={"bold"}>Salvo!</Text>}
+        </Box>
+      </Box>
+    );
+  }
+
+  function Banner({ data }) {
+    function BannerWrapper({ children }) {
+      return (
+        <Box
+          mb={4}
+          //gap={2}
+          shadow="base"
+          borderWidth="1px"
+          borderColor={useColorModeValue("gray.200", "gray.500")}
+          borderRadius="30px"
+          width="100%" // define a largura em porcentagem
+        >
+          {children}
+        </Box>
+      );
+    }
+
+    function handleEditBanner(banner) {
+      setBanner(banner);
+    }
+    function handleAddNewBanner() {
+      const newData = { ...data };
+      const newBanner = {
+        id: uuidv4(),
+        src: "",
+      };
+      newData.banners.push(newBanner);
+      setData(newData);
+      setBanner(newBanner);
+    }
+
+    // console.log(data.banners);
+
+    const bannersData = data?.banners ?? [];
+
+    if (bannersData.length == 0) {
+      return <></>;
+    }
+    return (
+      <>
+        <Container
+          py={2}
+          px={12}
+          mt="1em"
+          alignItems="center"
+          maxW={{
+            base: "100%",
+            sm: "35rem",
+            md: "43.75rem",
+            lg: "57.5rem",
+            xl: "75rem",
+            xxl: "87.5rem",
+          }}
+        >
+          <Divider mb={4} />
           <IconButton
-            aria-label="Salvar"
-            p={5}
-            background={"red.600"}
+            aria-label="add bannero"
+            background={"gray.400"}
+            p={4}
+            mb={4}
             icon={
               <>
-                <TriangleDownIcon me={5} />{" "}
-                <Text fontWeight={"bold"}>Salvar!</Text>
+                <AddIcon me={4} /> Adicionar novo Banner
               </>
             }
-            onClick={() => salvarJSON()}
+            onClick={() => handleAddNewBanner()}
           />
-        )}
-        {save && <Text fontWeight={"bold"}>Salvo!</Text>}
-      </Box>
+          <ChakraCarousel gap={3}>
+            {bannersData.length > 0 ? (
+              bannersData.map((item, index) => (
+                <motion.div key={`carousel_${index}`}>
+                  <Center>
+                    <BannerWrapper>
+                      <Box position="relative">
+                        <IconButton
+                          aria-label="Editar bannero"
+                          icon={<EditIcon />}
+                          onClick={() => handleEditBanner(item)}
+                        />
+                        <Box py={4} px={9}>
+                          {item.src && (
+                            <Image
+                              src={
+                                (DEBUG
+                                  ? "https://reacts3teste.s3.amazonaws.com/"
+                                  : "") + item.src
+                              }
+                              maxHeight={200}
+                              maxWidth={200}
+                            />
+                          )}
+                        </Box>
+                      </Box>
+                    </BannerWrapper>
+                  </Center>
+                </motion.div>
+              ))
+            ) : (
+              <Text>No pricing data available.</Text>
+            )}
+          </ChakraCarousel>
+        </Container>
+      </>
+    );
+  }
+
+  function FormBanner({ bannerItem }) {
+    const [bannerEdited, setBannerEdited] = useState(bannerItem);
+    const [image, setImage] = useState({
+      currentFile: null,
+    });
+
+    function changeValue(event) {
+      const target = event.target;
+      const inputName = target.name;
+      const value = target.value;
+      const id = target?.id ?? null;
+      const newBanner = { ...bannerEdited };
+
+      if (!id) {
+        newBanner[inputName] = value;
+      } else {
+        newBanner[inputName] = newBanner[inputName].map((reg, index) =>
+          index == id ? value : reg
+        );
+      }
+      setBannerEdited((prev) => newBanner);
+    }
+
+    function handleAddFeatureBanner() {
+      const newBanner = { ...bannerEdited };
+      newBanner.features.push("");
+      setBannerEdited((prev) => newBanner);
+      if (save) {
+        setSave(false);
+      }
+    }
+
+    // todo: ajustar remoção, deleta mais na renderização nao ajusta
+    function handleRemoveFeatureBanner(featIndex) {
+      const newBanner = { ...bannerEdited };
+      newBanner.features = newBanner.features.filter(
+        (_, index) => index != featIndex
+      );
+      setBannerEdited(newBanner);
+    }
+    const handleSaveBanner = async () => {
+      if (!token) {
+        setInvalidAuth();
+        return;
+      }
+
+      const newData = { ...data };
+
+      const newBannerEdited = { ...bannerEdited };
+
+      console.log(newData, newBannerEdited);
+
+      console.log("fora upload", image.currentFile);
+      if (image.currentFile) {
+        console.log("entrou upload");
+        const src = await upload();
+        newBannerEdited.src = src;
+        console.log(src, "src");
+      }
+
+      newData.banners = newData.banners.map((bannerReg) =>
+        bannerReg.id == bannerEdited.id ? newBannerEdited : bannerReg
+      );
+      const newGlobal = isPersonal
+        ? { ...global, ...{ personal: newData } }
+        : { ...global, ...{ enterprise: newData } };
+
+      console.log("newGlobal", newGlobal);
+      setData(newData);
+      setGlobal(newGlobal);
+
+      if (save) {
+        setSave(false);
+      }
+      handleClearForm();
+    };
+    function handleClearForm() {
+      setBanner(null);
+    }
+    function selectFile(event) {
+      setImage({
+        currentFile: event.target.files[0],
+        previewImage: URL.createObjectURL(event.target.files[0]),
+        progress: 0,
+        message: "",
+      });
+    }
+    const upload = async () =>
+      new Promise((resolve, reject) => {
+        UploadService.upload(image.currentFile, token, (event) => {
+          console.log(Math.round((100 * event.loaded) / event.total));
+        })
+          .then((response) => {
+            resolve(response.data);
+            setImage({
+              currentFile: null,
+              previewImage: null,
+              progress: 0,
+              message: "",
+            });
+          })
+          .catch((err) => {
+            reject();
+          });
+      });
+    return (
+      <>
+        <Modal isOpen={!!banner} isCentered onClose={handleClearForm}>
+          <ModalOverlay />
+          <ModalContent w="90%">
+            <ModalCloseButton />
+            <ModalHeader>Alteração banner</ModalHeader>
+            <ModalBody>
+              <Stack spacing={3} width={"100%"} alignItems="center">
+                <Stack alignItems="center" width={300}>
+                  {!!banner && (
+                    <>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={selectFile}
+                      />
+                      {banner.src && (
+                        <Image
+                          src={
+                            (DEBUG
+                              ? "https://reacts3teste.s3.amazonaws.com/"
+                              : "") + banner.src
+                          }
+                          height="200"
+                          width="200"
+                        />
+                      )}
+                      <Divider my={8} />
+                      <HStack alignItems="left">
+                        <IconButton
+                          aria-label="salvar banner"
+                          background={"green.400"}
+                          px={10}
+                          icon={
+                            <>
+                              <Text mx={2}>Salvar</Text>
+                              <EditIcon />
+                            </>
+                          }
+                          onClick={handleSaveBanner}
+                        />
+                        <IconButton
+                          aria-label="Limpar bannero"
+                          background={"gray.400"}
+                          px={10}
+                          icon={
+                            <>
+                              <Text mx={2}>Voltar</Text>
+                              <RepeatIcon />
+                            </>
+                          }
+                          onClick={handleClearForm}
+                        />
+                      </HStack>
+                    </>
+                  )}
+                </Stack>
+              </Stack>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </>
     );
   }
 
@@ -526,12 +903,13 @@ function App({ setInvalidAuth, token }) {
 
         setGlobal(jsonData);
       }, 1);
+      loopIsAuth();
     };
     //
     fetchData();
   }, []);
 
-  console.log("global", global);
+  // console.log("global", global);
   return (
     <Flex direction="column" height="100vh">
       <BoxSaveAlert />
@@ -553,6 +931,10 @@ function App({ setInvalidAuth, token }) {
           Para Empresa
         </Button>
       </HStack>
+      <FormBanner bannerItem={banner} />
+      <Banner data={data} />
+      <ImageCarousel statusEmpresa={!isPersonal} data={global} />
+
       <Form planItem={plan} />
 
       <motion.div
