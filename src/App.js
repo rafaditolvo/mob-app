@@ -86,10 +86,10 @@ function App() {
     setIsEmpresa(empresa);
   };
 
-  function BotaoEmpresa(id, values) {
+  function BotaoEmpresa({ id, plano }, values) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
-    const [planoId, setPlanoId] = useState(id.id);
+    const [planoId, setPlanoId] = useState(id);
     const [isLoading, setIsLoading] = useState(false);
 
     const validationSchema = Yup.object().shape({
@@ -108,7 +108,6 @@ function App() {
     });
 
     const handleSubmit = (values, actions) => {
-      console.log(values);
       actions.setSubmitting(false);
       onClose();
       toast({
@@ -174,6 +173,8 @@ function App() {
                   addressNumber: "",
                   phone: "",
                   planoId: planoId,
+                  plano: plano,
+                  tipo: "Empresarial",
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, props) => {
@@ -362,7 +363,7 @@ function App() {
       </>
     );
   }
-  function BotaoResidencial(id, values) {
+  function BotaoResidencial({ id, plano }, values) {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
     const [planoId, setPlanoId] = useState(id.id);
@@ -433,7 +434,6 @@ function App() {
     });
 
     const handleSubmitResidencial = (values, actions) => {
-      console.log(values);
       actions.setSubmitting(false);
       onClose();
       toast({
@@ -497,6 +497,8 @@ function App() {
                   addressNumber: "",
                   phone: "",
                   planoId: planoId,
+                  plano: plano,
+                  tipo: "Residencial",
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, props) => {
@@ -855,9 +857,9 @@ function App() {
                     <motion.div whileTap={{ rotate: 0, scale: 0.85 }}>
                       <Flex justifyContent="center">
                         {isEmpresa ? (
-                          <BotaoEmpresa id={item.id} />
+                          <BotaoEmpresa id={item.id} plano={item} />
                         ) : (
-                          <BotaoResidencial id={item.id} />
+                          <BotaoResidencial id={item.id} plano={item} />
                         )}
                       </Flex>
                     </motion.div>
