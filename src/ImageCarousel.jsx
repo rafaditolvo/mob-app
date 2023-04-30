@@ -4,13 +4,13 @@ import {
   useBreakpointValue,
   Spinner,
   Center,
-} from "@chakra-ui/react";
-import { useState, useEffect } from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { useSwipeable } from "react-swipeable";
+} from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { useSwipeable } from 'react-swipeable';
 
-const PREV = "PREV";
-const NEXT = "NEXT";
+const PREV = 'PREV';
+const NEXT = 'NEXT';
 
 export default function ImageCarousel(props) {
   const [currentImage, setCurrentImage] = useState(0);
@@ -19,12 +19,12 @@ export default function ImageCarousel(props) {
 
   const interval = 5000;
 
-  let status = props?.statusEmpresa ? "enterprise" : "personal";
+  let status = props?.statusEmpresa ? 'enterprise' : 'personal';
   useEffect(() => {
     // Verifica se props.data.enterprise.banners existe antes de mapeá-lo
     if (props?.data[status]?.banners) {
       const bannerImages = props?.data[status].banners.map(
-        (banner) => banner.src
+        (banner) => banner.src,
       );
       setImages(bannerImages);
     }
@@ -58,7 +58,7 @@ export default function ImageCarousel(props) {
 
   return (
     <div {...handlers}>
-      <Box position="relative" h={{ base: "200px", md: "400px" }}>
+      <Box position="relative" h={{ base: '200px', md: '400px' }}>
         {showChevrons && (
           <>
             <Box
@@ -97,10 +97,10 @@ export default function ImageCarousel(props) {
         ) : (
           <Image
             src={images[currentImage]}
-            alt="Carousel"
+            alt="Banner"
             objectFit="cover"
-            h={{ base: "200px", md: "400px" }}
-            w="full"
+            maxH={{ base: '200px', md: '400px' }}
+            maxW="full"
             onLoad={() => setIsImageLoaded(true)}
           />
         )}
@@ -120,8 +120,8 @@ export default function ImageCarousel(props) {
               h="10px"
               w="10px"
               borderRadius="full"
-              bg={index === currentImage ? "white" : "gray.300"}
-              ml={index !== 0 ? "10px" : "0"}
+              bg={index === currentImage ? 'white' : 'gray.300'}
+              ml={index !== 0 ? '10px' : '0'}
               cursor="pointer"
               onClick={() => setCurrentImage(index)}
             />
