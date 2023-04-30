@@ -1,92 +1,59 @@
 import {
-  Button,
-  Flex,
   Box,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  DrawerHeader,
-  DrawerBody,
-  Container,
-  Icon,
-  StackDivider,
-  Heading,
-  Stack,
-  SimpleGrid,
-  Badge,
-  Text,
-  HStack,
-  Tag,
-  VStack,
-  useColorModeValue,
-  Spinner,
-  Skeleton,
-  useColorMode,
-  List,
-  useToast,
-  ListItem,
+  Button,
   Center,
-  ListIcon,
-  Image,
-  useMediaQuery,
+  Container,
   Divider,
-  InputRightElement,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Heading,
   IconButton,
-  Modal,
+  Image,
+  Input,
   InputGroup,
-  InputLeftElement,
-  ModalOverlay,
-  useDisclosure,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
+  InputRightElement,
+  List,
+  ListIcon,
+  ListItem,
+  Modal,
   ModalBody,
   ModalCloseButton,
-  Input,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  SkeletonCircle,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   SkeletonText,
   Spacer,
-} from '@chakra-ui/react';
-import { CheckCircleIcon, PhoneIcon, ChevronDownIcon } from '@chakra-ui/icons';
-import { useState, useEffect } from 'react';
-import {
-  FaWhatsapp,
-  FaFacebook,
-  FaTwitter,
-  FaCheckCircle,
-} from 'react-icons/fa';
-import { capsFirst } from './utils';
-import Header from './Header';
-import Banner from './Baner';
-import Cards from './Cards';
-import Footer from './Footer';
-import FAQ from './FAQ';
-import CardFooter from './CardFooter';
-import PriceCarousel from './PriceCarousel';
-import ChakraCarousel from './ChakraCarousel';
-import { motion } from 'framer-motion';
-import AppContent from './AppContent';
-import ImageCarousel from './ImageCarousel';
-import imgteste from './img/img-teste-mob.png';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import axios from 'axios';
-import { FaMapMarkerAlt } from 'react-icons/fa';
-import InputMask from 'react-input-mask';
-import wpp from './img/wpp-icon.png';
+  useColorMode,
+  useDisclosure,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
+import axios from "axios";
+import { Field, Form, Formik } from "formik";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { FaCheckCircle, FaMapMarkerAlt, FaWhatsapp } from "react-icons/fa";
+import InputMask from "react-input-mask";
+import * as Yup from "yup";
+import AppContent from "./AppContent";
+import CardFooter from "./CardFooter";
+import ChakraCarousel from "./ChakraCarousel";
+import FAQ from "./FAQ";
+import Footer from "./Footer";
+import Header from "./Header";
+import ImageCarousel from "./ImageCarousel";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState('TESTE');
+  const [data, setData] = useState("TESTE");
   //const [pricingData, setPricingData] = useState([]);
   const [isResidencial, setIsResidencial] = useState(false);
   const [isEmpresa, setIsEmpresa] = useState(false);
   const { colorMode, toggleColorMode } = useColorMode();
-  const isLight = colorMode === 'light';
+  const isLight = colorMode === "light";
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -94,7 +61,7 @@ function App() {
     setIsLoading(true); // define o estado de carregamento como verdadeiro
     Promise.all([
       new Promise((resolve) => setTimeout(resolve, 1500)), // aguarda
-      fetch('https://reacts3teste.s3.amazonaws.com/data.json')
+      fetch("https://reacts3teste.s3.amazonaws.com/data.json")
         .then((res) => res.json())
         .then((res) => res),
     ]).then(([_, data]) => {
@@ -108,10 +75,10 @@ function App() {
       setIsMobile(window.innerWidth < 768);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     handleResize();
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [isMobile, Carrosel]);
 
   const handleStatusChange = (residencial, empresa) => {
@@ -126,18 +93,18 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
 
     const validationSchema = Yup.object().shape({
-      name: Yup.string().required('Campo obrigatório'),
+      name: Yup.string().required("Campo obrigatório"),
       cnpj: Yup.string()
-        .required('Campo obrigatório')
-        .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/, 'CNPJ inválido'),
-      endereco: Yup.string().required('Campo obrigatório'),
-      bairro: Yup.string().required('Campo obrigatório'),
+        .required("Campo obrigatório")
+        .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/, "CNPJ inválido"),
+      endereco: Yup.string().required("Campo obrigatório"),
+      bairro: Yup.string().required("Campo obrigatório"),
 
-      addressNumber: Yup.string().required('Campo obrigatório'), // nova validação
-      phone: Yup.string().required('Campo obrigatório'),
+      addressNumber: Yup.string().required("Campo obrigatório"), // nova validação
+      phone: Yup.string().required("Campo obrigatório"),
       cep: Yup.string()
-        .required('Campo obrigatório')
-        .matches(/^\d{8}$/, 'CEP inválido'),
+        .required("Campo obrigatório")
+        .matches(/^\d{8}$/, "CEP inválido"),
     });
 
     const handleSubmit = (values, actions) => {
@@ -145,11 +112,11 @@ function App() {
       actions.setSubmitting(false);
       onClose();
       toast({
-        title: 'Dados enviados!',
-        description: 'Seus dados foram enviados com sucesso.',
-        status: 'success',
+        title: "Dados enviados!",
+        description: "Seus dados foram enviados com sucesso.",
+        status: "success",
         duration: 5000,
-        position: 'top-right',
+        position: "top-right",
         isClosable: true,
       });
     };
@@ -160,14 +127,14 @@ function App() {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `https://viacep.com.br/ws/${cep}/json/`,
+          `https://viacep.com.br/ws/${cep}/json/`
         );
         const { logradouro, bairro, localidade, uf } = response.data;
         const endereco = `${logradouro}`;
         const bairroVar = `${bairro}`;
         console.log(endereco);
-        setFieldValue('endereco', endereco);
-        setFieldValue('bairro', bairroVar);
+        setFieldValue("endereco", endereco);
+        setFieldValue("bairro", bairroVar);
         setAutoPreenchido(true);
       } catch (error) {
         console.log(error);
@@ -200,25 +167,25 @@ function App() {
             <ModalBody>
               <Formik
                 initialValues={{
-                  name: '',
-                  cnpj: '',
-                  bairro: '',
-                  endereco: '',
-                  addressNumber: '',
-                  phone: '',
+                  name: "",
+                  cnpj: "",
+                  bairro: "",
+                  endereco: "",
+                  addressNumber: "",
+                  phone: "",
                   planoId: planoId,
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, props) => {
-                  console.log(values, 'DADOS FORMULARIO');
+                  console.log(values, "DADOS FORMULARIO");
                   //props.setSubmitting(false);
                   onClose();
                   toast({
-                    title: 'Dados enviados!',
-                    description: 'Seus dados foram enviados com sucesso.',
-                    status: 'success',
+                    title: "Dados enviados!",
+                    description: "Seus dados foram enviados com sucesso.",
+                    status: "success",
                     duration: 5000,
-                    position: 'top-right',
+                    position: "top-right",
                     isClosable: true,
                   });
                 }}
@@ -277,7 +244,7 @@ function App() {
                               type="text"
                               onChange={(e) => {
                                 setAutoPreenchido(false);
-                                setFieldValue('cep', e.target.value);
+                                setFieldValue("cep", e.target.value);
                               }}
                             />
                             <InputRightElement>
@@ -285,7 +252,7 @@ function App() {
                                 icon={<FaMapMarkerAlt />}
                                 type="button"
                                 isDisabled={isLoading}
-                                colorScheme={isLoading ? 'white' : 'red'}
+                                colorScheme={isLoading ? "white" : "red"}
                                 onClick={() =>
                                   buscarEndereco(values.cep, setFieldValue)
                                 }
@@ -402,27 +369,27 @@ function App() {
     const [isLoading, setIsLoading] = useState(false);
     const [autoPreenchido, setAutoPreenchido] = useState(false);
     const validationSchema = Yup.object().shape({
-      name: Yup.string().required('Campo obrigatório'),
+      name: Yup.string().required("Campo obrigatório"),
       cpf: Yup.string()
-        .required('Campo obrigatório')
-        .matches(/^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}$/, 'CPF inválido')
-        .test('cpf', 'CPF inválido', function (value) {
-          const cpf = value?.replace(/[^\d]+/g, '');
+        .required("Campo obrigatório")
+        .matches(/^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}$/, "CPF inválido")
+        .test("cpf", "CPF inválido", function (value) {
+          const cpf = value?.replace(/[^\d]+/g, "");
           if (!cpf) return false;
 
           // Elimina CPFs invalidos conhecidos
           if (
             cpf.length !== 11 ||
-            cpf === '00000000000' ||
-            cpf === '11111111111' ||
-            cpf === '22222222222' ||
-            cpf === '33333333333' ||
-            cpf === '44444444444' ||
-            cpf === '55555555555' ||
-            cpf === '66666666666' ||
-            cpf === '77777777777' ||
-            cpf === '88888888888' ||
-            cpf === '99999999999'
+            cpf === "00000000000" ||
+            cpf === "11111111111" ||
+            cpf === "22222222222" ||
+            cpf === "33333333333" ||
+            cpf === "44444444444" ||
+            cpf === "55555555555" ||
+            cpf === "66666666666" ||
+            cpf === "77777777777" ||
+            cpf === "88888888888" ||
+            cpf === "99999999999"
           ) {
             return false;
           }
@@ -456,13 +423,13 @@ function App() {
           return true;
         }),
 
-      endereco: Yup.string().required('Campo obrigatório'),
-      bairro: Yup.string().required('Campo obrigatório'),
-      addressNumber: Yup.string().required('Campo obrigatório'),
-      phone: Yup.string().required('Campo obrigatório'),
+      endereco: Yup.string().required("Campo obrigatório"),
+      bairro: Yup.string().required("Campo obrigatório"),
+      addressNumber: Yup.string().required("Campo obrigatório"),
+      phone: Yup.string().required("Campo obrigatório"),
       cep: Yup.string()
-        .required('Campo obrigatório')
-        .matches(/^\d{8}$/, 'CEP inválido'),
+        .required("Campo obrigatório")
+        .matches(/^\d{8}$/, "CEP inválido"),
     });
 
     const handleSubmitResidencial = (values, actions) => {
@@ -470,11 +437,11 @@ function App() {
       actions.setSubmitting(false);
       onClose();
       toast({
-        title: 'Dados enviados!',
-        description: 'Seus dados foram enviados com sucesso.',
-        status: 'success',
+        title: "Dados enviados!",
+        description: "Seus dados foram enviados com sucesso.",
+        status: "success",
         duration: 5000,
-        position: 'top-right',
+        position: "top-right",
         isClosable: true,
       });
     };
@@ -483,14 +450,14 @@ function App() {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `https://viacep.com.br/ws/${cep}/json/`,
+          `https://viacep.com.br/ws/${cep}/json/`
         );
         const { logradouro, bairro, localidade, uf } = response.data;
         const endereco = `${logradouro}`;
         const bairroVar = `${bairro}`;
         console.log(endereco);
-        setFieldValue('endereco', endereco);
-        setFieldValue('bairro', bairroVar);
+        setFieldValue("endereco", endereco);
+        setFieldValue("bairro", bairroVar);
         setAutoPreenchido(true);
       } catch (error) {
         console.log(error);
@@ -523,25 +490,25 @@ function App() {
             <ModalBody>
               <Formik
                 initialValues={{
-                  name: '',
-                  cpf: '',
-                  bairro: '',
-                  endereco: '',
-                  addressNumber: '',
-                  phone: '',
+                  name: "",
+                  cpf: "",
+                  bairro: "",
+                  endereco: "",
+                  addressNumber: "",
+                  phone: "",
                   planoId: planoId,
                 }}
                 validationSchema={validationSchema}
                 onSubmit={(values, props) => {
-                  console.log(values, 'DADOS FORMULARIO');
+                  console.log(values, "DADOS FORMULARIO");
                   props.setSubmitting(false);
                   onClose();
                   toast({
-                    title: 'Dados enviados!',
-                    description: 'Seus dados foram enviados com sucesso.',
-                    status: 'success',
+                    title: "Dados enviados!",
+                    description: "Seus dados foram enviados com sucesso.",
+                    status: "success",
                     duration: 5000,
-                    position: 'top-right',
+                    position: "top-right",
                     isClosable: true,
                   });
                 }}
@@ -582,7 +549,7 @@ function App() {
                             placeholder="___.___.___-__"
                             value={values.cpf}
                             onChange={(event) => {
-                              setFieldValue('cpf', event.target.value);
+                              setFieldValue("cpf", event.target.value);
                             }}
                             className="form-control form-input"
                           />
@@ -605,7 +572,7 @@ function App() {
                               isDisabled={isLoading}
                               onChange={(e) => {
                                 setAutoPreenchido(false);
-                                setFieldValue('cep', e.target.value);
+                                setFieldValue("cep", e.target.value);
                               }}
                             />
                             <InputRightElement>
@@ -613,7 +580,7 @@ function App() {
                                 icon={<FaMapMarkerAlt />}
                                 type="button"
                                 isLoading={isLoading}
-                                colorScheme={isLoading ? 'white' : 'red'}
+                                colorScheme={isLoading ? "white" : "red"}
                                 onClick={() =>
                                   buscarEndereco(values.cep, setFieldValue)
                                 }
@@ -723,19 +690,31 @@ function App() {
       </>
     );
   }
-  function WhatsAppButton() {
+  function WhatsAppButton(props) {
+    console.log("####", props.data["personal"].footer);
+    let status = props?.statusEmpresa ? "enterprise" : "personal";
+    if (!props?.data[status]?.footer) {
+      return <div>Error: Invalid props a</div>;
+    }
+    console.log("###", props?.data[status]);
+
+    const { whatsappNumber } = props?.data[status].footer;
+
+    if (!whatsappNumber) {
+      return <div>Error: Invalid props </div>;
+    }
     return (
       <Box
         as="a"
-        href="https://api.whatsapp.com/send?phone=0800 940 9777"
+        href={`https://api.whatsapp.com/send?phone=${whatsappNumber}`}
         target="_blank"
         rel="noopener noreferrer"
         position="fixed"
-        bottom={{ base: '79', md: '8', lg: '12' }}
-        right={{ base: '10', md: '8', lg: '12' }}
-        width={{ base: '60px', md: '70px', lg: '80px' }}
-        height={{ base: '60px', md: '70px', lg: '80px' }}
-        padding={{ base: '10px', md: '14px', lg: '16px' }}
+        bottom={{ base: "79", md: "8", lg: "12" }}
+        right={{ base: "10", md: "8", lg: "12" }}
+        width={{ base: "60px", md: "70px", lg: "80px" }}
+        height={{ base: "60px", md: "70px", lg: "80px" }}
+        padding={{ base: "10px", md: "14px", lg: "16px" }}
         borderRadius="full"
         backgroundColor="green.500"
         display="flex"
@@ -744,8 +723,8 @@ function App() {
         boxShadow="0px 4px 8px rgba(0, 0, 0, 0.1)"
         transition="all 0.2s ease-out"
         _hover={{
-          transform: 'scale(1.1)',
-          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
+          transform: "scale(1.1)",
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
         }}
       >
         <FaWhatsapp color="white" size="md" />
@@ -755,7 +734,7 @@ function App() {
 
   function Carrosel(props) {
     const [idCard, setIdCard] = useState(null);
-    let status = props?.statusEmpresa ? 'enterprise' : 'personal';
+    let status = props?.statusEmpresa ? "enterprise" : "personal";
     const [images, setImages] = useState([
       props?.data[status]?.pricingData?.srcImage,
     ]);
@@ -771,7 +750,7 @@ function App() {
     }
 
     function formatCurrency(value) {
-      return `R$ ${value.toLocaleString('pt-BR', {
+      return `R$ ${value.toLocaleString("pt-BR", {
         minimumFractionDigits: 2,
       })}`;
     }
@@ -782,12 +761,12 @@ function App() {
           py={5}
           px={5}
           maxW={{
-            base: '100%',
-            sm: '35rem',
-            md: '43.75rem',
-            lg: '57.5rem',
-            xl: '75rem',
-            xxl: '90.5rem',
+            base: "100%",
+            sm: "35rem",
+            md: "43.75rem",
+            lg: "57.5rem",
+            xl: "75rem",
+            xxl: "90.5rem",
           }}
         >
           <VStack spacing={2}>
@@ -827,12 +806,12 @@ function App() {
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.5 }}
                       maxW={{
-                        base: '100%',
-                        sm: '35rem',
-                        md: '43.75rem',
-                        lg: '57.5rem',
-                        xl: '75rem',
-                        xxl: '90.5rem',
+                        base: "100%",
+                        sm: "35rem",
+                        md: "43.75rem",
+                        lg: "57.5rem",
+                        xl: "75rem",
+                        xxl: "90.5rem",
                       }}
                     >
                       <VStack mb={6}>
@@ -845,14 +824,14 @@ function App() {
                           />
                         </Center>
                         <Heading
-                          fontSize={{ base: '3xl', md: '5xl' }}
+                          fontSize={{ base: "3xl", md: "5xl" }}
                           textAlign="left"
                           mb={2}
                         >
                           {item.name}
                         </Heading>
                         <Heading
-                          fontSize={{ base: '4xl', md: '4xl' }}
+                          fontSize={{ base: "4xl", md: "4xl" }}
                           textAlign="left"
                           mb={2}
                         >
@@ -885,10 +864,10 @@ function App() {
                   </Flex>
                 ) : (
                   <Box padding="6" boxShadow="lg" bg="white"></Box>
-                ),
+                )
               )}
             </ChakraCarousel>
-          )}{' '}
+          )}{" "}
         </Container>
         <Spacer />
       </Box>
@@ -896,7 +875,7 @@ function App() {
   }
 
   return (
-    <div style={{ touchAction: 'pan-y' }}>
+    <div style={{ touchAction: "pan-y" }}>
       <Flex direction="column" height="10vh">
         <Header onStatusChange={handleStatusChange} data={data} />
 
@@ -963,7 +942,7 @@ function App() {
               />
             </Box>
           ) : (
-            <WhatsAppButton />
+            <WhatsAppButton statusEmpresa={isEmpresa} data={data} />
           )}
 
           <Divider />
