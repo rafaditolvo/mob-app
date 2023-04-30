@@ -771,7 +771,7 @@ function App() {
         >
           <VStack spacing={2}>
             <Heading as="h1" mb="2em" fontSize="2xl" fontWeight="hairline">
-              {props?.data[status].header.h1.length}
+              {props?.data[status].header.h1}
             </Heading>
             <Spacer />
           </VStack>
