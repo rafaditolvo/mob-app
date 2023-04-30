@@ -4,6 +4,7 @@ import {
   DeleteIcon,
   EditIcon,
   LockIcon,
+  QuestionIcon,
   RepeatIcon,
   TriangleDownIcon,
 } from "@chakra-ui/icons";
@@ -11,11 +12,13 @@ import {
   Box,
   Button,
   Center,
+  chakra,
   Container,
   Divider,
   Flex,
   Heading,
   HStack,
+  Icon,
   IconButton,
   Image,
   Input,
@@ -37,14 +40,22 @@ import {
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
+
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { FaCheckCircle } from "react-icons/fa";
+import {
+  FaCheckCircle,
+  FaInstagram,
+  FaTwitter,
+  FaWhatsapp,
+  FaYoutube,
+} from "react-icons/fa";
 import ChakraCarousel from "./ChakraCarousel";
 
 import { v4 as uuidv4 } from "uuid";
 
 import bg from "../src/img/mob-img.png";
+import logo from "../src/img/mob_logo_black.svg";
 
 import ImageCarousel from "./ImageCarousel";
 import UploadService from "./services/fileUpload.js";
@@ -58,14 +69,17 @@ const DEBUG = false;
 
 function App({ setInvalidAuth, token }) {
   const [isPersonal, setIsPersonal] = useState(true);
-  const [global, setGlobal] = useState({});
-  const [data, setData] = useState({});
+  const [global, setGlobal] = useState(false);
+  const [data, setData] = useState(false);
   const [plan, setPlan] = useState(null);
   const [save, setSave] = useState(true);
 
   const [banner, setBanner] = useState(null);
   const [description, setDescription] = useState(null);
   const [appDescription, setAppDescription] = useState(null);
+  const [faq, setFaq] = useState(null);
+  const [footer, setFooter] = useState(null);
+  const [header, setHeader] = useState(null);
 
   const intervalIsAuth = useRef();
 
@@ -81,8 +95,8 @@ function App({ setInvalidAuth, token }) {
   function loopIsAuth() {
     const idInterval = setInterval(() => {
       isAuth();
-      // }, 120000000);
-    }, 60000);
+    }, 120000000);
+    // }, 60000);
     intervalIsAuth.current = idInterval;
   }
   async function isAuth() {
@@ -555,12 +569,15 @@ function App({ setInvalidAuth, token }) {
   function BoxSaveAlert() {
     return (
       <Box
-        bg={save ? "green.400" : "red.300"}
+        bg={save ? "green.300" : "red.300"}
         w="100%"
-        p={4}
+        p={3}
         color="white"
+        position={"fixed"}
         display="flex"
-        justifyContent="justify-between"
+        justify={{ base: "center", md: "center" }}
+        align={{ base: "center", md: "center" }}
+        zIndex={2}
       >
         <IconButton
           aria-label="Sair"
@@ -872,6 +889,166 @@ function App({ setInvalidAuth, token }) {
     );
   }
 
+  function Header({ data }) {
+    const headerData = data?.header ?? false;
+
+    function handleEditHeader(desc) {
+      setHeader(desc);
+    }
+
+    return (
+      <Container
+        py={2}
+        px={1}
+        mt="1em"
+        alignItems="center"
+        maxW={{
+          base: "100%",
+          sm: "35rem",
+          md: "43.75rem",
+          lg: "57.5rem",
+          xl: "75rem",
+          xxl: "87.5rem",
+        }}
+      >
+        <Divider mb={4} />
+        <IconButton
+          aria-label="add bannero"
+          background={"gray.400"}
+          p={4}
+          mb={4}
+          icon={
+            <>
+              <AddIcon me={4} /> Editar
+            </>
+          }
+          onClick={() => handleEditHeader(headerData)}
+        />
+
+        <Box p={4} mt="2em" mb="6em">
+          <HStack
+            spacing={4}
+            as={Container}
+            maxW={"3xl"}
+            textAlign={"center"}
+            width={"100%"}
+            justify={{ base: "center", md: "space-between" }}
+            align={{ base: "center", md: "center" }}
+          >
+            <Text width={"100%"} color={"gray.600"}>
+              {headerData.h1}
+            </Text>
+          </HStack>
+        </Box>
+      </Container>
+    );
+  }
+
+  function FormHeader({ headerItem }) {
+    const [headerEdited, setHeaderEdited] = useState(headerItem);
+
+    function changeValue(event) {
+      const target = event.target;
+      const inputName = target.name;
+      const value = target.value;
+      const newHeader = { ...headerEdited };
+
+      newHeader[inputName] = value;
+
+      setHeaderEdited((prev) => newHeader);
+    }
+
+    const handleSaveForm = async () => {
+      if (!token) {
+        setInvalidAuth();
+        return;
+      }
+
+      const newData = { ...data };
+
+      const newHeaderEdited = { ...headerEdited };
+
+      newData.header = newHeaderEdited;
+      const newGlobal = isPersonal
+        ? { ...global, ...{ personal: newData } }
+        : { ...global, ...{ enterprise: newData } };
+
+      setData(newData);
+      setGlobal(newGlobal);
+
+      if (save) {
+        setSave(false);
+      }
+      handleClearForm();
+    };
+    function handleClearForm() {
+      setHeader(null);
+    }
+
+    return (
+      <>
+        <Modal
+          blockScrollOnMount={false}
+          isOpen={!!header}
+          isCentered
+          onClose={handleClearForm}
+        >
+          <ModalOverlay />
+          <ModalContent w="100%">
+            <ModalCloseButton />
+            <ModalHeader>Alteração Header</ModalHeader>
+            <ModalBody>
+              <Stack spacing={3} width={"100%"} alignItems="center">
+                <Stack alignItems="center" width={"100%"}>
+                  {!!header && (
+                    <>
+                      <VStack alignItems="left" my={0} width={"100%"}>
+                        <Text textAlign={"left"}>Texto:</Text>
+                        <Input
+                          defaultValue={header.h1}
+                          name={`h1`}
+                          onChange={(event) => changeValue(event)}
+                        />
+                      </VStack>
+
+                      <Divider my={8} />
+                      <HStack alignItems="left">
+                        <IconButton
+                          aria-label="salvar headero"
+                          background={"green.400"}
+                          px={10}
+                          icon={
+                            <>
+                              <Text mx={2}>Salvar</Text>
+                              <EditIcon />
+                            </>
+                          }
+                          onClick={handleSaveForm}
+                        />
+                        <IconButton
+                          aria-label="Limpar headero"
+                          background={"gray.400"}
+                          px={10}
+                          icon={
+                            <>
+                              <Text mx={2}>Voltar</Text>
+                              <RepeatIcon />
+                            </>
+                          }
+                          onClick={handleClearForm}
+                        />
+                      </HStack>
+                    </>
+                  )}
+                </Stack>
+              </Stack>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  }
+
   function Description({ data }) {
     const descriptionData = data?.description ?? false;
 
@@ -883,7 +1060,6 @@ function App({ setInvalidAuth, token }) {
       <>
         <Container
           py={2}
-          px={12}
           mt="1em"
           alignItems="center"
           maxW={{
@@ -900,6 +1076,7 @@ function App({ setInvalidAuth, token }) {
             aria-label="add bannero"
             background={"gray.400"}
             p={4}
+            mx={12}
             mb={4}
             icon={
               <>
@@ -909,7 +1086,7 @@ function App({ setInvalidAuth, token }) {
             onClick={() => handleEditDescription(descriptionData)}
           />
           {descriptionData && (
-            <Box bg={"gray.800"} position={"relative"}>
+            <Box bg={"gray.800"} width={"100%"} position={"relative"}>
               <Flex
                 flex={1}
                 zIndex={0}
@@ -1198,7 +1375,7 @@ function App({ setInvalidAuth, token }) {
 
     return (
       <>
-        <Container maxW={"7xl"}>
+        <Container mt={4} maxW={"7xl"}>
           <IconButton
             aria-label="add bannero"
             background={"gray.400"}
@@ -1506,6 +1683,555 @@ function App({ setInvalidAuth, token }) {
     );
   }
 
+  function Faq({ data }) {
+    const faqData = data?.FAQ ?? false;
+
+    function handleEditFaq(desc) {
+      setFaq(desc);
+    }
+
+    return (
+      <Container
+        py={2}
+        px={12}
+        mt="1em"
+        alignItems="center"
+        maxW={{
+          base: "100%",
+          sm: "35rem",
+          md: "43.75rem",
+          lg: "57.5rem",
+          xl: "75rem",
+          xxl: "87.5rem",
+        }}
+      >
+        <Divider mb={4} />
+        <IconButton
+          aria-label="add bannero"
+          background={"gray.400"}
+          p={4}
+          mb={4}
+          icon={
+            <>
+              <AddIcon me={4} /> Editar
+            </>
+          }
+          onClick={() => handleEditFaq(faqData)}
+        />
+
+        <Box p={4} mt="2em" mb="6em">
+          <Stack spacing={4} as={Container} maxW={"3xl"} textAlign={"center"}>
+            <Heading fontSize={"3xl"}>{faqData.h1}</Heading>
+            <Text color={"gray.600"} fontSize={"xl"}>
+              {faqData.text}
+            </Text>
+          </Stack>
+
+          <Container maxW={"6xl"} mt={10}>
+            <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={10}>
+              {faqData?.items?.length > 0 &&
+                faqData.items.map((feature) => (
+                  <HStack key={feature.id} align={"top"}>
+                    <Box color={"green.400"} px={2}>
+                      <Icon as={QuestionIcon} />
+                    </Box>
+                    <VStack align={"start"}>
+                      <Text fontWeight={600}>{feature.title}</Text>
+                      <Text color={"gray.600"}>{feature.text}</Text>
+                    </VStack>
+                  </HStack>
+                ))}
+            </SimpleGrid>
+          </Container>
+        </Box>
+      </Container>
+    );
+  }
+
+  function FormFaq({ faqItem }) {
+    const [faqEdited, setFaqEdited] = useState(faqItem);
+
+    function changeValue(event) {
+      const target = event.target;
+      const inputName = target.name;
+      const value = target.value;
+      const id = target?.id ?? null;
+      const newFaq = { ...faqEdited };
+
+      if (!id) {
+        newFaq[inputName] = value;
+      } else {
+        const [name, prop] = inputName.split("_");
+        newFaq[name] = newFaq[name].map((reg, index) => {
+          if (index == id) {
+            reg[prop] = value;
+          }
+          return reg;
+        });
+      }
+      console.log(newFaq);
+      setFaqEdited((prev) => newFaq);
+    }
+
+    function handleAddFeatureFaq() {
+      const newFaq = { ...faqEdited };
+      const newItem = {
+        id: uuidv4(),
+        title: "",
+        text: "",
+      };
+      newFaq.items.push(newItem);
+      setFaqEdited((prev) => newFaq);
+      if (save) {
+        setSave(false);
+      }
+    }
+
+    // todo: ajustar remoção, deleta mais na renderização nao ajusta
+    function handleRemoveFeatureFaq(id) {
+      const newFaq = { ...faqEdited };
+      console.log(newFaq, id);
+      newFaq.items = newFaq.items.filter((reg, index) => reg.id != id);
+      setFaqEdited(newFaq);
+    }
+    const handleSaveForm = async () => {
+      if (!token) {
+        setInvalidAuth();
+        return;
+      }
+
+      const newData = { ...data };
+
+      const newFaqEdited = { ...faqEdited };
+
+      newData.FAQ = newFaqEdited;
+      const newGlobal = isPersonal
+        ? { ...global, ...{ personal: newData } }
+        : { ...global, ...{ enterprise: newData } };
+
+      setData(newData);
+      setGlobal(newGlobal);
+
+      if (save) {
+        setSave(false);
+      }
+      handleClearForm();
+    };
+    function handleClearForm() {
+      setFaq(null);
+    }
+
+    return (
+      <>
+        <Modal
+          blockScrollOnMount={false}
+          isOpen={!!faq}
+          isCentered
+          onClose={handleClearForm}
+          size="full"
+        >
+          <ModalOverlay />
+          <ModalContent w="100%">
+            <ModalCloseButton />
+            <ModalHeader>Alteração FAQ</ModalHeader>
+            <ModalBody>
+              <Stack spacing={3} width={"100%"} alignItems="center">
+                <Stack alignItems="center" width={"100%"}>
+                  {!!faq && (
+                    <>
+                      <Stack alignItems="left" width={"100%"}>
+                        <HStack
+                          justify={"center"}
+                          alignItems="left"
+                          width={"100%"}
+                        >
+                          <Text>h1</Text>
+                          <Input
+                            key="h1"
+                            defaultValue={faq.h1}
+                            name="h1"
+                            onChange={(event) => changeValue(event)}
+                          />
+                        </HStack>
+                      </Stack>
+                      <HStack
+                        justify={"center"}
+                        alignItems="left"
+                        width={"100%"}
+                      >
+                        <Text>text</Text>
+                        <Input
+                          key="text"
+                          defaultValue={faq.text}
+                          name="text"
+                          onChange={(event) => changeValue(event)}
+                        />
+                      </HStack>
+                      <HStack alignItems="left" width={"100%"}>
+                        <Text>Itens</Text>
+                        <IconButton
+                          aria-label="Add itens"
+                          width={20}
+                          icon={<AddIcon />}
+                          onClick={handleAddFeatureFaq}
+                        />
+                      </HStack>
+                      <SimpleGrid columns={{ base: 1, lg: 4 }} spacing={5}>
+                        {faqEdited.items.map((feat, index) => (
+                          <HStack
+                            alignItems="left"
+                            width={"100%"}
+                            key={feat.id}
+                          >
+                            <VStack alignItems="center" my={0} width={"100%"}>
+                              <Input
+                                defaultValue={feat.title}
+                                name={`items_title`}
+                                id={index}
+                                onChange={(event) => changeValue(event)}
+                              />
+                              <Textarea
+                                defaultValue={feat.text}
+                                name={`items_text`}
+                                height={32}
+                                id={index}
+                                onChange={(event) => changeValue(event)}
+                              />
+                            </VStack>
+
+                            <IconButton
+                              mt="auto"
+                              aria-label="Features"
+                              width={20}
+                              icon={<DeleteIcon />}
+                              onClick={() => handleRemoveFeatureFaq(feat.id)}
+                            />
+                          </HStack>
+                        ))}
+                      </SimpleGrid>
+
+                      <Divider my={8} />
+                      <HStack alignItems="left">
+                        <IconButton
+                          aria-label="salvar faqo"
+                          background={"green.400"}
+                          px={10}
+                          icon={
+                            <>
+                              <Text mx={2}>Salvar</Text>
+                              <EditIcon />
+                            </>
+                          }
+                          onClick={handleSaveForm}
+                        />
+                        <IconButton
+                          aria-label="Limpar faqo"
+                          background={"gray.400"}
+                          px={10}
+                          icon={
+                            <>
+                              <Text mx={2}>Voltar</Text>
+                              <RepeatIcon />
+                            </>
+                          }
+                          onClick={handleClearForm}
+                        />
+                      </HStack>
+                    </>
+                  )}
+                </Stack>
+              </Stack>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  }
+
+  function Footer({ data }) {
+    const footerData = data?.footer ?? false;
+
+    function handleEditFooter(desc) {
+      setFooter(desc);
+    }
+
+    return (
+      <Container
+        py={2}
+        px={1}
+        mt="1em"
+        alignItems="center"
+        maxW={{
+          base: "100%",
+          sm: "35rem",
+          md: "43.75rem",
+          lg: "57.5rem",
+          xl: "75rem",
+          xxl: "87.5rem",
+        }}
+      >
+        <Divider mb={4} />
+        <IconButton
+          aria-label="add bannero"
+          background={"gray.400"}
+          p={4}
+          mb={4}
+          icon={
+            <>
+              <AddIcon me={4} /> Editar
+            </>
+          }
+          onClick={() => handleEditFooter(footerData)}
+        />
+
+        <Box p={4} mt="2em" mb="6em">
+          <HStack
+            spacing={4}
+            as={Container}
+            maxW={"3xl"}
+            textAlign={"center"}
+            justify={{ base: "center", md: "space-between" }}
+            align={{ base: "center", md: "center" }}
+          >
+            <Image src={logo} boxSize="5em" />
+            <Text color={"gray.600"}>
+              © Copyright Mob Telecom 2023. Todos os direitos reservados.
+            </Text>
+            <chakra.button
+              bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
+              rounded={"full"}
+              w={8}
+              h={8}
+              cursor={"pointer"}
+              as={"a"}
+              href={footerData.socialMedia[0].href}
+              display={"inline-flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              transition={"background 0.3s ease"}
+              _hover={{
+                bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
+              }}
+            >
+              <FaTwitter />
+            </chakra.button>
+            <chakra.button
+              bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
+              rounded={"full"}
+              w={8}
+              h={8}
+              cursor={"pointer"}
+              as={"a"}
+              href={footerData.socialMedia[1].href}
+              display={"inline-flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              transition={"background 0.3s ease"}
+              _hover={{
+                bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
+              }}
+            >
+              <FaYoutube />
+            </chakra.button>
+            <chakra.button
+              bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
+              rounded={"full"}
+              w={8}
+              h={8}
+              cursor={"pointer"}
+              as={"a"}
+              href={footerData.socialMedia[2].href}
+              display={"inline-flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              transition={"background 0.3s ease"}
+              _hover={{
+                bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
+              }}
+            >
+              <FaInstagram />
+            </chakra.button>
+          </HStack>
+          <Box
+            as="a"
+            href={`https://api.whatsapp.com/send?phone=${footerData.whatsappNumber}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            position="fixed"
+            bottom={{ base: "79", md: "8", lg: "12" }}
+            right={{ base: "10", md: "8", lg: "12" }}
+            width={{ base: "60px", md: "70px", lg: "80px" }}
+            height={{ base: "60px", md: "70px", lg: "80px" }}
+            padding={{ base: "10px", md: "14px", lg: "16px" }}
+            borderRadius="full"
+            backgroundColor="green.500"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            boxShadow="0px 4px 8px rgba(0, 0, 0, 0.1)"
+            transition="all 0.2s ease-out"
+            _hover={{
+              transform: "scale(1.1)",
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+            }}
+          >
+            <FaWhatsapp size="md" />
+          </Box>
+        </Box>
+      </Container>
+    );
+  }
+
+  function FormFooter({ footerItem }) {
+    const [footerEdited, setFooterEdited] = useState(footerItem);
+
+    function changeValue(event) {
+      const target = event.target;
+      const inputName = target.name;
+      const value = target.value;
+      const id = target?.id ?? null;
+      const newFooter = { ...footerEdited };
+
+      if (!id) {
+        newFooter[inputName] = value;
+      } else {
+        const [name, prop] = inputName.split("_");
+        newFooter[name] = newFooter[name].map((reg, index) => {
+          if (index == id) {
+            reg[prop] = value;
+          }
+          return reg;
+        });
+      }
+      setFooterEdited((prev) => newFooter);
+    }
+
+    const handleSaveForm = async () => {
+      if (!token) {
+        setInvalidAuth();
+        return;
+      }
+
+      const newData = { ...data };
+
+      const newFooterEdited = { ...footerEdited };
+
+      newData.footer = newFooterEdited;
+      const newGlobal = isPersonal
+        ? { ...global, ...{ personal: newData } }
+        : { ...global, ...{ enterprise: newData } };
+
+      setData(newData);
+      setGlobal(newGlobal);
+
+      if (save) {
+        setSave(false);
+      }
+      handleClearForm();
+    };
+    function handleClearForm() {
+      setFooter(null);
+    }
+
+    return (
+      <>
+        <Modal
+          blockScrollOnMount={false}
+          isOpen={!!footer}
+          isCentered
+          onClose={handleClearForm}
+        >
+          <ModalOverlay />
+          <ModalContent w="100%">
+            <ModalCloseButton />
+            <ModalHeader>Alteração Footer</ModalHeader>
+            <ModalBody>
+              <Stack spacing={3} width={"100%"} alignItems="center">
+                <Stack alignItems="center" width={"100%"}>
+                  {!!footer && (
+                    <>
+                      <VStack alignItems="left" my={0} width={"100%"}>
+                        <Text textAlign={"left"}>Twitter link:</Text>
+                        <Input
+                          defaultValue={footer.socialMedia[0].href}
+                          name={`socialMedia_href`}
+                          id={0}
+                          onChange={(event) => changeValue(event)}
+                        />
+                      </VStack>
+                      <VStack alignItems="left" my={0} width={"100%"}>
+                        <Text textAlign={"left"}>Youtube link:</Text>
+                        <Input
+                          defaultValue={footer.socialMedia[1].href}
+                          name={`socialMedia_href`}
+                          id={1}
+                          onChange={(event) => changeValue(event)}
+                        />
+                      </VStack>
+                      <VStack alignItems="left" my={0} width={"100%"}>
+                        <Text textAlign={"left"}>Instagram link:</Text>
+                        <Input
+                          defaultValue={footer.socialMedia[2].href}
+                          name={`socialMedia_href`}
+                          id={2}
+                          onChange={(event) => changeValue(event)}
+                        />
+                      </VStack>
+                      <VStack alignItems="left" my={0} width={"100%"}>
+                        <Text textAlign={"left"}>Whatsapp:</Text>
+                        <Input
+                          defaultValue={footer.whatsappNumber}
+                          name={`whatsappNumber`}
+                          onChange={(event) => changeValue(event)}
+                        />
+                      </VStack>
+
+                      <Divider my={8} />
+                      <HStack alignItems="left">
+                        <IconButton
+                          aria-label="salvar footero"
+                          background={"green.400"}
+                          px={10}
+                          icon={
+                            <>
+                              <Text mx={2}>Salvar</Text>
+                              <EditIcon />
+                            </>
+                          }
+                          onClick={handleSaveForm}
+                        />
+                        <IconButton
+                          aria-label="Limpar footero"
+                          background={"gray.400"}
+                          px={10}
+                          icon={
+                            <>
+                              <Text mx={2}>Voltar</Text>
+                              <RepeatIcon />
+                            </>
+                          }
+                          onClick={handleClearForm}
+                        />
+                      </HStack>
+                    </>
+                  )}
+                </Stack>
+              </Stack>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </>
+    );
+  }
+
+  function BlockDivider({ children }) {
+    return (
+      <HStack width={"100vw"} bg="gray.200" mt={8} py={4} px={8}>
+        <Text color={"gray.900"}>{children}</Text>
+      </HStack>
+    );
+  }
+
   async function fetchJson(json) {
     let options = {
       method: "POST",
@@ -1557,11 +2283,14 @@ function App({ setInvalidAuth, token }) {
     fetchData();
   }, []);
 
+  if (!global || !data) {
+    return <>Dados nao carregados</>;
+  }
   // console.log("global", global);
   return (
     <Flex direction="column" height="100vh">
       <BoxSaveAlert />
-      <HStack justifyContent="center" my={4}>
+      <HStack justifyContent="center" mt={32}>
         <Button
           colorScheme={!isPersonal ? "gray" : "red"}
           onClick={() => {
@@ -1580,17 +2309,18 @@ function App({ setInvalidAuth, token }) {
         </Button>
       </HStack>
 
-      <Divider my={4} />
-      <h1>Banner</h1>
-      <Divider my={4} />
+      <BlockDivider>Banner</BlockDivider>
 
       <FormBanner bannerItem={banner} />
       <Banner data={data} />
       <ImageCarousel statusEmpresa={!isPersonal} data={global} />
 
-      <Divider my={4} />
-      <h1>Planos</h1>
-      <Divider my={4} />
+      <BlockDivider>Header</BlockDivider>
+
+      <FormHeader headerItem={header} />
+      <Header data={data} />
+
+      <BlockDivider>Planos</BlockDivider>
 
       <Form planItem={plan} />
       <motion.div
@@ -1601,19 +2331,25 @@ function App({ setInvalidAuth, token }) {
         <Carrosel data={data} />
       </motion.div>
 
-      <Divider my={4} />
-      <h1>Descrição</h1>
-      <Divider my={4} />
+      <BlockDivider>Descrição</BlockDivider>
 
       <Description data={data} />
       <FormDescription descriptionItem={description} />
 
-      <Divider my={4} />
-      <h1>App</h1>
-      <Divider my={4} />
+      <BlockDivider>App</BlockDivider>
 
       <AppDescription data={data} />
       <FormAppDescription appDescriptionItem={appDescription} />
+
+      <BlockDivider>FAQ</BlockDivider>
+
+      <Faq data={data} />
+      <FormFaq faqItem={faq} />
+
+      <BlockDivider>Footer</BlockDivider>
+
+      <Footer data={data} />
+      <FormFooter footerItem={footer} />
     </Flex>
   );
 }
