@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 const { randomUUID } = require("crypto");
 
 const S3_BUCKET = process.env.TIME_JWT_EXPIRES ?? "cadastroplanos";
-const DIRECTORY_STATIC = process.env.DIRECTORY_STATIC ?? "data/plan/";
+const DIRECTORY_STATIC = process.env.DIRECTORY_STATIC ?? "data/plan";
 
 const JWT_SECRET =
   "8d60f6a35bbe4d4d755f046699043fc5dd2d73c241287f483865adf9a964d8454d30e9b742dd6f310ec51f0bf97e021813a49e53726b56289dbf3a0a80cfb03e";
@@ -23,13 +23,16 @@ const putObjectToS3 = async (data, nameOfFile, paramsFile = null) =>
       .replaceAll("-", "")
       .replaceAll(":", "")
       .split(".")[0];
+    const [year, month, _] = new Date().toISOString().split("-");
     const fileName = `${dateFormated}_${randomUUID()}.json`;
+    const directory = `${DIRECTORY_STATIC}/${year}${month}`;
 
     var params = {
       Bucket: S3_BUCKET,
-      Key: fileName,
+      Key: `${directory}/${fileName}`,
       Body: data,
     };
+    console.log("####params", params);
     S3.putObject(paramsFile ? paramsFile : params, function (err, data) {
       if (err) {
         console.log(err, err.stack); // an error occurred
@@ -74,20 +77,48 @@ const save = async ({ headers, body }) => {
     return responseUnauthorized;
   }
   const token = bearerToken.split(" ")[1];
+  if (token != JWT_SECRET) {
+    return responseUnauthorized;
+  }
+  console.log(body);
+  if (
+    !body.name ||
+    !body.cpf ||
+    !body.bairro ||
+    !body.endereco ||
+    !body.addressNumber ||
+    !body.phone ||
+    !body.plano ||
+    !body.tipo ||
+    !body.cep
+  ) {
+    return responseUnauthorized;
+  }
+  body = {
+    name: body.name,
+    cpf: body.cpf,
+    bairro: body.bairro,
+    endereco: body.endereco,
+    addressNumber: body.addressNumber,
+    phone: body.phone,
+    plano: body.plano,
+    tipo: body.tipo,
+    cep: body.cep,
+  };
 
   try {
-    const tokenIsValid = await validJWT(token);
-    if (tokenIsValid) {
-      try {
-        await putObjectToS3(JSON.stringify(body), "data");
-      } catch (errPutObjectToS3) {
-        console.log(errPutObjectToS3);
-        return {
-          statusCode: 400,
-          body: JSON.stringify("Não foi possível cadastrar a requisição"),
-        };
-      }
+    // const tokenIsValid = await validJWT(token);
+    // if (tokenIsValid) {
+    try {
+      await putObjectToS3(JSON.stringify(body), "data");
+    } catch (errPutObjectToS3) {
+      console.log(errPutObjectToS3);
+      return {
+        statusCode: 400,
+        body: JSON.stringify("Não foi possível cadastrar a requisição"),
+      };
     }
+    // }
   } catch (errToken) {
     console.log(errToken);
     return responseUnauthorized;
