@@ -83,7 +83,7 @@ const save = async ({ headers, body }) => {
   console.log(body);
   if (
     !body.name ||
-    !body.cpf ||
+    !(body.cpf || body.cnpj) ||
     !body.bairro ||
     !body.endereco ||
     !body.addressNumber ||
@@ -94,9 +94,8 @@ const save = async ({ headers, body }) => {
   ) {
     return responseUnauthorized;
   }
-  body = {
+  const newBody = {
     name: body.name,
-    cpf: body.cpf,
     bairro: body.bairro,
     endereco: body.endereco,
     addressNumber: body.addressNumber,
@@ -105,12 +104,18 @@ const save = async ({ headers, body }) => {
     tipo: body.tipo,
     cep: body.cep,
   };
+  if (body.cpf) {
+    newBody.cpf = body.cpf;
+  }
+  if (body.cnpj) {
+    newBody.cnpj = body.cnpj;
+  }
 
   try {
     // const tokenIsValid = await validJWT(token);
     // if (tokenIsValid) {
     try {
-      await putObjectToS3(JSON.stringify(body), "data");
+      await putObjectToS3(JSON.stringify(newBody), "data");
     } catch (errPutObjectToS3) {
       console.log(errPutObjectToS3);
       return {
