@@ -91,6 +91,7 @@ function App() {
     const toast = useToast();
     const [planoId, setPlanoId] = useState(id);
     const [isLoading, setIsLoading] = useState(false);
+    const [submitLoading, setSubmitLoading] = useState(false);
 
     const validationSchema = Yup.object().shape({
       name: Yup.string().required("Campo obrigatório"),
@@ -141,6 +142,48 @@ function App() {
         setIsLoading(false);
       }
     };
+    const submitForm = async (values, props) => {
+      props.setSubmitting(false);
+      setSubmitLoading(true);
+      // setIsLoading(true);
+      try {
+        const token =
+          "8d60f6a35bbe4d4d755f046699043fc5dd2d73c241287f483865adf9a964d8454d30e9b742dd6f310ec51f0bf97e021813a49e53726b56289dbf3a0a80cfb03e";
+        // const token = await generateToken();
+        const response = await axios.post(
+          `https://mpdbrelos2zfgh6vztsbzwfuu40qistr.lambda-url.us-east-2.on.aws/`,
+          values,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const test = response.data;
+        onClose();
+        toast({
+          title: "Dados enviados!",
+          description: "Seus dados foram enviados com sucesso.",
+          status: "success",
+          duration: 5000,
+          position: "top-right",
+          isClosable: true,
+        });
+      } catch (error) {
+        console.log(error);
+        toast({
+          title: "Não foi possível enviar seus dados!",
+          description: "Por favor, tente mais tarde",
+          status: "error",
+          duration: 5000,
+          position: "top-right",
+          isClosable: true,
+        });
+      } finally {
+        setSubmitLoading(false);
+      }
+    };
 
     return (
       <>
@@ -177,19 +220,7 @@ function App() {
                   tipo: "Empresarial",
                 }}
                 validationSchema={validationSchema}
-                onSubmit={(values, props) => {
-                  console.log(values, "DADOS FORMULARIO");
-                  //props.setSubmitting(false);
-                  onClose();
-                  toast({
-                    title: "Dados enviados!",
-                    description: "Seus dados foram enviados com sucesso.",
-                    status: "success",
-                    duration: 5000,
-                    position: "top-right",
-                    isClosable: true,
-                  });
-                }}
+                onSubmit={submitForm}
                 values={values}
                 //setFieldValue={setFieldValue}
               >
@@ -347,6 +378,7 @@ function App() {
                         mr={3}
                         type="submit"
                         onClick={handleSubmit}
+                        isDisabled={submitLoading}
                       >
                         Enviar
                       </Button>
@@ -367,6 +399,7 @@ function App() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
     const [planoId, setPlanoId] = useState(id.id);
+    const [submitLoading, setSubmitLoading] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [autoPreenchido, setAutoPreenchido] = useState(false);
     const validationSchema = Yup.object().shape({
@@ -436,14 +469,14 @@ function App() {
     const handleSubmitResidencial = (values, actions) => {
       actions.setSubmitting(false);
       onClose();
-      toast({
-        title: "Dados enviados!",
-        description: "Seus dados foram enviados com sucesso.",
-        status: "success",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      // toast({
+      //   title: "Dados enviados!",
+      //   description: "Seus dados foram enviados com sucesso.",
+      //   status: "success",
+      //   duration: 5000,
+      //   position: "top-right",
+      //   isClosable: true,
+      // });
     };
 
     const buscarEndereco = async (cep, setFieldValue) => {
@@ -463,6 +496,49 @@ function App() {
         console.log(error);
       } finally {
         setIsLoading(false);
+      }
+    };
+
+    const submitForm = async (values, props) => {
+      props.setSubmitting(false);
+      setSubmitLoading(true);
+      // setIsLoading(true);
+      try {
+        const token =
+          "8d60f6a35bbe4d4d755f046699043fc5dd2d73c241287f483865adf9a964d8454d30e9b742dd6f310ec51f0bf97e021813a49e53726b56289dbf3a0a80cfb03e";
+        // const token = await generateToken();
+        const response = await axios.post(
+          `https://mpdbrelos2zfgh6vztsbzwfuu40qistr.lambda-url.us-east-2.on.aws/`,
+          values,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const test = response.data;
+        onClose();
+        toast({
+          title: "Dados enviados!",
+          description: "Seus dados foram enviados com sucesso.",
+          status: "success",
+          duration: 5000,
+          position: "top-right",
+          isClosable: true,
+        });
+      } catch (error) {
+        console.log(error);
+        toast({
+          title: "Não foi possível enviar seus dados!",
+          description: "Por favor, tente mais tarde",
+          status: "error",
+          duration: 5000,
+          position: "top-right",
+          isClosable: true,
+        });
+      } finally {
+        setSubmitLoading(false);
       }
     };
 
@@ -501,19 +577,7 @@ function App() {
                   tipo: "Residencial",
                 }}
                 validationSchema={validationSchema}
-                onSubmit={(values, props) => {
-                  console.log(values, "DADOS FORMULARIO");
-                  props.setSubmitting(false);
-                  onClose();
-                  toast({
-                    title: "Dados enviados!",
-                    description: "Seus dados foram enviados com sucesso.",
-                    status: "success",
-                    duration: 5000,
-                    position: "top-right",
-                    isClosable: true,
-                  });
-                }}
+                onSubmit={submitForm}
                 values={values}
                 //setFieldValue={setFieldValue}
               >
@@ -676,8 +740,9 @@ function App() {
                         mr={3}
                         type="submit"
                         onClick={handleSubmitResidencial}
+                        isDisabled={submitLoading}
                       >
-                        Enviar
+                        {submitLoading ? "Enviando..." : "Enviar"}
                       </Button>
                       <Button variant="ghost" onClick={onClose}>
                         Cancelar
