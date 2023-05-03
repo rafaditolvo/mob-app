@@ -30,6 +30,7 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
   SimpleGrid,
@@ -353,6 +354,7 @@ function App({ setInvalidAuth, token }) {
 
   function Form({ planItem }) {
     const [planEdited, setPlanEdited] = useState(planItem);
+    const [confirmDelete, setConfirmDelete] = useState(false);
     const [image, setImage] = useState({
       currentFile: null,
     });
@@ -386,11 +388,41 @@ function App({ setInvalidAuth, token }) {
     // todo: ajustar remoção, deleta mais na renderização nao ajusta
     function handleRemoveFeaturePlan(featIndex) {
       const newPlan = { ...planEdited };
-      newPlan.features = newPlan.features.filter(
-        (_, index) => index != featIndex
-      );
+      // newPlan.features = newPlan.features.filter((f, index) => {
+      //   console.log(f);
+      //   return f.id != featId;
+      // });
+      newPlan.features = newPlan.features.map((reg, index) => {
+        return index != featIndex ? reg : null;
+      });
+      console.log(newPlan);
       setPlanEdited(newPlan);
     }
+    const handleDeletePlan = async () => {
+      if (!token) {
+        setInvalidAuth();
+        return;
+      }
+
+      const newData = { ...data };
+
+      newData.pricingData = newData.pricingData.filter(
+        (reg) => reg.id != planEdited.id
+      );
+      const newGlobal = isPersonal
+        ? { ...global, ...{ personal: newData } }
+        : { ...global, ...{ enterprise: newData } };
+
+      console.log("newGlobal", newGlobal);
+      setData(newData);
+      setGlobal(newGlobal);
+
+      if (save) {
+        setSave(false);
+      }
+      setConfirmDelete(false);
+      handleClearForm();
+    };
     const handleSaveForm = async () => {
       if (!token) {
         setInvalidAuth();
@@ -401,13 +433,12 @@ function App({ setInvalidAuth, token }) {
 
       const newPlanEdited = { ...planEdited };
 
-      console.log("fora upload", image.currentFile);
       if (image.currentFile) {
-        console.log("entrou upload");
         const srcImage = await upload();
         newPlanEdited.srcImage = srcImage;
         console.log(srcImage, "srcImage");
       }
+      newPlanEdited.features = newPlanEdited.features.filter(Boolean);
 
       newData.pricingData = newData.pricingData.map((planReg) =>
         planReg.id == planEdited.id ? newPlanEdited : planReg
@@ -452,8 +483,39 @@ function App({ setInvalidAuth, token }) {
             reject();
           });
       });
+
+    const ModalConfirmDelete = () => {
+      return (
+        <>
+          <Modal
+            blockScrollOnMount={false}
+            isOpen={confirmDelete}
+            onClose={() => setConfirmDelete(false)}
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Deletar plano</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text fontWeight="bold" mb="1rem">
+                  Tem certeza que deseja deletar o plano?
+                </Text>
+              </ModalBody>
+
+              <ModalFooter>
+                <Button colorScheme="red" mx={3} onClick={handleDeletePlan}>
+                  Deletar
+                </Button>
+                <Button onClick={() => setConfirmDelete(false)}>Voltar</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </>
+      );
+    };
     return (
       <>
+        <ModalConfirmDelete />
         <Modal isOpen={!!plan} isCentered onClose={handleClearForm}>
           <ModalOverlay />
           <ModalContent w="90%">
@@ -511,22 +573,29 @@ function App({ setInvalidAuth, token }) {
                           onClick={handleAddFeaturePlan}
                         />
                       </HStack>
-                      {planEdited.features.map((feat, index) => (
-                        <HStack alignItems="left" width={"100%"} key={uuidv4()}>
-                          <Input
-                            defaultValue={feat}
-                            name="features"
-                            id={index}
-                            onChange={(event) => changeValue(event)}
-                          />
-                          <IconButton
-                            aria-label="Features"
-                            width={20}
-                            icon={<DeleteIcon />}
-                            onClick={() => handleRemoveFeaturePlan(index)}
-                          />
-                        </HStack>
-                      ))}
+                      {planEdited.features.map((feat, index) => {
+                        if (!feat) return <HStack key={`empty_${index}`} />;
+                        return (
+                          <HStack
+                            alignItems="left"
+                            width={"100%"}
+                            key={`plan_feature_${index}`}
+                          >
+                            <Input
+                              defaultValue={feat}
+                              name="features"
+                              id={index}
+                              onChange={(event) => changeValue(event)}
+                            />
+                            <IconButton
+                              aria-label="Features"
+                              width={20}
+                              icon={<DeleteIcon />}
+                              onClick={() => handleRemoveFeaturePlan(index)}
+                            />
+                          </HStack>
+                        );
+                      })}
 
                       <Divider my={8} />
                       <HStack alignItems="left">
@@ -553,6 +622,12 @@ function App({ setInvalidAuth, token }) {
                             </>
                           }
                           onClick={handleClearForm}
+                        />
+                        <IconButton
+                          aria-label="Deleter banner"
+                          background={"red.600"}
+                          icon={<DeleteIcon />}
+                          onClick={() => setConfirmDelete(true)}
                         />
                       </HStack>
                     </>
@@ -632,6 +707,9 @@ function App({ setInvalidAuth, token }) {
     function handleEditBanner(banner) {
       setBanner(banner);
     }
+    function handleRemoveBanner(banner) {
+      setBanner(banner);
+    }
     function handleAddNewBanner() {
       const newData = { ...data };
       const newBanner = {
@@ -679,18 +757,21 @@ function App({ setInvalidAuth, token }) {
             }
             onClick={() => handleAddNewBanner()}
           />
-          <ChakraCarousel gap={3}>
+          <ChakraCarousel gap={1}>
             {bannersData.length > 0 ? (
               bannersData.map((item, index) => (
                 <motion.div key={`carousel_${index}`}>
                   <Center>
                     <BannerWrapper>
-                      <Box position="relative">
-                        <IconButton
-                          aria-label="Editar bannero"
-                          icon={<EditIcon />}
-                          onClick={() => handleEditBanner(item)}
-                        />
+                      <Box position="relative" minWidth={200}>
+                        <HStack mx={4} mt={2} justifyContent="space-between">
+                          <IconButton
+                            aria-label="Editar bannero"
+                            background={"gray.300"}
+                            icon={<EditIcon />}
+                            onClick={() => handleEditBanner(item)}
+                          />
+                        </HStack>
                         <Box py={4} px={9}>
                           {item.src && (
                             <Image
@@ -720,44 +801,37 @@ function App({ setInvalidAuth, token }) {
 
   function FormBanner({ bannerItem }) {
     const [bannerEdited, setBannerEdited] = useState(bannerItem);
+    const [confirmDelete, setConfirmDelete] = useState(false);
+
     const [image, setImage] = useState({
       currentFile: null,
     });
 
-    function changeValue(event) {
-      const target = event.target;
-      const inputName = target.name;
-      const value = target.value;
-      const id = target?.id ?? null;
-      const newBanner = { ...bannerEdited };
-
-      if (!id) {
-        newBanner[inputName] = value;
-      } else {
-        newBanner[inputName] = newBanner[inputName].map((reg, index) =>
-          index == id ? value : reg
-        );
+    const handleDeleteBanner = async () => {
+      if (!token) {
+        setInvalidAuth();
+        return;
       }
-      setBannerEdited((prev) => newBanner);
-    }
 
-    function handleAddFeatureBanner() {
-      const newBanner = { ...bannerEdited };
-      newBanner.features.push("");
-      setBannerEdited((prev) => newBanner);
+      const newData = { ...data };
+
+      newData.banners = newData.banners.filter(
+        (bannerReg) => bannerReg.id != bannerEdited.id
+      );
+      const newGlobal = isPersonal
+        ? { ...global, ...{ personal: newData } }
+        : { ...global, ...{ enterprise: newData } };
+
+      console.log("newGlobal", newGlobal);
+      setData(newData);
+      setGlobal(newGlobal);
+
       if (save) {
         setSave(false);
       }
-    }
-
-    // todo: ajustar remoção, deleta mais na renderização nao ajusta
-    function handleRemoveFeatureBanner(featIndex) {
-      const newBanner = { ...bannerEdited };
-      newBanner.features = newBanner.features.filter(
-        (_, index) => index != featIndex
-      );
-      setBannerEdited(newBanner);
-    }
+      setConfirmDelete(false);
+      handleClearForm();
+    };
     const handleSaveBanner = async () => {
       if (!token) {
         setInvalidAuth();
@@ -823,8 +897,39 @@ function App({ setInvalidAuth, token }) {
             reject();
           });
       });
+
+    const ModalConfirmDelete = () => {
+      return (
+        <>
+          <Modal
+            blockScrollOnMount={false}
+            isOpen={confirmDelete}
+            onClose={() => setConfirmDelete(false)}
+          >
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Deletar banner</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text fontWeight="bold" mb="1rem">
+                  Tem certeza que deseja deletar o banner?
+                </Text>
+              </ModalBody>
+
+              <ModalFooter>
+                <Button colorScheme="red" mx={3} onClick={handleDeleteBanner}>
+                  Deletar
+                </Button>
+                <Button onClick={() => setConfirmDelete(false)}>Voltar</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </>
+      );
+    };
     return (
       <>
+        <ModalConfirmDelete />
         <Modal isOpen={!!banner} isCentered onClose={handleClearForm}>
           <ModalOverlay />
           <ModalContent w="90%">
@@ -876,6 +981,12 @@ function App({ setInvalidAuth, token }) {
                             </>
                           }
                           onClick={handleClearForm}
+                        />
+                        <IconButton
+                          aria-label="Deleter banner"
+                          background={"red.600"}
+                          icon={<DeleteIcon />}
+                          onClick={() => setConfirmDelete(true)}
                         />
                       </HStack>
                     </>
@@ -2264,9 +2375,7 @@ function App({ setInvalidAuth, token }) {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch(
-        "https://reacts3teste.s3.amazonaws.com/data.json"
-      );
+      const response = await fetch("/data.json");
       const jsonData = await response.json();
       setTimeout(() => {
         if (isPersonal) {
