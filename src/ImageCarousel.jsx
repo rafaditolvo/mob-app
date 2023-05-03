@@ -57,8 +57,8 @@ export default function ImageCarousel(props) {
   const showChevrons = useBreakpointValue({ base: true, md: true });
 
   return (
-    <div {...handlers}>
-      <Box position="relative" h={{ base: '200px', md: '400px' }}>
+    <div {...handlers} maxH="700px" w="100%">
+      <Box position="relative" maxH="700px" w="100%">
         {showChevrons && (
           <>
             <Box
@@ -99,8 +99,8 @@ export default function ImageCarousel(props) {
             src={images[currentImage]}
             alt="Banner"
             objectFit="cover"
-            maxH={{ base: '200px', md: '400px' }}
-            maxW="full"
+            maxH="700px"
+            w="100%"
             onLoad={() => setIsImageLoaded(true)}
           />
         )}
