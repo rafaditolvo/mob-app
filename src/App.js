@@ -10,6 +10,7 @@ import {
   DrawerBody,
   Container,
   Icon,
+  Checkbox,
   StackDivider,
   Heading,
   Stack,
@@ -126,6 +127,7 @@ function App() {
     const toast = useToast();
     const [planoId, setPlanoId] = useState(id.id);
     const [isLoading, setIsLoading] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
 
     const validationSchema = Yup.object().shape({
       name: Yup.string().required('Campo obrigatório'),
@@ -178,6 +180,55 @@ function App() {
       }
     };
 
+    const handleCheckboxChange = (event) => {
+      setIsChecked(event.target.checked);
+    };
+
+    const handleConfirmButtonClick = () => {
+      // perform action on confirmation button click
+    };
+
+    function PrivacyModal() {
+      const { isOpen, onOpen, onClose } = useDisclosure();
+      return (
+        <>
+          <Text as="u" onClick={onOpen} cursor="pointer">
+            termos de proteção e privacidade de dados
+          </Text>
+
+          <Modal isOpen={isOpen} isCentered onClose={onClose}>
+            <ModalOverlay />
+
+            <ModalContent w="50%" borderRadius="30px">
+              <ModalHeader>
+                LGPD - Proteção e Privacidade do seus Dados
+              </ModalHeader>
+              <ModalBody>
+                Gostaríamos de reforçar com você nosso compromisso com a
+                Proteção e Privacidade dos seus Dados.
+                <br />
+                <br />
+                Respeitamos a sua privacidade e estamos empenhados em proteger
+                os seus dados pessoais de acordo com a legislação nacional
+                aplicável. As tratativas e recepção dos dados pessoais descritos
+                nesta Política de Privacidade protegem os nossos clientes e os
+                utilizadores dos nossos websites, aplicações, produtos e
+                serviços digitais.
+                <br />
+                <br />
+                Caso continue essa conversa, entenderemos que você está de cordo
+                com esses termos e firmaremos um compomisso entre nós, conforme
+                está registrado a Política de Privacidade.
+              </ModalBody>
+              <ModalFooter>
+                <Button onClick={onClose}>Fechar</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </>
+      );
+    }
+
     return (
       <>
         <Center>
@@ -196,7 +247,7 @@ function App() {
 
         <Modal isOpen={isOpen} isCentered onClose={onClose}>
           <ModalOverlay />
-          <ModalContent w="90%">
+          <ModalContent w="90%" maxH="900px">
             <ModalCloseButton />
             <ModalHeader color="red.400">Confirme seus Dados!</ModalHeader>
             <ModalBody>
@@ -375,11 +426,24 @@ function App() {
                       )}
                     </Field>
 
+                    <HStack mt="1em">
+                      {' '}
+                      <Text>
+                        Li, e concordo com os <PrivacyModal />
+                      </Text>
+                      <Checkbox
+                        colorScheme="green"
+                        isChecked={isChecked}
+                        onChange={handleCheckboxChange}
+                      ></Checkbox>
+                    </HStack>
+
                     <ModalFooter>
                       <Button
-                        colorScheme="blue"
+                        colorScheme="red"
                         mr={3}
                         type="submit"
+                        isDisabled={!isChecked}
                         onClick={handleSubmit}
                       >
                         Enviar
@@ -399,10 +463,16 @@ function App() {
   }
   function BotaoResidencial(id, values) {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const {
+      isOpen: isOpenModal2,
+      onOpen: onOpenModal2,
+      onClose: onCloseModal2,
+    } = useDisclosure();
     const toast = useToast();
     const [planoId, setPlanoId] = useState(id.id);
     const [isLoading, setIsLoading] = useState(false);
     const [autoPreenchido, setAutoPreenchido] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
     const validationSchema = Yup.object().shape({
       name: Yup.string().required('Campo obrigatório'),
       cpf: Yup.string()
@@ -500,6 +570,55 @@ function App() {
         setIsLoading(false);
       }
     };
+
+    const handleCheckboxChange = (event) => {
+      setIsChecked(event.target.checked);
+    };
+
+    const handleConfirmButtonClick = () => {
+      // perform action on confirmation button click
+    };
+
+    function PrivacyModal() {
+      const { isOpen, onOpen, onClose } = useDisclosure();
+      return (
+        <>
+          <Text as="u" onClick={onOpen} cursor="pointer">
+            termos de proteção e privacidade de dados
+          </Text>
+
+          <Modal isOpen={isOpen} isCentered onClose={onClose}>
+            <ModalOverlay />
+
+            <ModalContent w="50%" borderRadius="30px">
+              <ModalHeader>
+                LGPD - Proteção e Privacidade do seus Dados
+              </ModalHeader>
+              <ModalBody>
+                Gostaríamos de reforçar com você nosso compromisso com a
+                Proteção e Privacidade dos seus Dados.
+                <br />
+                <br />
+                Respeitamos a sua privacidade e estamos empenhados em proteger
+                os seus dados pessoais de acordo com a legislação nacional
+                aplicável. As tratativas e recepção dos dados pessoais descritos
+                nesta Política de Privacidade protegem os nossos clientes e os
+                utilizadores dos nossos websites, aplicações, produtos e
+                serviços digitais.
+                <br />
+                <br />
+                Caso continue essa conversa, entenderemos que você está de cordo
+                com esses termos e firmaremos um compomisso entre nós, conforme
+                está registrado a Política de Privacidade.
+              </ModalBody>
+              <ModalFooter>
+                <Button onClick={onClose}>Fechar</Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        </>
+      );
+    }
 
     return (
       <>
@@ -702,12 +821,24 @@ function App() {
                         </FormControl>
                       )}
                     </Field>
+                    <HStack mt="1em">
+                      {' '}
+                      <Text>
+                        Li, e concordo com os <PrivacyModal />
+                      </Text>
+                      <Checkbox
+                        colorScheme="green"
+                        isChecked={isChecked}
+                        onChange={handleCheckboxChange}
+                      ></Checkbox>
+                    </HStack>
 
                     <ModalFooter>
                       <Button
                         colorScheme="red"
                         mr={3}
                         type="submit"
+                        isDisabled={!isChecked}
                         onClick={handleSubmitResidencial}
                       >
                         Enviar
@@ -738,8 +869,8 @@ function App() {
         target="_blank"
         rel="noopener noreferrer"
         position="fixed"
-        bottom={{ base: '79', md: '8', lg: '12' }}
-        right={{ base: '10', md: '8', lg: '12' }}
+        bottom={{ base: '2.5', md: '8', lg: '12' }}
+        right={{ base: '8', md: '8', lg: '12' }}
         width={{ base: '60px', md: '70px', lg: '80px' }}
         height={{ base: '60px', md: '70px', lg: '80px' }}
         padding={{ base: '10px', md: '14px', lg: '16px' }}
@@ -755,7 +886,7 @@ function App() {
           boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
         }}
       >
-        <IconmonstrWhatsapp_1 boxSize={8} color="white" />
+        <IconmonstrWhatsapp_1 boxSize={9} color="white" />
       </Box>
     );
   }
