@@ -101,7 +101,7 @@ function App({ setInvalidAuth, token }) {
     intervalIsAuth.current = idInterval;
   }
   async function isAuth() {
-    console.log("isAuth?", token);
+    // console.log("isAuth?", token);
     let options = {
       method: "POST",
       headers: {
@@ -115,7 +115,7 @@ function App({ setInvalidAuth, token }) {
       options
     );
     const status = await response.status;
-    console.log(status);
+    // console.log(status);
     if (status == 403) {
       logout();
       return;
@@ -226,7 +226,7 @@ function App({ setInvalidAuth, token }) {
     }
 
     function handleEditPlan(plan) {
-      console.log(plan);
+      // console.log(plan);
       setPlan(plan);
     }
     function handleAddNewPlan() {
@@ -395,7 +395,7 @@ function App({ setInvalidAuth, token }) {
       newPlan.features = newPlan.features.map((reg, index) => {
         return index != featIndex ? reg : null;
       });
-      console.log(newPlan);
+      // console.log(newPlan);
       setPlanEdited(newPlan);
     }
     const handleDeletePlan = async () => {
@@ -413,7 +413,7 @@ function App({ setInvalidAuth, token }) {
         ? { ...global, ...{ personal: newData } }
         : { ...global, ...{ enterprise: newData } };
 
-      console.log("newGlobal", newGlobal);
+      // console.log("newGlobal", newGlobal);
       setData(newData);
       setGlobal(newGlobal);
 
@@ -436,7 +436,7 @@ function App({ setInvalidAuth, token }) {
       if (image.currentFile) {
         const srcImage = await upload();
         newPlanEdited.srcImage = srcImage;
-        console.log(srcImage, "srcImage");
+        // console.log(srcImage, "srcImage");
       }
       newPlanEdited.features = newPlanEdited.features.filter(Boolean);
 
@@ -574,7 +574,17 @@ function App({ setInvalidAuth, token }) {
                         />
                       </HStack>
                       {planEdited.features.map((feat, index) => {
-                        if (!feat) return <HStack key={`empty_${index}`} />;
+                        if (feat == null)
+                          return (
+                            <HStack
+                              visibility={false}
+                              bg="red.500"
+                              h={0}
+                              m={0}
+                              p={0}
+                              key={`empty_${index}`}
+                            />
+                          );
                         return (
                           <HStack
                             alignItems="left"
@@ -822,7 +832,7 @@ function App({ setInvalidAuth, token }) {
         ? { ...global, ...{ personal: newData } }
         : { ...global, ...{ enterprise: newData } };
 
-      console.log("newGlobal", newGlobal);
+      // console.log("newGlobal", newGlobal);
       setData(newData);
       setGlobal(newGlobal);
 
@@ -842,14 +852,14 @@ function App({ setInvalidAuth, token }) {
 
       const newBannerEdited = { ...bannerEdited };
 
-      console.log(newData, newBannerEdited);
+      // console.log(newData, newBannerEdited);
 
-      console.log("fora upload", image.currentFile);
+      // console.log("fora upload", image.currentFile);
       if (image.currentFile) {
-        console.log("entrou upload");
+        // console.log("entrou upload");
         const src = await upload();
         newBannerEdited.src = src;
-        console.log(src, "src");
+        // console.log(src, "src");
       }
 
       newData.banners = newData.banners.map((bannerReg) =>
@@ -859,7 +869,7 @@ function App({ setInvalidAuth, token }) {
         ? { ...global, ...{ personal: newData } }
         : { ...global, ...{ enterprise: newData } };
 
-      console.log("newGlobal", newGlobal);
+      // console.log("newGlobal", newGlobal);
       setData(newData);
       setGlobal(newGlobal);
 
@@ -1611,12 +1621,12 @@ function App({ setInvalidAuth, token }) {
 
       try {
         if (image.currentFile) {
-          console.log("entrou upload");
+          // console.log("entrou upload");
           const srcImage = await upload();
           newAppDescriptionEdited.appImage = srcImage;
         }
       } catch (e) {
-        console.log("aaaa", e);
+        // console.log("aaaa", e);
       }
 
       newData.appDescription = newAppDescriptionEdited;
@@ -1630,7 +1640,7 @@ function App({ setInvalidAuth, token }) {
       if (save) {
         setSave(false);
       }
-      console.log("tfim");
+      // console.log("tfim");
       handleClearForm();
     };
     function handleClearForm() {
@@ -1880,7 +1890,7 @@ function App({ setInvalidAuth, token }) {
           return reg;
         });
       }
-      console.log(newFaq);
+      // console.log(newFaq);
       setFaqEdited((prev) => newFaq);
     }
 
@@ -1901,7 +1911,7 @@ function App({ setInvalidAuth, token }) {
     // todo: ajustar remoção, deleta mais na renderização nao ajusta
     function handleRemoveFeatureFaq(id) {
       const newFaq = { ...faqEdited };
-      console.log(newFaq, id);
+      // console.log(newFaq, id);
       newFaq.items = newFaq.items.filter((reg, index) => reg.id != id);
       setFaqEdited(newFaq);
     }
