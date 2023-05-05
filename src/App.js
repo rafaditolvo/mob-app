@@ -283,7 +283,7 @@ function App() {
 
         <Modal isOpen={isOpen} isCentered onClose={onClose}>
           <ModalOverlay />
-          <ModalContent w="90%" maxH="900px">
+          <ModalContent w="90%" maxH={"100%"}>
             <ModalCloseButton />
             <ModalHeader color="red.400">Confirme seus Dados!</ModalHeader>
             <ModalBody overflow={"scroll"}>
@@ -706,7 +706,7 @@ function App() {
 
         <Modal isOpen={isOpen} isCentered onClose={onClose}>
           <ModalOverlay />
-          <ModalContent w="90%">
+          <ModalContent w="90%" maxH={"100%"}>
             <ModalHeader color="red">Confirme seus Dados!</ModalHeader>
             <ModalCloseButton />
             <ModalBody overflow={"scroll"}>
