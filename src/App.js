@@ -63,16 +63,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true); // define o estado de carregamento como verdadeiro
-    Promise.all([
-      new Promise((resolve) => setTimeout(resolve, 1500)), // aguarda
-      fetch("https://reacts3teste.s3.amazonaws.com/data.json")
-        .then((res) => res.json())
-        .then((res) => res),
-    ]).then(([_, data]) => {
-      setData(data); // atualiza os dados
-      setIsLoading(false); // define o estado de carregamento como falso
-    });
+    loadData();
   }, []);
 
   useEffect(() => {
@@ -89,6 +80,40 @@ function App() {
   const handleStatusChange = (residencial, empresa) => {
     setIsResidencial(residencial);
     setIsEmpresa(empresa);
+  };
+
+  const loadData = () => {
+    setIsLoading(true); // define o estado de carregamento como verdadeiro
+    const dataJson = JSON.parse(localStorage.getItem("@mob_landpage_data"));
+    let expired = true;
+    if (dataJson && dataJson != "") {
+      setData(dataJson);
+      if (dataJson.expireIn > new Date().getTime()) {
+        expired = false;
+      }
+      console.log("expira  em", new Date(dataJson.expireIn), new Date());
+    }
+    if (expired) {
+      console.error("Expirou");
+      Promise.all([
+        new Promise((resolve) => setTimeout(resolve, 1500)), // aguarda
+        fetch("/data.json")
+          .then((res) => res.json())
+          .then((res) => res),
+      ]).then(([_, data]) => {
+        setData(data); // atualiza os dados
+        setIsLoading(false); // define o estado de carregamento como falso
+        const expireInMinutes = 1;
+        data.expireIn = new Date().getTime() + expireInMinutes * 60 * 1000;
+        saveDataLocalStorage(data);
+      });
+    } else {
+      setIsLoading(false);
+    }
+  };
+
+  const saveDataLocalStorage = (data) => {
+    localStorage.setItem("@mob_landpage_data", JSON.stringify(data));
   };
 
   function BotaoEmpresa({ id, plano }, values) {

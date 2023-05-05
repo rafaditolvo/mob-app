@@ -2376,7 +2376,11 @@ function App({ setInvalidAuth, token, tokenExpired }) {
       setInvalidAuth();
     }
     await fetchJson(global);
+    clearDataLocalStorage();
   }
+  const clearDataLocalStorage = (data) => {
+    localStorage.setItem("@mob_landpage_data", null);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
