@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  Checkbox,
   Container,
   Divider,
   Flex,
@@ -9,6 +10,7 @@ import {
   FormErrorMessage,
   FormLabel,
   Heading,
+  HStack,
   IconButton,
   Image,
   Input,
@@ -26,6 +28,7 @@ import {
   ModalOverlay,
   SkeletonText,
   Spacer,
+  Text,
   useColorMode,
   useDisclosure,
   useToast,
@@ -268,8 +271,6 @@ function App() {
                   addressNumber: "",
                   phone: "",
                   planoId: planoId,
-                  plano: plano,
-                  tipo: "Empresarial",
                 }}
                 validationSchema={validationSchema}
                 onSubmit={submitForm}
@@ -445,7 +446,7 @@ function App() {
                         onClick={handleSubmit}
                         isDisabled={submitLoading}
                       >
-                        Enviar
+                        {submitLoading ? "Enviando..." : "Enviar"}
                       </Button>
                       <Button variant="ghost" onClick={onClose}>
                         Cancelar
