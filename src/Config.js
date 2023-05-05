@@ -505,7 +505,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
           <ModalContent w="90%">
             <ModalCloseButton />
             <ModalHeader>Alteração plano</ModalHeader>
-            <ModalBody>
+            <ModalBody overflow={"scroll"}>
               <Stack spacing={3} width={"100%"} alignItems="center">
                 <Stack alignItems="center" width={300}>
                   {!!plan && (
@@ -929,7 +929,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
           <ModalContent w="90%">
             <ModalCloseButton />
             <ModalHeader>Alteração banner</ModalHeader>
-            <ModalBody>
+            <ModalBody overflow={"scroll"}>
               <Stack spacing={3} width={"100%"} alignItems="center">
                 <Stack alignItems="center" width={300}>
                   {!!banner && (
@@ -1102,7 +1102,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
           <ModalContent w="100%">
             <ModalCloseButton />
             <ModalHeader>Alteração Header</ModalHeader>
-            <ModalBody>
+            <ModalBody overflow={"scroll"}>
               <Stack spacing={3} width={"100%"} alignItems="center">
                 <Stack alignItems="center" width={"100%"}>
                   {!!header && (
@@ -1343,14 +1343,19 @@ function App({ setInvalidAuth, token, tokenExpired }) {
 
     return (
       <>
-        <Modal isOpen={!!description} isCentered onClose={handleClearForm}>
+        <Modal
+          isOpen={!!description}
+          isCentered
+          onClose={handleClearForm}
+          size="full"
+        >
           <ModalOverlay />
-          <ModalContent w="90%">
+          <ModalContent h="90%" w="90%">
             <ModalCloseButton />
             <ModalHeader>Alteração descrição</ModalHeader>
-            <ModalBody>
+            <ModalBody overflow={"scroll"}>
               <Stack spacing={3} width={"100%"} alignItems="center">
-                <Stack alignItems="center" width={300}>
+                <Stack alignItems="center" width={"100%"}>
                   {!!description && (
                     <>
                       <Stack alignItems="left" width={"100%"}>
@@ -1403,35 +1408,41 @@ function App({ setInvalidAuth, token, tokenExpired }) {
                           onClick={handleAddFeatureDescription}
                         />
                       </HStack>
-                      {descriptionEdited.items.map((feat, index) => (
-                        <HStack alignItems="left" width={"100%"} key={feat.id}>
-                          <VStack alignItems="center" my={4} width={"100%"}>
-                            <Input
-                              defaultValue={feat.title}
-                              name={`items_title`}
-                              id={index}
-                              onChange={(event) => changeValue(event)}
-                            />
-                            <Textarea
-                              defaultValue={feat.text}
-                              name={`items_text`}
-                              height={20}
-                              id={index}
-                              onChange={(event) => changeValue(event)}
-                            />
-                          </VStack>
+                      <SimpleGrid columns={{ base: 1, lg: 2 }} spacing={5}>
+                        {descriptionEdited.items.map((feat, index) => (
+                          <HStack
+                            alignItems="left"
+                            width={"100%"}
+                            key={feat.id}
+                          >
+                            <VStack alignItems="center" my={4} width={"100%"}>
+                              <Input
+                                defaultValue={feat.title}
+                                name={`items_title`}
+                                id={index}
+                                onChange={(event) => changeValue(event)}
+                              />
+                              <Textarea
+                                defaultValue={feat.text}
+                                name={`items_text`}
+                                height={20}
+                                id={index}
+                                onChange={(event) => changeValue(event)}
+                              />
+                            </VStack>
 
-                          <IconButton
-                            mt="auto"
-                            aria-label="Features"
-                            width={20}
-                            icon={<DeleteIcon />}
-                            onClick={() =>
-                              handleRemoveFeatureDescription(feat.id)
-                            }
-                          />
-                        </HStack>
-                      ))}
+                            <IconButton
+                              mt="auto"
+                              aria-label="Features"
+                              width={20}
+                              icon={<DeleteIcon />}
+                              onClick={() =>
+                                handleRemoveFeatureDescription(feat.id)
+                              }
+                            />
+                          </HStack>
+                        ))}
+                      </SimpleGrid>
 
                       <Divider my={8} />
                       <HStack alignItems="left">
@@ -1663,7 +1674,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
           <ModalContent w="90%">
             <ModalCloseButton />
             <ModalHeader>Alteração appDescriptiono</ModalHeader>
-            <ModalBody>
+            <ModalBody overflow={"scroll"}>
               <Stack spacing={3} width={"100%"} alignItems="center">
                 <Stack alignItems="center" width={300}>
                   {!!appDescription && (
@@ -1936,10 +1947,10 @@ function App({ setInvalidAuth, token, tokenExpired }) {
           size="full"
         >
           <ModalOverlay />
-          <ModalContent w="100%">
+          <ModalContent h="100%" w="100%">
             <ModalCloseButton />
             <ModalHeader>Alteração FAQ</ModalHeader>
-            <ModalBody>
+            <ModalBody overflow={"scroll"}>
               <Stack spacing={3} width={"100%"} alignItems="center">
                 <Stack alignItems="center" width={"100%"}>
                   {!!faq && (
@@ -2250,7 +2261,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
           <ModalContent w="100%">
             <ModalCloseButton />
             <ModalHeader>Alteração Footer</ModalHeader>
-            <ModalBody>
+            <ModalBody overflow={"scroll"}>
               <Stack spacing={3} width={"100%"} alignItems="center">
                 <Stack alignItems="center" width={"100%"}>
                   {!!footer && (
