@@ -63,17 +63,36 @@ function Auth() {
     setAuth(false);
   }
 
+  function tokenExpired(token) {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace("-", "+").replace("_", "/");
+    const { exp } = JSON.parse(atob(base64));
+    const unixTimeNow = new Date().getTime();
+    return exp * 1000 < unixTimeNow;
+  }
+
   useEffect(() => {
     const authStorage = JSON.parse(
       localStorage.getItem("@mob_landpage_f0552434361ccf7da13bdece6f1efddc")
     );
     if (authStorage && authStorage != "") {
-      setAuth((prev) => authStorage);
+      if (tokenExpired(authStorage)) {
+        console.log("venceu");
+        setInvalidToken();
+      } else {
+        setAuth((prev) => authStorage);
+      }
     }
   }, []);
 
   if (auth) {
-    return <Config setInvalidAuth={setInvalidToken} token={auth} />;
+    return (
+      <Config
+        setInvalidAuth={setInvalidToken}
+        token={auth}
+        tokenExpired={tokenExpired}
+      />
+    );
   }
   return (
     <Stack spacing={3} width={"100%"} alignItems="center">

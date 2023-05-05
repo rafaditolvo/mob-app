@@ -68,7 +68,7 @@ const PlayIcon = createIcon({
 
 const DEBUG = false;
 
-function App({ setInvalidAuth, token }) {
+function App({ setInvalidAuth, token, tokenExpired }) {
   const [isPersonal, setIsPersonal] = useState(true);
   const [global, setGlobal] = useState(false);
   const [data, setData] = useState(false);
@@ -96,27 +96,11 @@ function App({ setInvalidAuth, token }) {
   function loopIsAuth() {
     const idInterval = setInterval(() => {
       isAuth();
-    }, 120000000);
-    // }, 60000);
+    }, 10000);
     intervalIsAuth.current = idInterval;
   }
   async function isAuth() {
-    // console.log("isAuth?", token);
-    let options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: "{}",
-    };
-    const response = await fetch(
-      "https://owa4t6eb4mlyrrvmxnn4vtusm40mjjih.lambda-url.us-east-2.on.aws/isauth",
-      options
-    );
-    const status = await response.status;
-    // console.log(status);
-    if (status == 403) {
+    if (tokenExpired(token)) {
       logout();
       return;
     }
