@@ -103,7 +103,7 @@ function App() {
       ]).then(([_, data]) => {
         setData(data); // atualiza os dados
         setIsLoading(false); // define o estado de carregamento como falso
-        const expireInMinutes = 1;
+        const expireInMinutes = 5;
         data.expireIn = new Date().getTime() + expireInMinutes * 60 * 1000;
         saveDataLocalStorage(data);
       });
@@ -239,7 +239,7 @@ function App() {
               <ModalHeader>
                 LGPD - Proteção e Privacidade do seus Dados
               </ModalHeader>
-              <ModalBody>
+              <ModalBody overflow={"scroll"}>
                 Gostaríamos de reforçar com você nosso compromisso com a
                 Proteção e Privacidade dos seus Dados.
                 <br />
@@ -286,7 +286,7 @@ function App() {
           <ModalContent w="90%" maxH="900px">
             <ModalCloseButton />
             <ModalHeader color="red.400">Confirme seus Dados!</ModalHeader>
-            <ModalBody>
+            <ModalBody overflow={"scroll"}>
               <Formik
                 initialValues={{
                   name: "",
@@ -662,7 +662,7 @@ function App() {
               <ModalHeader>
                 LGPD - Proteção e Privacidade do seus Dados
               </ModalHeader>
-              <ModalBody>
+              <ModalBody overflow={"scroll"}>
                 Gostaríamos de reforçar com você nosso compromisso com a
                 Proteção e Privacidade dos seus Dados.
                 <br />
@@ -709,7 +709,7 @@ function App() {
           <ModalContent w="90%">
             <ModalHeader color="red">Confirme seus Dados!</ModalHeader>
             <ModalCloseButton />
-            <ModalBody>
+            <ModalBody overflow={"scroll"}>
               <Formik
                 initialValues={{
                   name: "",
