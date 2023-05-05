@@ -890,7 +890,19 @@ function App() {
       </>
     );
   }
-  function WhatsAppButton() {
+  function WhatsAppButton(props) {
+    // console.log("####", props.data["personal"].footer);
+    let status = props?.statusEmpresa ? "enterprise" : "personal";
+    if (!props?.data[status]?.footer) {
+      return <div>Error: Invalid props a</div>;
+    }
+    // console.log("###", props?.data[status]);
+
+    const { whatsappNumber } = props?.data[status].footer;
+
+    if (!whatsappNumber) {
+      return <div>Error: Invalid props </div>;
+    }
     const IconmonstrWhatsapp_1 = createIcon({
       displayName: "IconmonstrWhatsapp_1",
       viewBox: "0 0 24 24",
