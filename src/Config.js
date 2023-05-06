@@ -433,6 +433,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
       const newGlobal = isPersonal
         ? { ...global, ...{ personal: newData } }
         : { ...global, ...{ enterprise: newData } };
+
       setData(newData);
       setGlobal(newGlobal);
 
@@ -443,17 +444,19 @@ function App({ setInvalidAuth, token, tokenExpired }) {
     };
     async function handleClearForm() {
       setPlan(null);
-      const response = await fetch("/data.json");
-      const jsonData = await response.json();
-
-      if (isPersonal) {
-        setData(jsonData.personal);
-      } else {
-        setData(jsonData.enterprise);
-      }
-
-      setGlobal(jsonData);
     }
+    // async function handleRollBackForm() {
+    //   handleClearForm();
+    //   const response = await fetch("/data.json");
+    //   const jsonData = await response.json();
+
+    //   if (isPersonal) {
+    //     setData(jsonData.personal);
+    //   } else {
+    //     setData(jsonData.enterprise);
+    //   }
+    //   setGlobal(jsonData);
+    // }
     function selectFile(event) {
       setImage({
         currentFile: event.target.files[0],
@@ -2417,11 +2420,13 @@ function App({ setInvalidAuth, token, tokenExpired }) {
           setData(jsonData.enterprise);
         }
 
+        console.log("useeffect fetchdata jsonData");
         setGlobal(jsonData);
       }, 1);
       loopIsAuth();
     };
     //
+
     fetchData();
   }, []);
 
