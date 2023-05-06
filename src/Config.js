@@ -45,12 +45,15 @@ import {
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import {
+  FaApple,
   FaCheckCircle,
+  FaGooglePlay,
   FaInstagram,
   FaTwitter,
   FaWhatsapp,
   FaYoutube,
 } from "react-icons/fa";
+
 import ChakraCarousel from "./ChakraCarousel";
 
 import { v4 as uuidv4 } from "uuid";
@@ -438,8 +441,18 @@ function App({ setInvalidAuth, token, tokenExpired }) {
       }
       handleClearForm();
     };
-    function handleClearForm() {
+    async function handleClearForm() {
       setPlan(null);
+      const response = await fetch("/data.json");
+      const jsonData = await response.json();
+
+      if (isPersonal) {
+        setData(jsonData.personal);
+      } else {
+        setData(jsonData.enterprise);
+      }
+
+      setGlobal(jsonData);
     }
     function selectFile(event) {
       setImage({
@@ -1530,30 +1543,41 @@ function App({ setInvalidAuth, token, tokenExpired }) {
                 spacing={{ base: 4, sm: 6 }}
                 direction={{ base: "column", sm: "row" }}
               >
-                <Link href={appDescriptionData.downloadLink} passHref>
+                <Link
+                  href={appDescriptionData.downloadLinkPlayStore}
+                  passHref
+                  target={"_blank"}
+                >
                   <Button
                     rounded={"full"}
                     size={"lg"}
                     fontWeight={"normal"}
                     px={6}
-                    colorScheme={"red"}
-                    bg={"red.400"}
-                    _hover={{ bg: "red.500" }}
+                    bg={"black"}
+                    color={"white"}
+                    leftIcon={<Icon as={FaGooglePlay} h={5} w={5} />}
                   >
-                    Baixar
+                    Disponível na Play Store
                   </Button>
                 </Link>
-                <Link href={appDescriptionData.supportDownload} passHref>
+                <Link
+                  href={appDescriptionData.downloadLinkAppStore}
+                  passHref
+                  target={"_blank"}
+                >
                   <Button
                     rounded={"full"}
                     size={"lg"}
                     fontWeight={"normal"}
                     px={6}
-                    leftIcon={<PlayIcon h={4} w={4} color={"gray.300"} />}
+                    bg={"black"}
+                    color={"white"}
+                    leftIcon={<Icon as={FaApple} h={6} w={6} color={"white"} />}
                   >
-                    Como Baixar
+                    Disponível na App Store
                   </Button>
                 </Link>
+                =
               </Stack>
             </Stack>
             <Flex
@@ -1673,7 +1697,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
           <ModalOverlay />
           <ModalContent w="90%">
             <ModalCloseButton />
-            <ModalHeader>Alteração appDescriptiono</ModalHeader>
+            <ModalHeader>Alteração App</ModalHeader>
             <ModalBody overflow={"scroll"}>
               <Stack spacing={3} width={"100%"} alignItems="center">
                 <Stack alignItems="center" width={300}>
@@ -1739,11 +1763,11 @@ function App({ setInvalidAuth, token, tokenExpired }) {
                         alignItems="left"
                         width={"100%"}
                       >
-                        <Text>Download Link</Text>
+                        <Text>Play Store</Text>
                         <Input
-                          key="downloadLink"
-                          defaultValue={appDescription.downloadLink}
-                          name="downloadLink"
+                          key="downloadLinkPlayStore"
+                          defaultValue={appDescription.downloadLinkPlayStore}
+                          name="downloadLinkPlayStore"
                           onChange={(event) => changeValue(event)}
                         />
                       </HStack>
@@ -1752,11 +1776,11 @@ function App({ setInvalidAuth, token, tokenExpired }) {
                         alignItems="left"
                         width={"100%"}
                       >
-                        <Text>Support Download</Text>
+                        <Text>App Store</Text>
                         <Input
-                          key="supportDownload"
-                          defaultValue={appDescription.supportDownload}
-                          name="supportDownload"
+                          key="downloadLinkAppStore"
+                          defaultValue={appDescription.downloadLinkAppStore}
+                          name="downloadLinkAppStore"
                           onChange={(event) => changeValue(event)}
                         />
                       </HStack>
@@ -1764,7 +1788,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
                       <Divider my={8} />
                       <HStack alignItems="left">
                         <IconButton
-                          aria-label="salvar appDescriptiono"
+                          aria-label="salvar app description"
                           background={"green.400"}
                           px={10}
                           icon={
@@ -2375,8 +2399,8 @@ function App({ setInvalidAuth, token, tokenExpired }) {
     if (!token || token == "") {
       setInvalidAuth();
     }
-    await fetchJson(global);
     clearDataLocalStorage();
+    await fetchJson(global);
   }
   const clearDataLocalStorage = (data) => {
     localStorage.setItem("@mob_landpage_data", null);
