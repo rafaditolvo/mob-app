@@ -33,32 +33,32 @@ import {
   useDisclosure,
   useToast,
   VStack,
-} from "@chakra-ui/react";
-import axios from "axios";
-import { Field, Form, Formik } from "formik";
-import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-import { FaCheckCircle, FaMapMarkerAlt } from "react-icons/fa";
-import InputMask from "react-input-mask";
-import * as Yup from "yup";
-import AppContent from "./AppContent";
-import CardFooter from "./CardFooter";
-import ChakraCarousel from "./ChakraCarousel";
-import FAQ from "./FAQ";
-import Footer from "./Footer";
-import Header from "./Header";
-import ImageCarousel from "./ImageCarousel";
+} from '@chakra-ui/react';
+import axios from 'axios';
+import { Field, Form, Formik } from 'formik';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { FaCheckCircle, FaMapMarkerAlt } from 'react-icons/fa';
+import InputMask from 'react-input-mask';
+import * as Yup from 'yup';
+import AppContent from './AppContent';
+import CardFooter from './CardFooter';
+import ChakraCarousel from './ChakraCarousel';
+import FAQ from './FAQ';
+import Footer from './Footer';
+import Header from './Header';
+import ImageCarousel from './ImageCarousel';
 
-import { createIcon } from "@chakra-ui/react";
+import { createIcon } from '@chakra-ui/react';
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState("TESTE");
+  const [data, setData] = useState('TESTE');
   //const [pricingData, setPricingData] = useState([]);
   const [isResidencial, setIsResidencial] = useState(false);
   const [isEmpresa, setIsEmpresa] = useState(false);
   const { colorMode, toggleColorMode } = useColorMode();
-  const isLight = colorMode === "light";
+  const isLight = colorMode === 'light';
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -71,10 +71,10 @@ function App() {
       setIsMobile(window.innerWidth < 768);
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     handleResize();
 
-    return () => window.removeEventListener("resize", handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, [isMobile, Carrosel]);
 
   const handleStatusChange = (residencial, empresa) => {
@@ -84,20 +84,20 @@ function App() {
 
   const loadData = () => {
     setIsLoading(true); // define o estado de carregamento como verdadeiro
-    const dataJson = JSON.parse(localStorage.getItem("@mob_landpage_data"));
+    const dataJson = JSON.parse(localStorage.getItem('@mob_landpage_data'));
     let expired = true;
-    if (dataJson && dataJson != "") {
+    if (dataJson && dataJson != '') {
       setData(dataJson);
       if (dataJson.expireIn > new Date().getTime()) {
         expired = false;
       }
-      console.log("expira  em", new Date(dataJson.expireIn), new Date());
+      console.log('expira  em', new Date(dataJson.expireIn), new Date());
     }
     if (expired) {
-      console.error("Expirou");
+      console.error('Expirou');
       Promise.all([
         new Promise((resolve) => setTimeout(resolve, 1500)), // aguarda
-        fetch("/data.json")
+        fetch('/data.json')
           .then((res) => res.json())
           .then((res) => res),
       ]).then(([_, data]) => {
@@ -113,7 +113,7 @@ function App() {
   };
 
   const saveDataLocalStorage = (data) => {
-    localStorage.setItem("@mob_landpage_data", JSON.stringify(data));
+    localStorage.setItem('@mob_landpage_data', JSON.stringify(data));
   };
 
   function BotaoEmpresa({ id, plano }, values) {
@@ -125,29 +125,29 @@ function App() {
     const [isChecked, setIsChecked] = useState(false);
 
     const validationSchema = Yup.object().shape({
-      name: Yup.string().required("Campo obrigatório"),
+      name: Yup.string().required('Campo obrigatório'),
       cnpj: Yup.string()
-        .required("Campo obrigatório")
-        .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/, "CNPJ inválido"),
-      endereco: Yup.string().required("Campo obrigatório"),
-      bairro: Yup.string().required("Campo obrigatório"),
+        .required('Campo obrigatório')
+        .matches(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/, 'CNPJ inválido'),
+      endereco: Yup.string().required('Campo obrigatório'),
+      bairro: Yup.string().required('Campo obrigatório'),
 
-      addressNumber: Yup.string().required("Campo obrigatório"), // nova validação
-      phone: Yup.string().required("Campo obrigatório"),
+      addressNumber: Yup.string().required('Campo obrigatório'), // nova validação
+      phone: Yup.string().required('Campo obrigatório'),
       cep: Yup.string()
-        .required("Campo obrigatório")
-        .matches(/^\d{8}$/, "CEP inválido"),
+        .required('Campo obrigatório')
+        .matches(/^\d{8}$/, 'CEP inválido'),
     });
 
     const handleSubmit = (values, actions) => {
       actions.setSubmitting(false);
       onClose();
       toast({
-        title: "Dados enviados!",
-        description: "Seus dados foram enviados com sucesso.",
-        status: "success",
+        title: 'Dados enviados!',
+        description: 'Seus dados foram enviados com sucesso.',
+        status: 'success',
         duration: 5000,
-        position: "top-right",
+        position: 'top-right',
         isClosable: true,
       });
     };
@@ -158,14 +158,14 @@ function App() {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `https://viacep.com.br/ws/${cep}/json/`
+          `https://viacep.com.br/ws/${cep}/json/`,
         );
         const { logradouro, bairro, localidade, uf } = response.data;
         const endereco = `${logradouro}`;
         const bairroVar = `${bairro}`;
         console.log(endereco);
-        setFieldValue("endereco", endereco);
-        setFieldValue("bairro", bairroVar);
+        setFieldValue('endereco', endereco);
+        setFieldValue('bairro', bairroVar);
         setAutoPreenchido(true);
       } catch (error) {
         console.log(error);
@@ -179,36 +179,36 @@ function App() {
       // setIsLoading(true);
       try {
         const token =
-          "8d60f6a35bbe4d4d755f046699043fc5dd2d73c241287f483865adf9a964d8454d30e9b742dd6f310ec51f0bf97e021813a49e53726b56289dbf3a0a80cfb03e";
+          '8d60f6a35bbe4d4d755f046699043fc5dd2d73c241287f483865adf9a964d8454d30e9b742dd6f310ec51f0bf97e021813a49e53726b56289dbf3a0a80cfb03e';
         // const token = await generateToken();
         const response = await axios.post(
           `https://mpdbrelos2zfgh6vztsbzwfuu40qistr.lambda-url.us-east-2.on.aws/`,
           values,
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         const test = response.data;
         onClose();
         toast({
-          title: "Dados enviados!",
-          description: "Seus dados foram enviados com sucesso.",
-          status: "success",
+          title: 'Dados enviados!',
+          description: 'Seus dados foram enviados com sucesso.',
+          status: 'success',
           duration: 5000,
-          position: "top-right",
+          position: 'top-right',
           isClosable: true,
         });
       } catch (error) {
         console.log(error);
         toast({
-          title: "Não foi possível enviar seus dados!",
-          description: "Por favor, tente mais tarde",
-          status: "error",
+          title: 'Não foi possível enviar seus dados!',
+          description: 'Por favor, tente mais tarde',
+          status: 'error',
           duration: 5000,
-          position: "top-right",
+          position: 'top-right',
           isClosable: true,
         });
       } finally {
@@ -225,21 +225,34 @@ function App() {
     };
 
     function PrivacyModal() {
-      const { isOpen, onOpen, onClose } = useDisclosure();
+      const [defaultOpen, setDefaultOpen] = useState(
+        localStorage.getItem('defaultOpen') === 'false' ? false : true,
+      );
+
+      const { isOpen, onOpen, onClose } = useDisclosure({
+        defaultIsOpen: defaultOpen,
+      });
+
+      const handleClose = () => {
+        setDefaultOpen(false);
+        localStorage.setItem('defaultOpen', false);
+        onClose();
+      };
+
       return (
         <>
           <Text as="u" onClick={onOpen} cursor="pointer">
             termos de proteção e privacidade de dados
           </Text>
 
-          <Modal isOpen={isOpen} isCentered onClose={onClose}>
+          <Modal isOpen={isOpen} isCentered onClose={handleClose}>
             <ModalOverlay />
 
-            <ModalContent w="50%" borderRadius="30px">
+            <ModalContent w="90%" borderRadius="30px">
               <ModalHeader>
                 LGPD - Proteção e Privacidade do seus Dados
               </ModalHeader>
-              <ModalBody overflow={"scroll"}>
+              <ModalBody overflow={'scroll'}>
                 Gostaríamos de reforçar com você nosso compromisso com a
                 Proteção e Privacidade dos seus Dados.
                 <br />
@@ -257,7 +270,7 @@ function App() {
                 está registrado a Política de Privacidade.
               </ModalBody>
               <ModalFooter>
-                <Button onClick={onClose}>Fechar</Button>
+                <Button onClick={handleClose}>Fechar</Button>
               </ModalFooter>
             </ModalContent>
           </Modal>
@@ -283,18 +296,18 @@ function App() {
 
         <Modal isOpen={isOpen} isCentered onClose={onClose}>
           <ModalOverlay />
-          <ModalContent w="90%" maxH={"100%"}>
+          <ModalContent w="90%" maxH={'100%'}>
             <ModalCloseButton />
             <ModalHeader color="red.400">Confirme seus Dados!</ModalHeader>
-            <ModalBody overflow={"scroll"}>
+            <ModalBody overflow={'scroll'}>
               <Formik
                 initialValues={{
-                  name: "",
-                  cnpj: "",
-                  bairro: "",
-                  endereco: "",
-                  addressNumber: "",
-                  phone: "",
+                  name: '',
+                  cnpj: '',
+                  bairro: '',
+                  endereco: '',
+                  addressNumber: '',
+                  phone: '',
                   planoId: planoId,
                 }}
                 validationSchema={validationSchema}
@@ -354,7 +367,7 @@ function App() {
                               type="text"
                               onChange={(e) => {
                                 setAutoPreenchido(false);
-                                setFieldValue("cep", e.target.value);
+                                setFieldValue('cep', e.target.value);
                               }}
                             />
                             <InputRightElement>
@@ -362,7 +375,7 @@ function App() {
                                 icon={<FaMapMarkerAlt />}
                                 type="button"
                                 isDisabled={isLoading}
-                                colorScheme={isLoading ? "white" : "red"}
+                                colorScheme={isLoading ? 'white' : 'red'}
                                 onClick={() =>
                                   buscarEndereco(values.cep, setFieldValue)
                                 }
@@ -451,7 +464,7 @@ function App() {
                     </Field>
 
                     <HStack mt="1em">
-                      {" "}
+                      {' '}
                       <Text>
                         Li, e concordo com os <PrivacyModal />
                       </Text>
@@ -469,9 +482,9 @@ function App() {
                         type="submit"
                         isDisabled={!isChecked}
                         onClick={handleSubmit}
-                        isDisabled={submitLoading}
+                        // isDisabled={submitLoading}
                       >
-                        {submitLoading ? "Enviando..." : "Enviar"}
+                        {submitLoading ? 'Enviando...' : 'Enviar'}
                       </Button>
                       <Button variant="ghost" onClick={onClose}>
                         Cancelar
@@ -500,27 +513,27 @@ function App() {
     const [autoPreenchido, setAutoPreenchido] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const validationSchema = Yup.object().shape({
-      name: Yup.string().required("Campo obrigatório"),
+      name: Yup.string().required('Campo obrigatório'),
       cpf: Yup.string()
-        .required("Campo obrigatório")
-        .matches(/^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}$/, "CPF inválido")
-        .test("cpf", "CPF inválido", function (value) {
-          const cpf = value?.replace(/[^\d]+/g, "");
+        .required('Campo obrigatório')
+        .matches(/^\d{3}\.?\d{3}\.?\d{3}\-?\d{2}$/, 'CPF inválido')
+        .test('cpf', 'CPF inválido', function (value) {
+          const cpf = value?.replace(/[^\d]+/g, '');
           if (!cpf) return false;
 
           // Elimina CPFs invalidos conhecidos
           if (
             cpf.length !== 11 ||
-            cpf === "00000000000" ||
-            cpf === "11111111111" ||
-            cpf === "22222222222" ||
-            cpf === "33333333333" ||
-            cpf === "44444444444" ||
-            cpf === "55555555555" ||
-            cpf === "66666666666" ||
-            cpf === "77777777777" ||
-            cpf === "88888888888" ||
-            cpf === "99999999999"
+            cpf === '00000000000' ||
+            cpf === '11111111111' ||
+            cpf === '22222222222' ||
+            cpf === '33333333333' ||
+            cpf === '44444444444' ||
+            cpf === '55555555555' ||
+            cpf === '66666666666' ||
+            cpf === '77777777777' ||
+            cpf === '88888888888' ||
+            cpf === '99999999999'
           ) {
             return false;
           }
@@ -554,13 +567,13 @@ function App() {
           return true;
         }),
 
-      endereco: Yup.string().required("Campo obrigatório"),
-      bairro: Yup.string().required("Campo obrigatório"),
-      addressNumber: Yup.string().required("Campo obrigatório"),
-      phone: Yup.string().required("Campo obrigatório"),
+      endereco: Yup.string().required('Campo obrigatório'),
+      bairro: Yup.string().required('Campo obrigatório'),
+      addressNumber: Yup.string().required('Campo obrigatório'),
+      phone: Yup.string().required('Campo obrigatório'),
       cep: Yup.string()
-        .required("Campo obrigatório")
-        .matches(/^\d{8}$/, "CEP inválido"),
+        .required('Campo obrigatório')
+        .matches(/^\d{8}$/, 'CEP inválido'),
     });
 
     const handleSubmitResidencial = (values, actions) => {
@@ -580,14 +593,14 @@ function App() {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `https://viacep.com.br/ws/${cep}/json/`
+          `https://viacep.com.br/ws/${cep}/json/`,
         );
         const { logradouro, bairro, localidade, uf } = response.data;
         const endereco = `${logradouro}`;
         const bairroVar = `${bairro}`;
         console.log(endereco);
-        setFieldValue("endereco", endereco);
-        setFieldValue("bairro", bairroVar);
+        setFieldValue('endereco', endereco);
+        setFieldValue('bairro', bairroVar);
         setAutoPreenchido(true);
       } catch (error) {
         console.log(error);
@@ -602,36 +615,36 @@ function App() {
       // setIsLoading(true);
       try {
         const token =
-          "8d60f6a35bbe4d4d755f046699043fc5dd2d73c241287f483865adf9a964d8454d30e9b742dd6f310ec51f0bf97e021813a49e53726b56289dbf3a0a80cfb03e";
+          '8d60f6a35bbe4d4d755f046699043fc5dd2d73c241287f483865adf9a964d8454d30e9b742dd6f310ec51f0bf97e021813a49e53726b56289dbf3a0a80cfb03e';
         // const token = await generateToken();
         const response = await axios.post(
           `https://mpdbrelos2zfgh6vztsbzwfuu40qistr.lambda-url.us-east-2.on.aws/`,
           values,
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         const test = response.data;
         onClose();
         toast({
-          title: "Dados enviados!",
-          description: "Seus dados foram enviados com sucesso.",
-          status: "success",
+          title: 'Dados enviados!',
+          description: 'Seus dados foram enviados com sucesso.',
+          status: 'success',
           duration: 5000,
-          position: "top-right",
+          position: 'top-right',
           isClosable: true,
         });
       } catch (error) {
         console.log(error);
         toast({
-          title: "Não foi possível enviar seus dados!",
-          description: "Por favor, tente mais tarde",
-          status: "error",
+          title: 'Não foi possível enviar seus dados!',
+          description: 'Por favor, tente mais tarde',
+          status: 'error',
           duration: 5000,
-          position: "top-right",
+          position: 'top-right',
           isClosable: true,
         });
       } finally {
@@ -648,21 +661,34 @@ function App() {
     };
 
     function PrivacyModal() {
-      const { isOpen, onOpen, onClose } = useDisclosure();
+      const [defaultOpen, setDefaultOpen] = useState(
+        localStorage.getItem('defaultOpen') === 'false' ? false : true,
+      );
+
+      const { isOpen, onOpen, onClose } = useDisclosure({
+        defaultIsOpen: defaultOpen,
+      });
+
+      const handleClose = () => {
+        setDefaultOpen(false);
+        localStorage.setItem('defaultOpen', false);
+        onClose();
+      };
+
       return (
         <>
           <Text as="u" onClick={onOpen} cursor="pointer">
             termos de proteção e privacidade de dados
           </Text>
 
-          <Modal isOpen={isOpen} isCentered onClose={onClose}>
+          <Modal isOpen={isOpen} isCentered onClose={handleClose}>
             <ModalOverlay />
 
-            <ModalContent w="50%" borderRadius="30px">
+            <ModalContent w="90%" borderRadius="30px">
               <ModalHeader>
                 LGPD - Proteção e Privacidade do seus Dados
               </ModalHeader>
-              <ModalBody overflow={"scroll"}>
+              <ModalBody overflow={'scroll'}>
                 Gostaríamos de reforçar com você nosso compromisso com a
                 Proteção e Privacidade dos seus Dados.
                 <br />
@@ -680,7 +706,7 @@ function App() {
                 está registrado a Política de Privacidade.
               </ModalBody>
               <ModalFooter>
-                <Button onClick={onClose}>Fechar</Button>
+                <Button onClick={handleClose}>Fechar</Button>
               </ModalFooter>
             </ModalContent>
           </Modal>
@@ -706,21 +732,21 @@ function App() {
 
         <Modal isOpen={isOpen} isCentered onClose={onClose}>
           <ModalOverlay />
-          <ModalContent w="90%" maxH={"100%"}>
+          <ModalContent w="90%" maxH={'100%'}>
             <ModalHeader color="red">Confirme seus Dados!</ModalHeader>
             <ModalCloseButton />
-            <ModalBody overflow={"scroll"}>
+            <ModalBody overflow={'scroll'}>
               <Formik
                 initialValues={{
-                  name: "",
-                  cpf: "",
-                  bairro: "",
-                  endereco: "",
-                  addressNumber: "",
-                  phone: "",
+                  name: '',
+                  cpf: '',
+                  bairro: '',
+                  endereco: '',
+                  addressNumber: '',
+                  phone: '',
                   planoId: planoId,
                   plano: plano,
-                  tipo: "Residencial",
+                  tipo: 'Residencial',
                 }}
                 validationSchema={validationSchema}
                 onSubmit={submitForm}
@@ -761,7 +787,7 @@ function App() {
                             placeholder="___.___.___-__"
                             value={values.cpf}
                             onChange={(event) => {
-                              setFieldValue("cpf", event.target.value);
+                              setFieldValue('cpf', event.target.value);
                             }}
                             className="form-control form-input"
                           />
@@ -784,7 +810,7 @@ function App() {
                               isDisabled={isLoading}
                               onChange={(e) => {
                                 setAutoPreenchido(false);
-                                setFieldValue("cep", e.target.value);
+                                setFieldValue('cep', e.target.value);
                               }}
                             />
                             <InputRightElement>
@@ -792,7 +818,7 @@ function App() {
                                 icon={<FaMapMarkerAlt />}
                                 type="button"
                                 isLoading={isLoading}
-                                colorScheme={isLoading ? "white" : "red"}
+                                colorScheme={isLoading ? 'white' : 'red'}
                                 onClick={() =>
                                   buscarEndereco(values.cep, setFieldValue)
                                 }
@@ -880,7 +906,7 @@ function App() {
                       )}
                     </Field>
                     <HStack mt="1em">
-                      {" "}
+                      {' '}
                       <Text>
                         Li, e concordo com os <PrivacyModal />
                       </Text>
@@ -898,9 +924,9 @@ function App() {
                         type="submit"
                         isDisabled={!isChecked}
                         onClick={handleSubmitResidencial}
-                        isDisabled={submitLoading}
+                        //isDisabled={submitLoading}
                       >
-                        {submitLoading ? "Enviando..." : "Enviar"}
+                        {submitLoading ? 'Enviando...' : 'Enviar'}
                       </Button>
                       <Button variant="ghost" onClick={onClose}>
                         Cancelar
@@ -917,7 +943,7 @@ function App() {
   }
   function WhatsAppButton(props) {
     // console.log("####", props.data["personal"].footer);
-    let status = props?.statusEmpresa ? "enterprise" : "personal";
+    let status = props?.statusEmpresa ? 'enterprise' : 'personal';
     if (!props?.data[status]?.footer) {
       return <div>Error: Invalid props a</div>;
     }
@@ -929,9 +955,9 @@ function App() {
       return <div>Error: Invalid props </div>;
     }
     const IconmonstrWhatsapp_1 = createIcon({
-      displayName: "IconmonstrWhatsapp_1",
-      viewBox: "0 0 24 24",
-      d: "M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z",
+      displayName: 'IconmonstrWhatsapp_1',
+      viewBox: '0 0 24 24',
+      d: 'M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z',
     });
     return (
       <Box
@@ -940,11 +966,11 @@ function App() {
         target="_blank"
         rel="noopener noreferrer"
         position="fixed"
-        bottom={{ base: "2.5", md: "8", lg: "12" }}
-        right={{ base: "8", md: "8", lg: "12" }}
-        width={{ base: "60px", md: "70px", lg: "80px" }}
-        height={{ base: "60px", md: "70px", lg: "80px" }}
-        padding={{ base: "10px", md: "14px", lg: "16px" }}
+        bottom={{ base: '2.5', md: '8', lg: '12' }}
+        right={{ base: '8', md: '8', lg: '12' }}
+        width={{ base: '60px', md: '70px', lg: '80px' }}
+        height={{ base: '60px', md: '70px', lg: '80px' }}
+        padding={{ base: '10px', md: '14px', lg: '16px' }}
         borderRadius="full"
         backgroundColor="green.500"
         display="flex"
@@ -953,8 +979,8 @@ function App() {
         boxShadow="0px 4px 8px rgba(0, 0, 0, 0.1)"
         transition="all 0.2s ease-out"
         _hover={{
-          transform: "scale(1.1)",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
+          transform: 'scale(1.1)',
+          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)',
         }}
       >
         <IconmonstrWhatsapp_1 boxSize={9} color="white" />
@@ -964,7 +990,7 @@ function App() {
 
   function Carrosel(props) {
     const [idCard, setIdCard] = useState(null);
-    let status = props?.statusEmpresa ? "enterprise" : "personal";
+    let status = props?.statusEmpresa ? 'enterprise' : 'personal';
     const [images, setImages] = useState([
       props?.data[status]?.pricingData?.srcImage,
     ]);
@@ -980,7 +1006,7 @@ function App() {
     }
 
     function formatCurrency(value) {
-      return `R$ ${value.toLocaleString("pt-BR", {
+      return `R$ ${value.toLocaleString('pt-BR', {
         minimumFractionDigits: 2,
       })}`;
     }
@@ -991,12 +1017,12 @@ function App() {
           py={5}
           px={5}
           maxW={{
-            base: "100%",
-            sm: "35rem",
-            md: "43.75rem",
-            lg: "57.5rem",
-            xl: "75rem",
-            xxl: "90.5rem",
+            base: '100%',
+            sm: '35rem',
+            md: '43.75rem',
+            lg: '57.5rem',
+            xl: '75rem',
+            xxl: '90.5rem',
           }}
         >
           <VStack spacing={2}>
@@ -1036,12 +1062,12 @@ function App() {
                       animate={{ scale: 1, opacity: 1 }}
                       transition={{ duration: 0.5 }}
                       maxW={{
-                        base: "100%",
-                        sm: "35rem",
-                        md: "43.75rem",
-                        lg: "57.5rem",
-                        xl: "75rem",
-                        xxl: "90.5rem",
+                        base: '100%',
+                        sm: '35rem',
+                        md: '43.75rem',
+                        lg: '57.5rem',
+                        xl: '75rem',
+                        xxl: '90.5rem',
                       }}
                     >
                       <VStack mb={6}>
@@ -1054,14 +1080,14 @@ function App() {
                           />
                         </Center>
                         <Heading
-                          fontSize={{ base: "3xl", md: "5xl" }}
+                          fontSize={{ base: '3xl', md: '5xl' }}
                           textAlign="left"
                           mb={2}
                         >
                           {item.name}
                         </Heading>
                         <Heading
-                          fontSize={{ base: "4xl", md: "4xl" }}
+                          fontSize={{ base: '4xl', md: '4xl' }}
                           textAlign="left"
                           mb={2}
                         >
@@ -1094,10 +1120,10 @@ function App() {
                   </Flex>
                 ) : (
                   <Box padding="6" boxShadow="lg" bg="white"></Box>
-                )
+                ),
               )}
             </ChakraCarousel>
-          )}{" "}
+          )}{' '}
         </Container>
         <Spacer />
       </Box>
@@ -1105,7 +1131,7 @@ function App() {
   }
 
   return (
-    <div style={{ touchAction: "pan-y" }}>
+    <div style={{ touchAction: 'pan-y' }}>
       <Flex direction="column" height="10vh">
         <Header onStatusChange={handleStatusChange} data={data} />
 

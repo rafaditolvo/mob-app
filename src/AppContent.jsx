@@ -15,6 +15,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import mobcel from '../src/img/minha-mob-cellphone.png';
+import { FaApple, FaGooglePlay } from 'react-icons/fa';
 
 export default function AppContent(props) {
   let status = props?.statusEmpresa ? 'enterprise' : 'personal';
@@ -69,11 +70,11 @@ export default function AppContent(props) {
                 size={'lg'}
                 fontWeight={'normal'}
                 px={6}
-                colorScheme={'red'}
-                bg={'red.400'}
-                _hover={{ bg: 'red.500' }}
+                bg={'black'}
+                color={'white'}
+                leftIcon={<Icon as={FaGooglePlay} h={5} w={5} />}
               >
-                Baixar
+                Disponível na Play Store
               </Button>
             </Link>
             <Link
@@ -85,9 +86,11 @@ export default function AppContent(props) {
                 size={'lg'}
                 fontWeight={'normal'}
                 px={6}
-                leftIcon={<PlayIcon h={4} w={4} color={'gray.300'} />}
+                bg={'black'}
+                color={'white'}
+                leftIcon={<Icon as={FaApple} h={6} w={6} color={'white'} />}
               >
-                Como Baixar
+                Disponível na App Store
               </Button>
             </Link>
           </Stack>
