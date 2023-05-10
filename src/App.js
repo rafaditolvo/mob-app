@@ -270,7 +270,7 @@ function App() {
                 está registrado a Política de Privacidade.
               </ModalBody>
               <ModalFooter>
-                <Button onClick={handleClose}>Fechar</Button>
+                <Button onClick={handleClose}>Continuar</Button>
               </ModalFooter>
             </ModalContent>
           </Modal>
@@ -706,7 +706,7 @@ function App() {
                 está registrado a Política de Privacidade.
               </ModalBody>
               <ModalFooter>
-                <Button onClick={handleClose}>Fechar</Button>
+                <Button onClick={handleClose}>Continuar</Button>
               </ModalFooter>
             </ModalContent>
           </Modal>
@@ -1166,6 +1166,7 @@ function App() {
               <SkeletonText
                 mt="4"
                 noOfLines={8}
+                w="100%"
                 spacing="4"
                 skeletonHeight="20"
               />
