@@ -8,7 +8,8 @@ const { randomUUID } = require("crypto");
 const { hash, compare } = require("bcryptjs");
 
 const TIME_JWT_EXPIRES = process.env.TIME_JWT_EXPIRES ?? 3600;
-const S3_BUCKET = process.env.TIME_JWT_EXPIRES ?? "reacts3teste";
+const S3_BUCKET = process.env.S3_BUCKET ?? "reacts3teste";
+const S3_BUCKET_PLANS = process.env.S3_BUCKET_PLANS ?? "cadastroplanos";
 const DYNAMODB_TABLE_USERS = process.env.DYNAMODB_TABLE_USERS ?? "mob_users";
 const DIRECTORY_STATIC = process.env.DIRECTORY_STATIC ?? "static/media/";
 
@@ -37,6 +38,81 @@ const putObjectToS3 = async (data, nameOfFile, paramsFile = null) =>
     });
   });
 
+/**
+ *
+ * @param {string} data body json
+ * @param {string} nameOfFile
+ * @returns Promise<void>
+ */
+const listObjectsS3 = async (params) =>
+  new Promise((resolve, reject) => {
+    var s3 = new AWS.S3();
+    s3.listObjectsV2(params, function (err, data) {
+      if (err) {
+        console.log(err, err.stack); // an error occurred
+        reject();
+      } else {
+        resolve(data);
+      }
+    });
+  });
+
+/**
+ *
+ * @param {string} data body json
+ * @param {string} nameOfFile
+ * @returns Promise<void>
+ */
+const getObjectS3 = async (filename) =>
+  new Promise((resolve, reject) => {
+    const params = {
+      Bucket: S3_BUCKET_PLANS, // your bucket name,
+      Key: filename, // path to the object you're looking for
+    };
+    var s3 = new AWS.S3();
+    s3.getObject(params, function (err, data) {
+      if (err) {
+        console.log(err, err.stack); // an error occurred
+        reject();
+      } else {
+        resolve(data.Body);
+      }
+    });
+  });
+
+const getListObjectsS3 = async (list) => {
+  const arrPromises = [];
+  list.map(({ Key }) => {
+    arrPromises.push(getObjectS3(Key));
+  });
+  return await Promise.all(arrPromises);
+};
+
+const mountCSV = async (bodyList) => {
+  const header = `Tipo;Plano;Preço;Itens;Nome;CPF;Bairro;Endereço;Número;Telefone`;
+  const body = bodyList
+    .map((body) => {
+      const {
+        tipo,
+        plano,
+        name,
+        cpf,
+        bairro,
+        endereco,
+        addressNumber,
+        cep,
+        phone,
+      } = JSON.parse(body.toString("utf-8"));
+      return `"${tipo}";"${plano.name}";"${plano.price}";"${plano.features
+        .filter((e) => e != "")
+        .join(
+          ", "
+        )}";"${name}";"${cpf}";"${bairro}";"${endereco}";"${addressNumber}";"${cep}";"${phone}"`;
+    })
+    .join("\n");
+
+  return header + "\n" + body;
+};
 /**
  *
  * @param {headers, body} objeto
@@ -273,12 +349,73 @@ const upload = async (body, headers) => {
   }
 };
 
+const exportCSV = async (body, headers) => {
+  const bearerToken = headers?.authorization ?? false;
+  const monthRef = body?.monthRef ?? false;
+
+  const responseUnauthorized = {
+    statusCode: 403,
+    body: body,
+  };
+  const responseSuccess = {
+    statusCode: 200,
+    body: {},
+  };
+
+  // data/plan/202305/
+  if (!bearerToken || !monthRef) {
+    return responseUnauthorized;
+  }
+  const token = bearerToken.split(" ")[1];
+
+  try {
+    // const tokenIsValid = await validJWT(token);
+    const tokenIsValid = true;
+    if (tokenIsValid) {
+      try {
+        const params = {
+          Bucket: S3_BUCKET_PLANS,
+          // Delimiter: '/',
+          Prefix: "data/plan/" + monthRef + "/",
+          MaxKeys: 1000,
+        };
+
+        let listFiles = [];
+        while (true) {
+          const responseListObject = await listObjectsS3(params);
+          listFiles = [...listFiles, ...responseListObject.Contents];
+
+          if (responseListObject.NextContinuationToken) {
+            params.ContinuationToken = responseListObject.NextContinuationToken;
+          } else {
+            break;
+          }
+        }
+
+        const responseGetObjects = await getListObjectsS3(listFiles);
+
+        const CSV = await mountCSV(responseGetObjects);
+
+        responseSuccess.body = CSV;
+        return responseSuccess;
+      } catch (errPutObjectToS3) {
+        console.log("errorr S3", errPutObjectToS3);
+        return {
+          statusCode: 400,
+          body: JSON.stringify(errPutObjectToS3),
+        };
+      }
+    }
+  } catch (e) {
+    console.log(e);
+    return responseUnauthorized;
+  }
+};
+
 module.exports.handler = async (event) => {
   const rawPath = event?.rawPath ?? null;
   const body = JSON.parse(event.body);
   const headers = event.headers;
-
-  // console.log("hash", await hash("admin", 10));
 
   if (rawPath == "/auth") {
     const response = await auth(body);
@@ -293,10 +430,13 @@ module.exports.handler = async (event) => {
   } else if (rawPath == "/upload") {
     const response = await upload(body, headers);
     return response;
+  } else if (rawPath == "/exportcsv") {
+    const response = await exportCSV(body, headers);
+    return response;
   } else {
     const response = {
       statusCode: 404,
-      body: JSON.stringify({}),
+      body: {},
     };
     return response;
   }
