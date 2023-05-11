@@ -116,6 +116,9 @@ export default function CardFooter(props) {
                     >
                       {item.title}
                     </Text>
+                    <Text fontSize={"xl"} color={"gray.400"}>
+                      {item.text}
+                    </Text>
                     <UnorderedList spacing={3} listStyleType="none">
                       {!!item.items &&
                         item.items.map((listItem, listItemIndex) => (
@@ -134,7 +137,7 @@ export default function CardFooter(props) {
                             />
                             <Text
                               fontFamily={"heading"}
-                              fontSize={"3xl"}
+                              fontSize={"xl"}
                               color={"white"}
                               mb={3}
                               ml="0.5em"
