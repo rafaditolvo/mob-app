@@ -1,32 +1,29 @@
+import { HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import {
-  Button,
-  Container,
-  Flex,
-  Heading,
-  Image,
-  Text,
-  useColorMode,
-  IconButton,
-  Spinner,
-  Center,
   Box,
+  Button,
+  Center,
+  Container,
   Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  DrawerHeader,
   DrawerBody,
-  VStack
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  Flex,
+  IconButton,
+  Image,
+  Spinner,
+  useColorMode,
+  VStack,
 } from "@chakra-ui/react";
-import { MoonIcon, SunIcon, HamburgerIcon } from "@chakra-ui/icons";
-import logoDark from "../img/mob_logo.svg";
-import logo from "../img/mob_logo_black.svg";
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { FaWhatsapp } from "react-icons/fa";
+import logoDark from "../img/mob_logo.svg";
+import logo from "../img/mob_logo_black.svg";
 import PrinceWrapper from "./PrinceWrapper";
 import SmallWithLogoLeft from "./SmallWithLogoLeft";
-import { FaWhatsapp } from "react-icons/fa";
-import { Icon } from "@chakra-ui/react";
 
 function Main() {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -51,6 +48,7 @@ function Main() {
         width={{ base: "60px", md: "70px", lg: "80px" }}
         height={{ base: "60px", md: "70px", lg: "80px" }}
         padding={{ base: "10px", md: "14px", lg: "16px" }}
+        zIndex={9999}
         borderRadius="full"
         backgroundColor="green.500"
         color="white"
@@ -61,7 +59,7 @@ function Main() {
         transition="all 0.2s ease-out"
         _hover={{
           transform: "scale(1.1)",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)"
+          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.2)",
         }}
       >
         <FaWhatsapp size={{ base: "24px", md: "28px", lg: "32px" }} />

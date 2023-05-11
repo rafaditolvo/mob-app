@@ -2206,6 +2206,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
             width={{ base: "60px", md: "70px", lg: "80px" }}
             height={{ base: "60px", md: "70px", lg: "80px" }}
             padding={{ base: "10px", md: "14px", lg: "16px" }}
+            zIndex={9999}
             borderRadius="full"
             backgroundColor="green.500"
             display="flex"
