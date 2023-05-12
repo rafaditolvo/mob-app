@@ -34,32 +34,18 @@ export default function CardFooter(props) {
 
   return (
     <Box bg={'gray.800'} w="100%" position={'relative'}>
-      <Flex
-        flex={1}
-        zIndex={0}
-        display={{ base: 'none', lg: 'flex' }}
-        backgroundImage="url('/templates/stats-grid-with-image.png')"
-        backgroundSize={'cover'}
-        backgroundPosition="center"
-        position={'absolute'}
-        width="100%"
-        insetY={0}
-        right={0}
-      >
-        <Flex w={'full'} h={'full'} />
-      </Flex>
       <Container maxW={'7xl'} zIndex={10} w="100%" position={'relative'}>
         <Stack direction={{ base: 'column', lg: 'row' }}>
           <Stack
-            flex={1}
+            //flex={1}
             color={'red.700'}
             // justify={{ lg: 'center' }}
             w="100%"
-            py={{ base: 4, md: 20, xl: 60 }}
+            // py={{ base: 4, md: 10, xl: 60 }}
           >
-            <Box mb={{ base: 8, md: 20 }}>
+            <Box mb={{ base: 1, md: 20 }}>
               <Flex
-                flex={1}
+                //flex={1}
                 justify={'center'}
                 align={'center'}
                 position={'relative'}
@@ -67,27 +53,26 @@ export default function CardFooter(props) {
               >
                 <Heading
                   color={'white'}
-                  mb={5}
                   w="100%"
                   fontSize={{ base: '3xl', md: '5xl' }}
                 >
                   {props?.data[status].description.h1}
                 </Heading>
+
                 <Box
                   position={'relative'}
                   rounded={'2xl'}
-                  mb="4em" // altere o valor de mb conforme necessário
+                  //mb="1em" // altere o valor de mb conforme necessário
                   width={'full'}
                 >
+                  {' '}
                   <Image
                     src={bg}
-                    objectFit="cover" // ajusta o tamanho e posição da imagem para preencher a caixa
-                    // /position="absolute" // posiciona a imagem absolutamente dentro da caixa
-                    top={0}
+                    objectFit="cover"
+                    mt="2em"
                     left={0}
                     width="100%"
                     height="100%"
-                    //zIndex="-1" // coloca a imagem atrás do conteúdo dentro da caixa
                   />
                 </Box>
               </Flex>
@@ -107,8 +92,8 @@ export default function CardFooter(props) {
               </Text>
             </Box>
 
-            <Container maxW={'6xl'} w="100%" mt={10}>
-              <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={50} w="full">
+            <Container maxW={'6xl'} w="100%">
+              <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} gap={20} w="full">
                 {props?.data[status].description.items.map((item, index) => (
                   <Box key={index} w="100%">
                     <Text
@@ -132,7 +117,7 @@ export default function CardFooter(props) {
                               position="absolute"
                               left={0}
                               mr="2em"
-                              top={2}
+                              //top={2}
                               color="red.500"
                               boxSize={4}
                             />
@@ -140,7 +125,7 @@ export default function CardFooter(props) {
                               fontFamily={'heading'}
                               fontSize={'3xl'}
                               color={'white'}
-                              mb={3}
+                              //mb={3}
                               ml="0.5em"
                             >
                               {listItem.trim()}
