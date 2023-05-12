@@ -1,12 +1,13 @@
 import {
   AddIcon,
+  CheckCircleIcon,
   createIcon,
   DeleteIcon,
   EditIcon,
   LockIcon,
   QuestionIcon,
   RepeatIcon,
-  TriangleDownIcon
+  TriangleDownIcon,
 } from "@chakra-ui/icons";
 import {
   Box,
@@ -39,7 +40,7 @@ import {
   Text,
   Textarea,
   useColorModeValue,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 
 import { motion } from "framer-motion";
@@ -51,7 +52,7 @@ import {
   FaInstagram,
   FaTwitter,
   FaWhatsapp,
-  FaYoutube
+  FaYoutube,
 } from "react-icons/fa";
 
 import ChakraCarousel from "./ChakraCarousel";
@@ -673,6 +674,7 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
         <IconButton
           aria-label="Sair"
           p={5}
+          ml={10}
           background={"gray.700"}
           icon={
             <>
@@ -1265,6 +1267,19 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                           <Text fontSize={"xl"} color={"gray.400"}>
                             {item.text}
                           </Text>
+                          {item.items &&
+                            item.items.map((subitem, index) => (
+                              <HStack alignItems={"center"}>
+                                <CheckCircleIcon
+                                  mr="2"
+                                  color="red.500"
+                                  boxSize={4}
+                                />
+                                <Text fontSize={"xl"} color={"gray.400"}>
+                                  {subitem.text}
+                                </Text>
+                              </HStack>
+                            ))}
                         </Box>
                       ))}
                     </SimpleGrid>
@@ -1352,6 +1367,61 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
       setDescription(null);
     }
 
+    function handleAddSubitemDescription(id) {
+      const newDescriptionEdited = { ...descriptionEdited };
+
+      const item = newDescriptionEdited.items.filter((it) => it.id === id)[0];
+
+      if (!item.items) {
+        item.items = [];
+      }
+      item.items.push({ id: uuidv4(), text: "" });
+
+      newDescriptionEdited.items = newDescriptionEdited.items.map((it) => {
+        if (it.id == id) {
+          it.items = item.items;
+        }
+        return it;
+      });
+
+      setDescriptionEdited(newDescriptionEdited);
+
+      // console.log("pos", item);
+    }
+    function changeSubitemValue(e, id, subId) {
+      const newDescriptionEdited = { ...descriptionEdited };
+
+      const item = newDescriptionEdited.items.filter((it) => it.id === id)[0];
+      const subitem = item.items.map((sub) => {
+        if (sub.id === subId) {
+          sub.text = e.target.value;
+        }
+        return sub;
+      });
+      newDescriptionEdited.items = newDescriptionEdited.items.map((it) => {
+        if (it.id == id) {
+          it.items = item.items;
+        }
+        return it;
+      });
+
+      setDescriptionEdited(newDescriptionEdited);
+    }
+    function removeSubitem(id, subId) {
+      const newDescriptionEdited = { ...descriptionEdited };
+
+      const item = newDescriptionEdited.items.filter((it) => it.id === id)[0];
+      const subitem = item.items.filter((sub) => sub.id != subId);
+      newDescriptionEdited.items = newDescriptionEdited.items.map((it) => {
+        if (it.id == id) {
+          it.items = subitem;
+        }
+        return it;
+      });
+
+      setDescriptionEdited(newDescriptionEdited);
+    }
+
     return (
       <>
         <Modal
@@ -1410,7 +1480,11 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                           onChange={(event) => changeValue(event)}
                         />
                       </HStack>
-                      <HStack alignItems="left" width={"100%"}>
+                      <HStack
+                        alignItems="left"
+                        width={"100%"}
+                        alignItems="center"
+                      >
                         <Text>Itens</Text>
                         <IconButton
                           aria-label="Add itens"
@@ -1440,6 +1514,47 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                                 id={index}
                                 onChange={(event) => changeValue(event)}
                               />
+                              <HStack
+                                alignItems="left"
+                                width={"100%"}
+                                alignItems="center"
+                              >
+                                <Text>Subitens</Text>
+                                <IconButton
+                                  aria-label="Add itens"
+                                  width={10}
+                                  icon={<AddIcon />}
+                                  onClick={() =>
+                                    handleAddSubitemDescription(feat.id)
+                                  }
+                                />
+                              </HStack>
+                              {feat.items &&
+                                feat.items.map((subitem) => (
+                                  <HStack key={subitem.id}>
+                                    <Input
+                                      defaultValue={subitem.text}
+                                      name={`subitem_text`}
+                                      id={index}
+                                      onChange={(event) =>
+                                        changeSubitemValue(
+                                          event,
+                                          feat.id,
+                                          subitem.id
+                                        )
+                                      }
+                                    />
+                                    <IconButton
+                                      mt="auto"
+                                      aria-label="Features"
+                                      width={20}
+                                      icon={<DeleteIcon />}
+                                      onClick={() =>
+                                        removeSubitem(feat.id, subitem.id)
+                                      }
+                                    />
+                                  </HStack>
+                                ))}
                             </VStack>
 
                             <IconButton
