@@ -4,8 +4,8 @@ import {
   Container,
   Flex,
   Heading,
+  HStack,
   Image,
-  ListItem,
   SimpleGrid,
   Stack,
   Text,
@@ -104,32 +104,25 @@ export default function CardFooter(props) {
                     <Text fontSize={"xl"} color={"gray.400"}>
                       {item.text}
                     </Text>
-                    <UnorderedList spacing={3} listStyleType="none">
+                    <UnorderedList spacing={3} mt={5} listStyleType="none">
                       {item.items &&
                         item.items.map((listItem, listItemIndex) => (
-                          <ListItem
-                            key={listItemIndex}
-                            pl={4}
-                            position="relative"
-                          >
+                          <HStack key={`${listItem.id}`} alignItems={"center"}>
                             <CheckCircleIcon
-                              position="absolute"
-                              left={0}
-                              mr="2em"
-                              //top={2}
+                              mr="2"
                               color="red.500"
                               boxSize={4}
                             />
                             <Text
                               fontFamily={"heading"}
-                              fontSize={"3xl"}
+                              fontSize={"xl"}
                               color={"white"}
                               //mb={3}
                               ml="0.5em"
                             >
                               {listItem.text.trim()}
                             </Text>
-                          </ListItem>
+                          </HStack>
                         ))}
                     </UnorderedList>
                   </Box>

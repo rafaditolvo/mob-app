@@ -1269,7 +1269,10 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                           </Text>
                           {item.items &&
                             item.items.map((subitem, index) => (
-                              <HStack alignItems={"center"}>
+                              <HStack
+                                key={`${subitem.id}`}
+                                alignItems={"center"}
+                              >
                                 <CheckCircleIcon
                                   mr="2"
                                   color="red.500"
