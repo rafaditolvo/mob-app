@@ -1,5 +1,6 @@
 import {
   AddIcon,
+  CheckCircleIcon,
   createIcon,
   DeleteIcon,
   EditIcon,
@@ -71,7 +72,7 @@ const PlayIcon = createIcon({
 
 const DEBUG = false;
 
-function App({ setInvalidAuth, token, tokenExpired }) {
+function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
   const [isPersonal, setIsPersonal] = useState(true);
   const [global, setGlobal] = useState(false);
   const [data, setData] = useState(false);
@@ -213,7 +214,6 @@ function App({ setInvalidAuth, token, tokenExpired }) {
     }
 
     function handleEditPlan(plan) {
-      // console.log(plan);
       setPlan(plan);
     }
     function handleAddNewPlan() {
@@ -376,13 +376,13 @@ function App({ setInvalidAuth, token, tokenExpired }) {
     function handleRemoveFeaturePlan(featIndex) {
       const newPlan = { ...planEdited };
       // newPlan.features = newPlan.features.filter((f, index) => {
-      //   console.log(f);
+
       //   return f.id != featId;
       // });
       newPlan.features = newPlan.features.map((reg, index) => {
         return index != featIndex ? reg : null;
       });
-      // console.log(newPlan);
+
       setPlanEdited(newPlan);
     }
     const handleDeletePlan = async () => {
@@ -400,7 +400,6 @@ function App({ setInvalidAuth, token, tokenExpired }) {
         ? { ...global, ...{ personal: newData } }
         : { ...global, ...{ enterprise: newData } };
 
-      // console.log("newGlobal", newGlobal);
       setData(newData);
       setGlobal(newGlobal);
 
@@ -423,7 +422,6 @@ function App({ setInvalidAuth, token, tokenExpired }) {
       if (image.currentFile) {
         const srcImage = await upload();
         newPlanEdited.srcImage = srcImage;
-        // console.log(srcImage, "srcImage");
       }
       newPlanEdited.features = newPlanEdited.features.filter(Boolean);
 
@@ -467,9 +465,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
     }
     const upload = async () =>
       new Promise((resolve, reject) => {
-        UploadService.upload(image.currentFile, token, (event) => {
-          console.log(Math.round((100 * event.loaded) / event.total));
-        })
+        UploadService.upload(image.currentFile, token, (event) => {})
           .then((response) => {
             resolve(response.data);
             setImage({
@@ -675,6 +671,18 @@ function App({ setInvalidAuth, token, tokenExpired }) {
           }
           onClick={logout}
         />
+        <IconButton
+          aria-label="Sair"
+          p={5}
+          ml={10}
+          background={"gray.700"}
+          icon={
+            <>
+              <Text fontWeight={"bold"}>Menu</Text>
+            </>
+          }
+          onClick={backMenu}
+        />
         <Spacer />
         <Box display="flex" justifyContent="flex-end">
           {!save && (
@@ -730,8 +738,6 @@ function App({ setInvalidAuth, token, tokenExpired }) {
       setData(newData);
       setBanner(newBanner);
     }
-
-    // console.log(data.banners);
 
     const bannersData = data?.banners ?? [];
 
@@ -832,7 +838,6 @@ function App({ setInvalidAuth, token, tokenExpired }) {
         ? { ...global, ...{ personal: newData } }
         : { ...global, ...{ enterprise: newData } };
 
-      // console.log("newGlobal", newGlobal);
       setData(newData);
       setGlobal(newGlobal);
 
@@ -852,14 +857,9 @@ function App({ setInvalidAuth, token, tokenExpired }) {
 
       const newBannerEdited = { ...bannerEdited };
 
-      // console.log(newData, newBannerEdited);
-
-      // console.log("fora upload", image.currentFile);
       if (image.currentFile) {
-        // console.log("entrou upload");
         const src = await upload();
         newBannerEdited.src = src;
-        // console.log(src, "src");
       }
 
       newData.banners = newData.banners.map((bannerReg) =>
@@ -869,7 +869,6 @@ function App({ setInvalidAuth, token, tokenExpired }) {
         ? { ...global, ...{ personal: newData } }
         : { ...global, ...{ enterprise: newData } };
 
-      // console.log("newGlobal", newGlobal);
       setData(newData);
       setGlobal(newGlobal);
 
@@ -891,9 +890,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
     }
     const upload = async () =>
       new Promise((resolve, reject) => {
-        UploadService.upload(image.currentFile, token, (event) => {
-          console.log(Math.round((100 * event.loaded) / event.total));
-        })
+        UploadService.upload(image.currentFile, token, (event) => {})
           .then((response) => {
             resolve(response.data);
             setImage({
@@ -1270,6 +1267,19 @@ function App({ setInvalidAuth, token, tokenExpired }) {
                           <Text fontSize={"xl"} color={"gray.400"}>
                             {item.text}
                           </Text>
+                          {item.items &&
+                            item.items.map((subitem, index) => (
+                              <HStack alignItems={"center"}>
+                                <CheckCircleIcon
+                                  mr="2"
+                                  color="red.500"
+                                  boxSize={4}
+                                />
+                                <Text fontSize={"xl"} color={"gray.400"}>
+                                  {subitem.text}
+                                </Text>
+                              </HStack>
+                            ))}
                         </Box>
                       ))}
                     </SimpleGrid>
@@ -1357,6 +1367,61 @@ function App({ setInvalidAuth, token, tokenExpired }) {
       setDescription(null);
     }
 
+    function handleAddSubitemDescription(id) {
+      const newDescriptionEdited = { ...descriptionEdited };
+
+      const item = newDescriptionEdited.items.filter((it) => it.id === id)[0];
+
+      if (!item.items) {
+        item.items = [];
+      }
+      item.items.push({ id: uuidv4(), text: "" });
+
+      newDescriptionEdited.items = newDescriptionEdited.items.map((it) => {
+        if (it.id == id) {
+          it.items = item.items;
+        }
+        return it;
+      });
+
+      setDescriptionEdited(newDescriptionEdited);
+
+      // console.log("pos", item);
+    }
+    function changeSubitemValue(e, id, subId) {
+      const newDescriptionEdited = { ...descriptionEdited };
+
+      const item = newDescriptionEdited.items.filter((it) => it.id === id)[0];
+      const subitem = item.items.map((sub) => {
+        if (sub.id === subId) {
+          sub.text = e.target.value;
+        }
+        return sub;
+      });
+      newDescriptionEdited.items = newDescriptionEdited.items.map((it) => {
+        if (it.id == id) {
+          it.items = item.items;
+        }
+        return it;
+      });
+
+      setDescriptionEdited(newDescriptionEdited);
+    }
+    function removeSubitem(id, subId) {
+      const newDescriptionEdited = { ...descriptionEdited };
+
+      const item = newDescriptionEdited.items.filter((it) => it.id === id)[0];
+      const subitem = item.items.filter((sub) => sub.id != subId);
+      newDescriptionEdited.items = newDescriptionEdited.items.map((it) => {
+        if (it.id == id) {
+          it.items = subitem;
+        }
+        return it;
+      });
+
+      setDescriptionEdited(newDescriptionEdited);
+    }
+
     return (
       <>
         <Modal
@@ -1415,7 +1480,11 @@ function App({ setInvalidAuth, token, tokenExpired }) {
                           onChange={(event) => changeValue(event)}
                         />
                       </HStack>
-                      <HStack alignItems="left" width={"100%"}>
+                      <HStack
+                        alignItems="left"
+                        width={"100%"}
+                        alignItems="center"
+                      >
                         <Text>Itens</Text>
                         <IconButton
                           aria-label="Add itens"
@@ -1445,6 +1514,47 @@ function App({ setInvalidAuth, token, tokenExpired }) {
                                 id={index}
                                 onChange={(event) => changeValue(event)}
                               />
+                              <HStack
+                                alignItems="left"
+                                width={"100%"}
+                                alignItems="center"
+                              >
+                                <Text>Subitens</Text>
+                                <IconButton
+                                  aria-label="Add itens"
+                                  width={10}
+                                  icon={<AddIcon />}
+                                  onClick={() =>
+                                    handleAddSubitemDescription(feat.id)
+                                  }
+                                />
+                              </HStack>
+                              {feat.items &&
+                                feat.items.map((subitem) => (
+                                  <HStack key={subitem.id}>
+                                    <Input
+                                      defaultValue={subitem.text}
+                                      name={`subitem_text`}
+                                      id={index}
+                                      onChange={(event) =>
+                                        changeSubitemValue(
+                                          event,
+                                          feat.id,
+                                          subitem.id
+                                        )
+                                      }
+                                    />
+                                    <IconButton
+                                      mt="auto"
+                                      aria-label="Features"
+                                      width={20}
+                                      icon={<DeleteIcon />}
+                                      onClick={() =>
+                                        removeSubitem(feat.id, subitem.id)
+                                      }
+                                    />
+                                  </HStack>
+                                ))}
                             </VStack>
 
                             <IconButton
@@ -1643,13 +1753,10 @@ function App({ setInvalidAuth, token, tokenExpired }) {
 
       try {
         if (image.currentFile) {
-          // console.log("entrou upload");
           const srcImage = await upload();
           newAppDescriptionEdited.appImage = srcImage;
         }
-      } catch (e) {
-        // console.log("aaaa", e);
-      }
+      } catch (e) {}
 
       newData.appDescription = newAppDescriptionEdited;
       const newGlobal = isPersonal
@@ -1662,7 +1769,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
       if (save) {
         setSave(false);
       }
-      // console.log("tfim");
+
       handleClearForm();
     };
     function handleClearForm() {
@@ -1678,9 +1785,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
     }
     const upload = async () =>
       new Promise((resolve, reject) => {
-        UploadService.upload(image.currentFile, token, (event) => {
-          console.log(Math.round((100 * event.loaded) / event.total));
-        })
+        UploadService.upload(image.currentFile, token, (event) => {})
           .then((response) => {
             resolve(response.data);
             setImage({
@@ -1912,7 +2017,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
           return reg;
         });
       }
-      // console.log(newFaq);
+
       setFaqEdited((prev) => newFaq);
     }
 
@@ -1933,7 +2038,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
     // todo: ajustar remoção, deleta mais na renderização nao ajusta
     function handleRemoveFeatureFaq(id) {
       const newFaq = { ...faqEdited };
-      // console.log(newFaq, id);
+
       newFaq.items = newFaq.items.filter((reg, index) => reg.id != id);
       setFaqEdited(newFaq);
     }
@@ -2206,6 +2311,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
             width={{ base: "60px", md: "70px", lg: "80px" }}
             height={{ base: "60px", md: "70px", lg: "80px" }}
             padding={{ base: "10px", md: "14px", lg: "16px" }}
+            zIndex={9999}
             borderRadius="full"
             backgroundColor="green.500"
             display="flex"
@@ -2420,7 +2526,6 @@ function App({ setInvalidAuth, token, tokenExpired }) {
           setData(jsonData.enterprise);
         }
 
-        console.log("useeffect fetchdata jsonData");
         setGlobal(jsonData);
       }, 1);
       loopIsAuth();
@@ -2433,7 +2538,7 @@ function App({ setInvalidAuth, token, tokenExpired }) {
   if (!global || !data) {
     return <>Dados nao carregados</>;
   }
-  // console.log("global", global);
+
   return (
     <Flex direction="column" height="100vh">
       <BoxSaveAlert />
