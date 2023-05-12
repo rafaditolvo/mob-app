@@ -89,7 +89,7 @@ const getListObjectsS3 = async (list) => {
 };
 
 const mountCSV = async (bodyList) => {
-  const header = `Tipo;Plano;Preço;Itens;Nome;CPF;Bairro;Endereço;Número;Telefone`;
+  const header = `Tipo;Plano;Preço;Itens;Nome;CPF;Bairro;Endereço;Número;CEP;Telefone`;
   const body = bodyList
     .map((body) => {
       const {
