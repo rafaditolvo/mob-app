@@ -104,8 +104,10 @@ function App() {
         setData(data); // atualiza os dados
         setIsLoading(false); // define o estado de carregamento como falso
         const expireInMinutes = 5;
-        data.expireIn = new Date().getTime() + expireInMinutes * 60 * 1000;
-        saveDataLocalStorage(data);
+        const minutesInSeconds = 60;
+        data.expireIn =
+          new Date().getTime() + expireInMinutes * minutesInSeconds * 1000;
+        // saveDataLocalStorage(data);
       });
     } else {
       setIsLoading(false);
@@ -309,6 +311,8 @@ function App() {
                   addressNumber: "",
                   phone: "",
                   planoId: planoId,
+                  plano: plano,
+                  tipo: "Empresarial",
                 }}
                 validationSchema={validationSchema}
                 onSubmit={submitForm}

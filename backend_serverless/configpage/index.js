@@ -97,6 +97,7 @@ const mountCSV = async (bodyList) => {
         plano,
         name,
         cpf,
+        cnpj,
         bairro,
         endereco,
         addressNumber,
@@ -105,9 +106,9 @@ const mountCSV = async (bodyList) => {
       } = JSON.parse(body.toString("utf-8"));
       return `"${tipo}";"${plano.name}";"${plano.price}";"${plano.features
         .filter((e) => e != "")
-        .join(
-          ", "
-        )}";"${name}";"${cpf}";"${bairro}";"${endereco}";"${addressNumber}";"${cep}";"${phone}"`;
+        .join(", ")}";"${name}";"${
+        cpf ? cpf : cnpj
+      }";"${bairro}";"${endereco}";"${addressNumber}";"${cep}";"${phone}"`;
     })
     .join("\n");
 
