@@ -28,10 +28,13 @@ export default function ImageCarousel(props) {
       );
       setImages(bannerImages);
     }
+    setCurrentImage(0);
+  }, [props]);
 
+  useEffect(() => {
     const intervalId = setInterval(handleNext, interval);
     return () => clearInterval(intervalId);
-  }, [props]);
+  }, [images]);
 
   const handlers = useSwipeable({
     onSwipedLeft: () => slide(NEXT),
@@ -51,10 +54,12 @@ export default function ImageCarousel(props) {
   const handlePrev = () =>
     setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
 
-  const handleNext = () =>
+  const handleNext = () => {
+    console.log('images.length', images.length);
     setCurrentImage((prev) =>
       prev === images.length - 1 ? 0 : prev + 1 >= images.length ? 0 : prev + 1,
     );
+  };
 
   const showChevrons = useBreakpointValue({ base: true, md: true });
 
