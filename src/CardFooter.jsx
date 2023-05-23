@@ -1,20 +1,22 @@
-import { CheckCircleIcon } from "@chakra-ui/icons";
+import { CheckCircleIcon } from '@chakra-ui/icons';
 import {
   Box,
+  Center,
   Container,
   Flex,
   Heading,
   HStack,
   Image,
+  Grid,
   SimpleGrid,
   Stack,
   Text,
   UnorderedList,
-} from "@chakra-ui/react";
-import bg from "../src/img/mob-img.png";
+} from '@chakra-ui/react';
+import bg from '../src/img/mob-img.png';
 
 export default function CardFooter(props) {
-  let status = props?.statusEmpresa ? "enterprise" : "personal";
+  let status = props?.statusEmpresa ? 'enterprise' : 'personal';
 
   if (!props?.data[status]?.description) {
     return <div>Error: Invalid props</div>;
@@ -26,15 +28,21 @@ export default function CardFooter(props) {
     return <div>Error: Invalid props</div>;
   }
 
-  console.log(props?.data[status].description.items, "aqui");
+  console.log(props?.data[status].description.items, 'aqui');
 
   return (
-    <Box bg={"gray.800"} w="100%" position={"relative"}>
-      <Container maxW={"7xl"} zIndex={10} w="100%" position={"relative"}>
-        <Stack direction={{ base: "column", lg: "row" }}>
+    <Box bg={'gray.800'} w="100%" position={'relative'}>
+      <Container
+        maxW={'7xl'}
+        zIndex={10}
+        w="100%"
+        position={'relative'}
+        flex="row"
+      >
+        <Stack direction={{ base: 'column', lg: 'row' }}>
           <Stack
             //flex={1}
-            color={"red.700"}
+            color={'red.700'}
             // justify={{ lg: 'center' }}
             w="100%"
             py={{ base: 4, md: 10, xl: 5 }}
@@ -42,26 +50,26 @@ export default function CardFooter(props) {
             <Box mb={{ base: 1, md: 20 }}>
               <Flex
                 //flex={1}
-                justify={"center"}
-                align={"center"}
-                position={"relative"}
+                justify={'between'}
+                align={'center'}
+                position={'relative'}
                 w="100%"
               >
                 <Heading
-                  color={"white"}
+                  color={'white'}
                   w="100%"
-                  fontSize={{ base: "3xl", md: "5xl" }}
+                  fontSize={{ base: '3xl', md: '5xl' }}
                 >
                   {props?.data[status].description.h1}
                 </Heading>
 
                 <Box
-                  position={"relative"}
-                  rounded={"2xl"}
+                  position={'relative'}
+                  rounded={'2xl'}
                   //mb="1em" // altere o valor de mb conforme necessário
-                  width={"full"}
+                  width={'full'}
                 >
-                  {" "}
+                  {' '}
                   <Image
                     src={bg}
                     objectFit="cover"
@@ -73,62 +81,71 @@ export default function CardFooter(props) {
                 </Box>
               </Flex>
               <Text
-                fontFamily={"heading"}
+                fontFamily={'heading'}
                 fontWeight={700}
-                textTransform={"uppercase"}
+                textTransform={'uppercase'}
                 mb={3}
-                fontSize={"xl"}
-                color={"gray.500"}
+                fontSize={'xl'}
+                color={'gray.500'}
               >
                 {props?.data[status].description.h2}
               </Text>
 
-              <Text fontSize={"xl"} color={"gray.400"}>
+              <Text fontSize={'xl'} color={'gray.400'}>
                 {props?.data[status].description.h3}
               </Text>
             </Box>
-
-            <Container maxW={"6xl"} w="100%">
-              <SimpleGrid columns={{ base: 1, md: 4, lg: 4 }} gap={20} w="full">
-                {props?.data[status].description.items.map((item, index) => (
-                  <Box key={index} w="100%">
-                    <Text
-                      fontFamily={"heading"}
-                      fontSize={"3xl"}
-                      color={"white"}
-                      mb={3}
-                      ml="1.5em"
-                    >
-                      {item.title}
-                    </Text>
-                    <Text fontSize={"xl"} color={"gray.400"}>
-                      {item.text}
-                    </Text>
-                    <UnorderedList spacing={3} mt={5} listStyleType="none">
-                      {item.items &&
-                        item.items.map((listItem, listItemIndex) => (
-                          <HStack key={`${listItem.id}`} alignItems={"center"}>
-                            <CheckCircleIcon
+            <Center>
+              <Box>
+                <SimpleGrid
+                  mt="2em"
+                  columns={{ base: 1, md: 3, lg: 3 }}
+                  mb="2em"
+                  spacing={10}
+                >
+                  {props?.data[status].description.items.map((item, index) => (
+                    <Box key={index} flex={'row'} w="100%">
+                      <Text
+                        fontFamily={'heading'}
+                        fontSize={'3xl'}
+                        color={'white'}
+                        mb={3}
+                        ml="1.5em"
+                      >
+                        {item.title}
+                      </Text>
+                      <Text fontSize={'xl'} color={'gray.400'}>
+                        {item.text}
+                      </Text>
+                      <UnorderedList spacing={3} mt={5} listStyleType="none">
+                        {item.items &&
+                          item.items.map((listItem, listItemIndex) => (
+                            <HStack
+                              key={`${listItem.id}`}
+                              alignItems={'center'}
+                            >
+                              {/*   <CheckCircleIcon
                               mr="2"
                               color="red.500"
                               boxSize={4}
-                            />
-                            <Text
-                              fontFamily={"heading"}
-                              fontSize={"xl"}
-                              color={"white"}
-                              //mb={3}
-                              ml="0.5em"
-                            >
-                              {listItem.text.trim()}
-                            </Text>
-                          </HStack>
-                        ))}
-                    </UnorderedList>
-                  </Box>
-                ))}
-              </SimpleGrid>
-            </Container>
+                        /> */}
+                              <Text
+                                //fontFamily={'heading'}
+                                fontSize={'lg'}
+                                color={'white'}
+                                //mb={3}
+                                //ml="0.5em"
+                              >
+                                {listItem.text.trim()}
+                              </Text>
+                            </HStack>
+                          ))}
+                      </UnorderedList>
+                    </Box>
+                  ))}
+                </SimpleGrid>
+              </Box>
+            </Center>
           </Stack>
 
           <Flex flex={1} />
