@@ -1,7 +1,5 @@
 import {
   AddIcon,
-  CheckCircleIcon,
-  createIcon,
   DeleteIcon,
   EditIcon,
   LockIcon,
@@ -13,12 +11,11 @@ import {
   Box,
   Button,
   Center,
-  chakra,
   Container,
   Divider,
   Flex,
-  Heading,
   HStack,
+  Heading,
   Icon,
   IconButton,
   Image,
@@ -39,8 +36,10 @@ import {
   Stack,
   Text,
   Textarea,
-  useColorModeValue,
+  UnorderedList,
   VStack,
+  chakra,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 import { motion } from "framer-motion";
@@ -64,13 +63,6 @@ import logo from "../src/img/mob_logo_black.svg";
 
 import ImageCarousel from "./ImageCarousel";
 import UploadService from "./services/fileUpload.js";
-const PlayIcon = createIcon({
-  displayName: "PlayIcon",
-  viewBox: "0 0 58 58",
-  d: "M28.9999 0.562988C13.3196 0.562988 0.562378 13.3202 0.562378 29.0005C0.562378 44.6808 13.3196 57.438 28.9999 57.438C44.6801 57.438 57.4374 44.6808 57.4374 29.0005C57.4374 13.3202 44.6801 0.562988 28.9999 0.562988ZM39.2223 30.272L23.5749 39.7247C23.3506 39.8591 23.0946 39.9314 22.8332 39.9342C22.5717 39.9369 22.3142 39.8701 22.0871 39.7406C21.86 39.611 21.6715 39.4234 21.5408 39.1969C21.4102 38.9705 21.3421 38.7133 21.3436 38.4519V19.5491C21.3421 19.2877 21.4102 19.0305 21.5408 18.8041C21.6715 18.5776 21.86 18.3899 22.0871 18.2604C22.3142 18.1308 22.5717 18.064 22.8332 18.0668C23.0946 18.0696 23.3506 18.1419 23.5749 18.2763L39.2223 27.729C39.4404 27.8619 39.6207 28.0486 39.7458 28.2713C39.8709 28.494 39.9366 28.7451 39.9366 29.0005C39.9366 29.2559 39.8709 29.507 39.7458 29.7297C39.6207 29.9523 39.4404 30.1391 39.2223 30.272Z",
-});
-
-const DEBUG = false;
 
 function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
   const [isPersonal, setIsPersonal] = useState(true);
@@ -169,13 +161,10 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                           </Text>
                           <HStack justifyContent="center">
                             <Text fontSize="3xl" fontWeight="600">
-                              $
+                              R$
                             </Text>
                             <Text fontSize="5xl" fontWeight="900">
                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            </Text>
-                            <Text fontSize="3xl" color="gray.500">
-                              /mês
                             </Text>
                           </HStack>
                         </Box>
@@ -228,6 +217,11 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
       setData(newData);
       setPlan(newPlan);
     }
+    function formatCurrency(value) {
+      return `R$ ${value.toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+      })}`;
+    }
 
     const pricingData = data?.pricingData ?? [];
 
@@ -278,30 +272,29 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                         />
                         <Box py={4} px={9}>
                           {item.srcImage && (
-                            <Image
-                              src={
-                                (DEBUG
-                                  ? "https://reacts3teste.s3.amazonaws.com/"
-                                  : "") + item.srcImage
-                              }
-                              height="200"
-                              width="200"
-                            />
+                            <Center>
+                              <Image
+                                src={item.srcImage}
+                                type="image/svg+xml"
+                                maxHeight="300"
+                                maxWidth="400"
+                              />
+                            </Center>
                           )}
-                          <Text fontWeight="500" fontSize="2xl">
+                          <Heading
+                            fontSize={{ base: "3xl", md: "5xl" }}
+                            textAlign="center"
+                            mb={2}
+                          >
                             {item.name}
-                          </Text>
-                          <HStack justifyContent="center">
-                            <Text fontSize="3xl" fontWeight="600">
-                              $
-                            </Text>
-                            <Text fontSize="5xl" fontWeight="900">
-                              {item.price}
-                            </Text>
-                            <Text fontSize="3xl" color="gray.500">
-                              /mês
-                            </Text>
-                          </HStack>
+                          </Heading>
+                          <Heading
+                            fontSize={{ base: "4xl", md: "4xl" }}
+                            textAlign="center"
+                            mb={2}
+                          >
+                            {formatCurrency(item.price)}
+                          </Heading>
                         </Box>
                         <VStack
                           //bg={useColorModeValue('gray.50', 'gray.700')}
@@ -321,7 +314,7 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                           </List>
                           <Box w="80%" pt={7}>
                             <Button w="full" colorScheme="red">
-                              Start trial
+                              Para Você/Empresa
                             </Button>
                           </Box>
                         </VStack>
@@ -528,15 +521,7 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                         onChange={selectFile}
                       />
                       {plan.srcImage && (
-                        <Image
-                          src={
-                            (DEBUG
-                              ? "https://reacts3teste.s3.amazonaws.com/"
-                              : "") + plan.srcImage
-                          }
-                          height="200"
-                          width="200"
-                        />
+                        <Image src={plan.srcImage} height="200" width="200" />
                       )}
                       <Stack alignItems="left" width={"100%"}>
                         <Text>Plano</Text>
@@ -791,11 +776,7 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                         <Box py={4} px={9}>
                           {item.src && (
                             <Image
-                              src={
-                                (DEBUG
-                                  ? "https://reacts3teste.s3.amazonaws.com/"
-                                  : "") + item.src
-                              }
+                              src={item.src}
                               maxHeight={200}
                               maxWidth={200}
                             />
@@ -953,15 +934,7 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                         onChange={selectFile}
                       />
                       {banner.src && (
-                        <Image
-                          src={
-                            (DEBUG
-                              ? "https://reacts3teste.s3.amazonaws.com/"
-                              : "") + banner.src
-                          }
-                          height="200"
-                          width="200"
-                        />
+                        <Image src={banner.src} height="200" width="200" />
                       )}
                       <Divider my={8} />
                       <HStack alignItems="left">
@@ -1191,7 +1164,7 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
         >
           <Divider mb={4} />
           <IconButton
-            aria-label="add bannero"
+            aria-label="add banner"
             background={"gray.400"}
             p={4}
             mx={12}
@@ -1204,30 +1177,55 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
             onClick={() => handleEditDescription(descriptionData)}
           />
           {descriptionData && (
-            <Box bg={"gray.800"} width={"100%"} position={"relative"}>
-              <Flex
-                flex={1}
-                zIndex={0}
-                display={{ base: "none", lg: "flex" }}
-                backgroundImage="url('/templates/stats-grid-with-image.png')"
-                backgroundSize={"cover"}
-                backgroundPosition="center"
-                position={"absolute"}
-                width={"100%"}
-                insetY={0}
-                right={0}
+            <Box bg={"gray.800"} w="100%" position={"relative"}>
+              <Container
+                maxW={"7xl"}
+                zIndex={10}
+                w="100%"
+                position={"relative"}
+                flex="row"
               >
-                <Flex w={"full"} h={"full"} />
-              </Flex>
-              <Container maxW={"7xl"} zIndex={10} position={"relative"}>
                 <Stack direction={{ base: "column", lg: "row" }}>
                   <Stack
-                    flex={1}
+                    //flex={1}
                     color={"red.700"}
-                    justify={{ lg: "center" }}
-                    py={{ base: 4, md: 20, xl: 60 }}
+                    // justify={{ lg: 'center' }}
+                    w="100%"
+                    py={{ base: 4, md: 10, xl: 5 }}
                   >
-                    <Box mb={{ base: 8, md: 20 }}>
+                    <Box mb={{ base: 1, md: 20 }}>
+                      <Flex
+                        //flex={1}
+                        justify={"between"}
+                        align={"center"}
+                        position={"relative"}
+                        w="100%"
+                      >
+                        <Heading
+                          color={"white"}
+                          w="100%"
+                          fontSize={{ base: "3xl", md: "5xl" }}
+                        >
+                          {descriptionData.h1}
+                        </Heading>
+
+                        <Box
+                          position={"relative"}
+                          rounded={"2xl"}
+                          //mb="1em" // altere o valor de mb conforme necessário
+                          width={"full"}
+                        >
+                          {" "}
+                          <Image
+                            src={bg}
+                            objectFit="cover"
+                            mt="2em"
+                            left={0}
+                            width="100%"
+                            height="100%"
+                          />
+                        </Box>
+                      </Flex>
                       <Text
                         fontFamily={"heading"}
                         fontWeight={700}
@@ -1238,55 +1236,68 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                       >
                         {descriptionData.h2}
                       </Text>
-                      <Heading
-                        color={"white"}
-                        mb={5}
-                        fontSize={{ base: "3xl", md: "5xl" }}
-                      >
-                        {descriptionData.h1}
-                      </Heading>
+
                       <Text fontSize={"xl"} color={"gray.400"}>
                         {descriptionData.h3}
                       </Text>
                     </Box>
-                    <Flex flex={1}>
-                      <Image src={bg}></Image>
-                    </Flex>
-
-                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-                      {descriptionData.items.map((item, index) => (
-                        <Box key={index}>
-                          <Text
-                            fontFamily={"heading"}
-                            fontSize={"3xl"}
-                            color={"white"}
-                            mb={3}
-                          >
-                            {item.title}
-                          </Text>
-                          <Text fontSize={"xl"} color={"gray.400"}>
-                            {item.text}
-                          </Text>
-                          {item.items &&
-                            item.items.map((subitem, index) => (
-                              <HStack
-                                key={`${subitem.id}`}
-                                alignItems={"center"}
+                    <Center>
+                      <Box>
+                        <SimpleGrid
+                          mt="2em"
+                          columns={{ base: 1, md: 3, lg: 3 }}
+                          mb="2em"
+                          spacing={10}
+                        >
+                          {descriptionData.items.map((item, index) => (
+                            <Box key={index} flex={"row"} w="100%">
+                              <Text
+                                fontFamily={"heading"}
+                                fontSize={"3xl"}
+                                color={"white"}
+                                mb={3}
+                                ml="1.5em"
                               >
-                                <CheckCircleIcon
-                                  mr="2"
-                                  color="red.500"
-                                  boxSize={4}
-                                />
-                                <Text fontSize={"xl"} color={"gray.400"}>
-                                  {subitem.text}
-                                </Text>
-                              </HStack>
-                            ))}
-                        </Box>
-                      ))}
-                    </SimpleGrid>
+                                {item.title}
+                              </Text>
+                              <Text fontSize={"xl"} color={"gray.400"}>
+                                {item.text}
+                              </Text>
+                              <UnorderedList
+                                spacing={3}
+                                mt={5}
+                                listStyleType="none"
+                              >
+                                {item.items &&
+                                  item.items.map((subitem, index) => (
+                                    <HStack
+                                      key={`${subitem.id}`}
+                                      alignItems={"center"}
+                                    >
+                                      {/*   <CheckCircleIcon
+                                    mr="2"
+                                    color="red.500"
+                                    boxSize={4}
+                              /> */}
+                                      <Text
+                                        //fontFamily={'heading'}
+                                        fontSize={"lg"}
+                                        color={"white"}
+                                        //mb={3}
+                                        //ml="0.5em"
+                                      >
+                                        {subitem.text.trim()}
+                                      </Text>
+                                    </HStack>
+                                  ))}
+                              </UnorderedList>
+                            </Box>
+                          ))}
+                        </SimpleGrid>
+                      </Box>
+                    </Center>
                   </Stack>
+
                   <Flex flex={1} />
                 </Stack>
               </Container>
@@ -1713,10 +1724,7 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                 <Image
                   align={"center"}
                   maxHeight={600}
-                  src={
-                    (DEBUG ? "https://reacts3teste.s3.amazonaws.com/" : "") +
-                    appDescriptionData.appImage
-                  }
+                  src={appDescriptionData.appImage}
                 />
               </Box>
             </Flex>
@@ -1821,11 +1829,7 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                       />
                       {appDescription.appImage && (
                         <Image
-                          src={
-                            (DEBUG
-                              ? "https://reacts3teste.s3.amazonaws.com/"
-                              : "") + appDescription.appImage
-                          }
+                          src={appDescription.appImage}
                           height="200"
                           width="200"
                         />
