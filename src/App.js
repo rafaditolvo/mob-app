@@ -289,6 +289,7 @@ function App() {
             mb="1em"
             colorScheme="red"
             onClick={() => {
+              localStorage.setItem("defaultOpen", true);
               onOpen();
             }}
           >
@@ -727,6 +728,7 @@ function App() {
             mb="1em"
             colorScheme="red"
             onClick={() => {
+              localStorage.setItem("defaultOpen", true);
               onOpen();
             }}
           >
