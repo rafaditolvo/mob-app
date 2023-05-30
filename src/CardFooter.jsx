@@ -1,22 +1,20 @@
-import { CheckCircleIcon } from '@chakra-ui/icons';
 import {
   Box,
   Center,
   Container,
   Flex,
-  Heading,
   HStack,
+  Heading,
   Image,
-  Grid,
   SimpleGrid,
   Stack,
   Text,
   UnorderedList,
-} from '@chakra-ui/react';
-import bg from '../src/img/mob-img.png';
+} from "@chakra-ui/react";
+import bg from "../src/img/mob-img.png";
 
 export default function CardFooter(props) {
-  let status = props?.statusEmpresa ? 'enterprise' : 'personal';
+  let status = props?.statusEmpresa ? "enterprise" : "personal";
 
   if (!props?.data[status]?.description) {
     return <div>Error: Invalid props</div>;
@@ -28,21 +26,21 @@ export default function CardFooter(props) {
     return <div>Error: Invalid props</div>;
   }
 
-  console.log(props?.data[status].description.items, 'aqui');
+  console.log(props?.data[status].description.items, "aqui");
 
   return (
-    <Box bg={'gray.800'} w="100%" position={'relative'}>
+    <Box bg={"gray.800"} w="100%" position={"relative"}>
       <Container
-        maxW={'7xl'}
+        maxW={"7xl"}
         zIndex={10}
         w="100%"
-        position={'relative'}
+        position={"relative"}
         flex="row"
       >
-        <Stack direction={{ base: 'column', lg: 'row' }}>
+        <Stack direction={{ base: "column", lg: "row" }}>
           <Stack
             //flex={1}
-            color={'red.700'}
+            color={"red.700"}
             // justify={{ lg: 'center' }}
             w="100%"
             py={{ base: 4, md: 10, xl: 5 }}
@@ -50,26 +48,26 @@ export default function CardFooter(props) {
             <Box mb={{ base: 1, md: 20 }}>
               <Flex
                 //flex={1}
-                justify={'between'}
-                align={'center'}
-                position={'relative'}
+                justify={"between"}
+                align={"center"}
+                position={"relative"}
                 w="100%"
               >
                 <Heading
-                  color={'white'}
+                  color={"white"}
                   w="100%"
-                  fontSize={{ base: '3xl', md: '5xl' }}
+                  fontSize={{ base: "3xl", md: "5xl" }}
                 >
                   {props?.data[status].description.h1}
                 </Heading>
 
                 <Box
-                  position={'relative'}
-                  rounded={'2xl'}
+                  position={"relative"}
+                  rounded={"2xl"}
                   //mb="1em" // altere o valor de mb conforme necessário
-                  width={'full'}
+                  width={"full"}
                 >
-                  {' '}
+                  {" "}
                   <Image
                     src={bg}
                     objectFit="cover"
@@ -81,17 +79,17 @@ export default function CardFooter(props) {
                 </Box>
               </Flex>
               <Text
-                fontFamily={'heading'}
+                fontFamily={"heading"}
                 fontWeight={700}
-                textTransform={'uppercase'}
+                textTransform={"uppercase"}
                 mb={3}
-                fontSize={'xl'}
-                color={'gray.500'}
+                fontSize={"xl"}
+                color={"gray.500"}
               >
                 {props?.data[status].description.h2}
               </Text>
 
-              <Text fontSize={'xl'} color={'gray.400'}>
+              <Text fontSize={"xl"} color={"gray.400"}>
                 {props?.data[status].description.h3}
               </Text>
             </Box>
@@ -104,17 +102,17 @@ export default function CardFooter(props) {
                   spacing={10}
                 >
                   {props?.data[status].description.items.map((item, index) => (
-                    <Box key={index} flex={'row'} w="100%">
+                    <Box key={index} flex={"row"} w="100%">
                       <Text
-                        fontFamily={'heading'}
-                        fontSize={'3xl'}
-                        color={'white'}
+                        fontFamily={"heading"}
+                        fontSize={"3xl"}
+                        color={"white"}
                         mb={3}
                         ml="1.5em"
                       >
                         {item.title}
                       </Text>
-                      <Text fontSize={'xl'} color={'gray.400'}>
+                      <Text fontSize={"xl"} color={"gray.400"}>
                         {item.text}
                       </Text>
                       <UnorderedList spacing={3} mt={5} listStyleType="none">
@@ -122,7 +120,7 @@ export default function CardFooter(props) {
                           item.items.map((listItem, listItemIndex) => (
                             <HStack
                               key={`${listItem.id}`}
-                              alignItems={'center'}
+                              alignItems={"center"}
                             >
                               {/*   <CheckCircleIcon
                               mr="2"
@@ -131,8 +129,8 @@ export default function CardFooter(props) {
                         /> */}
                               <Text
                                 //fontFamily={'heading'}
-                                fontSize={'lg'}
-                                color={'white'}
+                                fontSize={"lg"}
+                                color={"gray.400"}
                                 //mb={3}
                                 //ml="0.5em"
                               >

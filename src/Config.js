@@ -1282,7 +1282,7 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
                                       <Text
                                         //fontFamily={'heading'}
                                         fontSize={"lg"}
-                                        color={"white"}
+                                        color={"gray.400"}
                                         //mb={3}
                                         //ml="0.5em"
                                       >
