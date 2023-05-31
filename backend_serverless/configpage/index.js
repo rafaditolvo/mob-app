@@ -1,5 +1,4 @@
 const AWS = require("aws-sdk");
-const S3 = new AWS.S3({ region: "us-east-1", apiVersion: "2012-10-17" });
 // Create the DynamoDB service object
 var DynamoDB = new AWS.DynamoDB({ apiVersion: "2012-08-10" });
 
@@ -10,8 +9,13 @@ const { hash, compare } = require("bcryptjs");
 const TIME_JWT_EXPIRES = process.env.TIME_JWT_EXPIRES ?? 3600;
 const S3_BUCKET = process.env.S3_BUCKET ?? "reacts3teste";
 const S3_BUCKET_PLANS = process.env.S3_BUCKET_PLANS ?? "cadastroplanos";
+const S3_BUCKET_REGION = process.env.S3_BUCKET_REGION ?? "us-east-1";
+const S3_BUCKET_PLANS_REGION =
+  process.env.S3_BUCKET_PLANS_REGION ?? "us-east-1";
 const DYNAMODB_TABLE_USERS = process.env.DYNAMODB_TABLE_USERS ?? "mob_users";
 const DIRECTORY_STATIC = process.env.DIRECTORY_STATIC ?? "static/media/";
+
+const S3 = new AWS.S3({ region: "us-east-1", apiVersion: "2012-10-17" });
 
 /**
  *
@@ -21,7 +25,7 @@ const DIRECTORY_STATIC = process.env.DIRECTORY_STATIC ?? "static/media/";
  */
 const putObjectToS3 = async (data, nameOfFile, paramsFile = null) =>
   new Promise((resolve, reject) => {
-    var s3 = new AWS.S3();
+    var s3 = new AWS.S3({ region: S3_BUCKET_REGION });
     var params = {
       Bucket: S3_BUCKET,
       Key: nameOfFile + ".json",
@@ -46,7 +50,7 @@ const putObjectToS3 = async (data, nameOfFile, paramsFile = null) =>
  */
 const listObjectsS3 = async (params) =>
   new Promise((resolve, reject) => {
-    var s3 = new AWS.S3();
+    var s3 = new AWS.S3({ region: S3_BUCKET_PLANS_REGION });
     s3.listObjectsV2(params, function (err, data) {
       if (err) {
         console.log(err, err.stack); // an error occurred
@@ -69,7 +73,7 @@ const getObjectS3 = async (filename) =>
       Bucket: S3_BUCKET_PLANS, // your bucket name,
       Key: filename, // path to the object you're looking for
     };
-    var s3 = new AWS.S3();
+    var s3 = new AWS.S3({ region: S3_BUCKET_PLANS_REGION });
     s3.getObject(params, function (err, data) {
       if (err) {
         console.log(err, err.stack); // an error occurred

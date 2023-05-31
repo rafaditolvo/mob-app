@@ -4,7 +4,7 @@ const S3 = new AWS.S3({ region: "us-east-1", apiVersion: "2012-10-17" });
 const jwt = require("jsonwebtoken");
 const { randomUUID } = require("crypto");
 
-const S3_BUCKET = process.env.TIME_JWT_EXPIRES ?? "cadastroplanos";
+const S3_BUCKET = process.env.S3_BUCKET ?? "cadastroplanos";
 const DIRECTORY_STATIC = process.env.DIRECTORY_STATIC ?? "data/plan";
 
 const JWT_SECRET =
