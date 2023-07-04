@@ -26,7 +26,7 @@ export default function CardFooter(props) {
     return <div>Error: Invalid props</div>;
   }
 
-  console.log(props?.data[status].description.items, "aqui");
+  // console.log(props?.data[status].description.items, "aqui");
 
   return (
     <Box bg={"gray.800"} w="100%" position={"relative"}>

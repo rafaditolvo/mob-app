@@ -91,7 +91,7 @@ function App() {
       if (dataJson.expireIn > new Date().getTime()) {
         expired = false;
       }
-      console.log("expira  em", new Date(dataJson.expireIn), new Date());
+      // console.log("expira  em", new Date(dataJson.expireIn), new Date());
     }
     if (expired) {
       console.error("Expirou");
@@ -107,7 +107,7 @@ function App() {
         const minutesInSeconds = 60;
         data.expireIn =
           new Date().getTime() + expireInMinutes * minutesInSeconds * 1000;
-        // saveDataLocalStorage(data);
+        saveDataLocalStorage(data);
       });
     } else {
       setIsLoading(false);
@@ -165,12 +165,12 @@ function App() {
         const { logradouro, bairro, localidade, uf } = response.data;
         const endereco = `${logradouro}`;
         const bairroVar = `${bairro}`;
-        console.log(endereco);
+        // console.log(endereco);
         setFieldValue("endereco", endereco);
         setFieldValue("bairro", bairroVar);
         setAutoPreenchido(true);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       } finally {
         setIsLoading(false);
       }
@@ -184,7 +184,7 @@ function App() {
           "8d60f6a35bbe4d4d755f046699043fc5dd2d73c241287f483865adf9a964d8454d30e9b742dd6f310ec51f0bf97e021813a49e53726b56289dbf3a0a80cfb03e";
         // const token = await generateToken();
         const response = await axios.post(
-          `https://mpdbrelos2zfgh6vztsbzwfuu40qistr.lambda-url.us-east-2.on.aws/`,
+          `https://mwrt7ajtuyx5zdvkfz7emcm3xm0spnqy.lambda-url.us-east-1.on.aws/`,
           values,
           {
             headers: {
@@ -204,7 +204,7 @@ function App() {
           isClosable: true,
         });
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         toast({
           title: "Não foi possível enviar seus dados!",
           description: "Por favor, tente mais tarde",
@@ -603,12 +603,12 @@ function App() {
         const { logradouro, bairro, localidade, uf } = response.data;
         const endereco = `${logradouro}`;
         const bairroVar = `${bairro}`;
-        console.log(endereco);
+        // console.log(endereco);
         setFieldValue("endereco", endereco);
         setFieldValue("bairro", bairroVar);
         setAutoPreenchido(true);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       } finally {
         setIsLoading(false);
       }
@@ -623,7 +623,7 @@ function App() {
           "8d60f6a35bbe4d4d755f046699043fc5dd2d73c241287f483865adf9a964d8454d30e9b742dd6f310ec51f0bf97e021813a49e53726b56289dbf3a0a80cfb03e";
         // const token = await generateToken();
         const response = await axios.post(
-          `https://mpdbrelos2zfgh6vztsbzwfuu40qistr.lambda-url.us-east-2.on.aws/`,
+          `https://mwrt7ajtuyx5zdvkfz7emcm3xm0spnqy.lambda-url.us-east-1.on.aws/`,
           values,
           {
             headers: {
@@ -643,7 +643,7 @@ function App() {
           isClosable: true,
         });
       } catch (error) {
-        console.log(error);
+        // console.log(error);
         toast({
           title: "Não foi possível enviar seus dados!",
           description: "Por favor, tente mais tarde",
@@ -972,10 +972,10 @@ function App() {
         target="_blank"
         rel="noopener noreferrer"
         position="fixed"
-        bottom={{ base: "2", md: "4", lg: "8" }}
-        right={{ base: "6", md: "4", lg: "8" }}
-        width={{ base: "60px", md: "70px", lg: "80px" }}
-        height={{ base: "60px", md: "70px", lg: "80px" }}
+        bottom={{ base: "20", md: "20", lg: "20" }}
+        right={{ base: "5", md: "5", lg: "5" }}
+        width={{ base: "56px", md: "56px", lg: "56px" }}
+        height={{ base: "56px", md: "56px", lg: "56px" }}
         padding={{ base: "10px", md: "14px", lg: "16px" }}
         borderRadius="full"
         zIndex={99999}

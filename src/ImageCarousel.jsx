@@ -1,16 +1,16 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import {
   Box,
   Center,
   Image,
   Spinner,
   useBreakpointValue,
-} from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { useSwipeable } from 'react-swipeable';
+} from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { useSwipeable } from "react-swipeable";
 
-const PREV = 'PREV';
-const NEXT = 'NEXT';
+const PREV = "PREV";
+const NEXT = "NEXT";
 
 export default function ImageCarousel(props) {
   const [currentImage, setCurrentImage] = useState(0);
@@ -19,12 +19,12 @@ export default function ImageCarousel(props) {
 
   const interval = 5000;
 
-  let status = props?.statusEmpresa ? 'enterprise' : 'personal';
+  let status = props?.statusEmpresa ? "enterprise" : "personal";
   useEffect(() => {
     // Verifica se props.data.enterprise.banners existe antes de mapeá-lo
     if (props?.data[status]?.banners) {
       const bannerImages = props?.data[status].banners.map(
-        (banner) => banner.src,
+        (banner) => banner.src
       );
       setImages(bannerImages);
     }
@@ -55,9 +55,9 @@ export default function ImageCarousel(props) {
     setCurrentImage((prev) => (prev === 0 ? images.length - 1 : prev - 1));
 
   const handleNext = () => {
-    console.log('images.length', images.length);
+    // console.log('images.length', images.length);
     setCurrentImage((prev) =>
-      prev === images.length - 1 ? 0 : prev + 1 >= images.length ? 0 : prev + 1,
+      prev === images.length - 1 ? 0 : prev + 1 >= images.length ? 0 : prev + 1
     );
   };
 
@@ -127,8 +127,8 @@ export default function ImageCarousel(props) {
               h="10px"
               w="10px"
               borderRadius="full"
-              bg={index === currentImage ? 'white' : 'gray.300'}
-              ml={index !== 0 ? '10px' : '0'}
+              bg={index === currentImage ? "white" : "gray.300"}
+              ml={index !== 0 ? "10px" : "0"}
               cursor="pointer"
               onClick={() => setCurrentImage(index)}
             />

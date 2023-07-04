@@ -1,15 +1,15 @@
+import { QuestionIcon } from "@chakra-ui/icons";
 import {
   Box,
   Container,
-  Heading,
-  SimpleGrid,
-  Icon,
-  Text,
-  Stack,
   HStack,
+  Heading,
+  Icon,
+  SimpleGrid,
+  Stack,
+  Text,
   VStack,
 } from "@chakra-ui/react";
-import { QuestionIcon } from "@chakra-ui/icons";
 
 export default function FAQ(props) {
   function checkProps(props) {
@@ -32,7 +32,7 @@ export default function FAQ(props) {
 
   let status = props?.statusEmpresa ? "enterprise" : "personal";
 
-  console.log(status, "isEmpresa");
+  // console.log(status, "isEmpresa");
 
   return (
     <Box p={4} mt="2em" mb="6em">

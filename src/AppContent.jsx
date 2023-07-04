@@ -25,7 +25,7 @@ export default function AppContent(props) {
     return <div>Error: Invalid props </div>;
   }
 
-  console.log(props?.data[status].appDescription.supportDownload, "href");
+  // console.log(props?.data[status].appDescription.supportDownload, "href");
 
   return (
     <Container maxW={"7xl"}>

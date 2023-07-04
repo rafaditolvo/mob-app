@@ -2313,10 +2313,10 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
             target="_blank"
             rel="noopener noreferrer"
             position="fixed"
-            bottom={{ base: "79", md: "8", lg: "12" }}
-            right={{ base: "10", md: "8", lg: "12" }}
-            width={{ base: "60px", md: "70px", lg: "80px" }}
-            height={{ base: "60px", md: "70px", lg: "80px" }}
+            bottom={{ base: "20", md: "20", lg: "20" }}
+            right={{ base: "5", md: "5", lg: "5" }}
+            width={{ base: "56px", md: "56px", lg: "56px" }}
+            height={{ base: "56px", md: "56px", lg: "56px" }}
             padding={{ base: "10px", md: "14px", lg: "16px" }}
             zIndex={9999}
             borderRadius="full"
@@ -2498,7 +2498,7 @@ function App({ setInvalidAuth, token, tokenExpired, backMenu }) {
       body: JSON.stringify(json),
     };
     const response = await fetch(
-      "https://owa4t6eb4mlyrrvmxnn4vtusm40mjjih.lambda-url.us-east-2.on.aws/save",
+      "https://u3stwz7llzycc7vspi2acrxbfq0nguvl.lambda-url.us-east-1.on.aws/save",
       options
     );
     const status = await response.status;

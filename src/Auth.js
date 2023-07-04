@@ -71,7 +71,7 @@ function Auth() {
       body: JSON.stringify({ login: credentials.user, pass: credentials.pass }),
     };
     const response = await fetch(
-      "https://owa4t6eb4mlyrrvmxnn4vtusm40mjjih.lambda-url.us-east-2.on.aws/auth",
+      "https://u3stwz7llzycc7vspi2acrxbfq0nguvl.lambda-url.us-east-1.on.aws/auth",
       options
     );
     const status = await response.status;
@@ -121,7 +121,7 @@ function Auth() {
       body: JSON.stringify({ monthRef: monthRefValue }),
     };
     const response = await fetch(
-      "https://owa4t6eb4mlyrrvmxnn4vtusm40mjjih.lambda-url.us-east-2.on.aws/exportcsv",
+      "https://u3stwz7llzycc7vspi2acrxbfq0nguvl.lambda-url.us-east-1.on.aws/exportcsv",
       options
     );
     const status = await response.status;

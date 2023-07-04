@@ -1,1 +1,382 @@
-{"personal":{"banners":[{"id":"fa3eab01-b788-4639-a7be-3","src":"static/media/BANNER_WEB_04-b8312da0-67ee-48af-b4b0-93a9f698f278.png"},{"id":"50319b8d-455e-4e94-8752-c75e751461f2","src":"static/media/Banner Inicial-d0ffe5a6-5adf-4cf6-8d3f-7d73a194e6ea.PNG"},{"id":"b9c77b7b-e767-44f4-8be6-00e650cf7c63","src":"static/media/Banner 450MB-108d1c19-40ae-496b-94a1-4d0eb3031b84.PNG"},{"id":"70f885e2-5657-4495-9546-635f4bb0d6c1","src":"static/media/Banner 500MB-f3a8b9a8-5369-4ee1-8530-3e0925a22c4e.PNG"},{"id":"0d0339a3-bb21-43be-b77d-8f3a6072d6cb","src":"static/media/Banner 600MB-a5bc9eac-ee98-4040-8397-59ce66185fbe.PNG"},{"id":"a124cd93-fb71-47f7-8554-17fa5925e14f","src":"static/media/BANNER SITE PAGAMENTOS-436386ca-7bbe-451b-b656-77ac5ce53b6d.png"}],"header":{"h1":"TURBINE A SUA VIDA COM A MOB"},"description":{"h2":"      ","h1":"Conheça nossa História","h3":"Há 24 anos descobrimos o nosso dom. O dom de conectar sonhos, pessoas, lugares, ideias e negócios. Durante essa trajetória a nossa missão foi levar internet de qualidade desde as cidades mais distantes até as grandes capitais do Brasil, além de contribuir para o desenvolvimento tecnológico através de projetos especiais apoiados por órgãos governamentais.","items":[{"id":"10+","title":"Missão","text":"Nossa missão é mobilizar clientes, colaboradores e a sociedade para conectar pessoas e negócios, promovendo a inclusão digital e o desenvolvimento por meio de soluções inovadoras de tecnologia da informação e comunicação."},{"id":"24/7","title":"Visão","text":"Como visão, buscamos ser referência em soluções integradas de tecnologia da informação e comunicação nos mercados em que atuamos de modo sustentável junto aos clientes e colaboradores."},{"id":"c9623735-2029-4982-b570-cdf7bb60a2e3","title":"Valores","text":"Paixão por empreender\nResiliência\nInovação\nÉtica\nComprometimento\nAgilidade\nFoco no Cliente", "items":[{"id":"50319b8d-455e-4e94-8752-c75e751461f2","text":"Item 1"},{"id":"50319b8d-455e-4e94-8752-c75e751461f3","text":"Item 2"},{"id":"50319b8d-455e-4e94-8752-c75e751461f4","text":"Item 3"}]}]},"appDescription":{"h1":"Baixe o App","appName":"Minha Mob","text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.","appImage":"static/media/export81991977-33DB-433C-A12E-E18F5A7E30AE-aef0426c-70be-4fc3-962a-b250caadd7b3.png","downloadLink":"https://play.google.com/store/games?device=windows","supportDownload":"https://www.youtube.com/","h3":"Conheça o aplicativo Minha Mob, o seu APP 100% turbinado. Uma infinidade de ferramentas para te auxiliar no seu dia a dia e ainda turbinar seu relacionamento com a Mob Telecom. Disponível para Android e IOS.","items":[{"id":"10+","title":"10+","text":"Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"id":"24/7","title":"24/7","text":"Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"id":"13%","title":"13%","text":"Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"id":"250M+","title":"250M+","text":"Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."}],"srcImage":"static/media/export81991977-33DB-433C-A12E-E18F5A7E30AE-38c261fa-4f08-422f-b298-e7c01e6e1f06.png","downloadLinkAppStore":"https://apps.apple.com/br/app/minha-mob/id1488464332","downloadLinkPlayStore":"https://play.google.com/store/apps/details?id=totalcross.appmmob"},"pricingData":[{"id":"1e4783a1-99d0-4a45-99aa-c49396cdf1b8","name":"800 MEGA","price":"124,90","features":["Instalação Grátis","Wi-Fi Turbo","100% Fibra","HBO Max","Watch TV","Paramount Plus","Suporte 24HS"],"srcImage":"static/media/IMG-20230426-WA0032-747544ab-4f9d-45bf-bb2b-cb7e16eaccbe.jpg"},{"id":"0bb05d7b-d62e-45f2-9f0f-d390ec78f5ef","name":"700 MEGA","price":"114,90","features":["Instalação Grátis","Wi-Fi Turbo","100% Fibra","HBO Max","Watch TV","Paramount Plus","Suporte 24HS"],"srcImage":"static/media/IMG-20230426-WA0034-3f13e81a-4c59-4264-9f3e-434711641fca.jpg"},{"id":"be579ba4-a5cc-407a-9c34-51c43805a930","name":"600 MEGA","price":"109,90","features":["Instalação Grátis","Wi-Fi Turbo","100% Fibra","HBO Max","Watch TV","Paramount Plus","Suporte 24HS"],"srcImage":"static/media/IMG-20230426-WA0031-abb5c2ab-d2cf-460c-82fc-240fc0518b7e.jpg"},{"id":"2aa4c11e-7d5a-4591-8f08-af9007ca7692","name":"500 MEGA","price":"94,90","features":["Instalação Grátis","Wi-Fi Turbo","100% Fibra","Watch TV","Paramount Plus","Suporte 24HS"],"srcImage":"static/media/IMG-20230426-WA0033-aab27386-c2b5-4e53-9adc-08a68ba29bd3.jpg"},{"id":"2cabf9e4-638a-4142-a36c-ec7da3b53fda","name":"450 MEGA","price":"89,90","features":["Instalação Grátis","Wi-Fi Turbo","100% Fibra","Watch TV","Paramount Plus","Suporte 24HS"],"srcImage":"static/media/IMG-20230426-WA0030-e3347d39-7bdc-4967-978a-a5dda22c8911.jpg"}],"FAQ":{"h1":"Para Você","text":"Internet fibra óptica de alta velocidade, qualidade, confiabilidade e estabilidade garantida. Para conectar você aos negócios e trazer diversão para toda a familía. Confira nossas ofertas de Internet para sua região!","items":[{"id":"1","title":"O que é fibra óptica?","text":"A internet fibra óptica é uma tecnologia capaz de transmitir um volume grande de dados através de cabos preenchidos com fibras finas de plástico ou vidro. Por eles, a conexão utiliza feixes pulsantes de luz que permitem um sinal mais estável e com menor interferência."},{"id":"2","title":"Qual é a diferença Wi-FI 2.4Ghz e 5Ghz?","text":"A diferença entre as frequências é a quantidade de ondas que o equipamento transmite por segundo e o alcance. A frequência 2.4 GHz tem maior alcance e atende uma área maior, mas é mais propensa a interferências. Já a 5 GHz tem um alcance menor e proporciona maior velocidade e qualidade de sinal."},{"id":"3","title":"O que é a velocidade de Download?","text":"A velocidade de download de uma conexão com a Internet descreve a taxa na qual os dados são transferidos da Internet para o computador de um usuário. Ela é medida em em megabits por segundo (Mbps) e determina a quantidade de dados que você pode receber em um segundo."},{"id":"4","title":"O que é a velocidade de Upload?","text":"A velocidade de upload de uma conexão com a Internet descreve a taxa na qual os dados são transferidos na direção oposta. Do computador de um usuário para a Internet, ou seja, do cliente para o servidor. Ela representa a quantidade de dados que você pode enviar em um determinado segundo."}]},"footer":{"whatsappNumber":"123123123123","logoSrc":"http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg","text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.","socialMedia":[{"name":"Twitter","imageSrc":"http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg","href":"https://twitter.com/MobTelecom"},{"name":"Youtube","imageSrc":"http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg","href":"https://www.youtube.com/@MobTelecomOficial"},{"name":"Instagram","imageSrc":"http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg","href":"https://www.instagram.com/mobtelecom"}]}},"enterprise":{"banners":[{"id":"fa3eab01-b788-4639-a7be-1","src":"static/media/BANNER_WEB_04-bd0e734b-8116-49f6-961c-de0b53a65242.png"},{"id":"fa3eab01-b788-4639-a7be-2","src":"static/media/BANNER SITE PAGAMENTOS-8ee64ed2-3d08-4943-b6b3-40e430eba064.png"},{"id":"fa3eab01-b788-4639-a7be-3","src":"static/media/BANNER-SITE-TURBOMOB-DESKTOP-a687cadb-1ef7-4096-aa92-c3818ea0ea85.png"}],"header":{"h1":"TURBINE A SUA VIDA COM A MOB"},"description":{"h2":"LOREM","h1":"Para Sua Empresa","h3":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.","items":[{"title":"10+","text":"Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"title":"24/7","text":"Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"title":"13%","text":"Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"title":"250M+","text":"Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."}]},"appDescription":{"h1":"Baixe o App","appName":"Minha Mob","text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.","appImage":"http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/minha-mob-cellphone.c7fe1a023964a3ae027f.png","downloadLink":"https://play.google.com/store/games?device=windows","supportDownload":"https://www.youtube.com/","h3":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.","items":[{"title":"10+","text":"Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"title":"24/7","text":"Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"title":"13%","text":"Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"title":"250M+","text":"Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."}]},"pricingData":[{"id":1,"name":"Lite","price":"99","features":["unlimited build minutes","Lorem, ipsum dolor.","10TB Lorem, ipsum dolor."],"srcImage":"static/media/aaatest (1)-2e3cbf01-e85b-4600-893c-2797354f6a3b.png"},{"id":2,"name":"Enterprise","price":"299","features":["unlimited build minutes","Lorem, ipsum dolor.","50TB Lorem, ipsum dolor."]},{"id":3,"name":"Hobby","price":"179","features":["unlimited build minutes","Lorem, ipsum dolor.","5TB Lorem, ipsum dolor."]},{"id":"95dd0735-6d7b-459a-979a-6f659d2012a0","name":"Novo Plano","price":"122","features":[],"srcImage":"static/media/Captura de Tela 2023-02-28 às 11-e27dc587-b23b-44ab-bfae-7eccce3c1587.png"}],"FAQ":{"h1":"Para Você","text":"FAQ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.","items":[{"title":"Lorem ipsum","text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"title":"Lorem ipsum","text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"title":"Lorem ipsum","text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"title":"Lorem ipsum","text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"title":"Lorem ipsum","text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"title":"Lorem ipsum","text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"title":"Lorem ipsum","text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."},{"title":"Lorem ipsum","text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."}]},"footer":{"whatsappNumber":"123123123123","logoSrc":"http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg","text":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.","socialMedia":[{"name":"Twitter","imageSrc":"http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg","href":"https://twitter.com/"},{"name":"Youtube","imageSrc":"http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg","href":"https://www.youtube.com/"},{"name":"Instagram","imageSrc":"http://reacts3teste.s3-website-us-east-1.amazonaws.com/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg","href":"https://www.instagram.com/"}]}}}
+{
+  "personal": {
+    "banners": [
+      {
+        "id": "fa3eab01-b788-4639-a7be-3",
+        "src": "static/media/BANNER_WEB_04-b8312da0-67ee-48af-b4b0-93a9f698f278.png"
+      },
+      {
+        "id": "50319b8d-455e-4e94-8752-c75e751461f2",
+        "src": "static/media/Banner Inicial-d0ffe5a6-5adf-4cf6-8d3f-7d73a194e6ea.PNG"
+      },
+      {
+        "id": "b9c77b7b-e767-44f4-8be6-00e650cf7c63",
+        "src": "static/media/Banner 450MB-108d1c19-40ae-496b-94a1-4d0eb3031b84.PNG"
+      },
+      {
+        "id": "70f885e2-5657-4495-9546-635f4bb0d6c1",
+        "src": "static/media/Banner 500MB-f3a8b9a8-5369-4ee1-8530-3e0925a22c4e.PNG"
+      },
+      {
+        "id": "0d0339a3-bb21-43be-b77d-8f3a6072d6cb",
+        "src": "static/media/Banner 600MB-a5bc9eac-ee98-4040-8397-59ce66185fbe.PNG"
+      },
+      {
+        "id": "a124cd93-fb71-47f7-8554-17fa5925e14f",
+        "src": "static/media/BANNER SITE PAGAMENTOS-436386ca-7bbe-451b-b656-77ac5ce53b6d.png"
+      }
+    ],
+    "header": { "h1": "TURBINE A SUA VIDA COM A MOB" },
+    "description": {
+      "h2": "      ",
+      "h1": "Conheça nossa História",
+      "h3": "Há 24 anos descobrimos o nosso dom. O dom de conectar sonhos, pessoas, lugares, ideias e negócios. Durante essa trajetória a nossa missão foi levar internet de qualidade desde as cidades mais distantes até as grandes capitais do Brasil, além de contribuir para o desenvolvimento tecnológico através de projetos especiais apoiados por órgãos governamentais.",
+      "items": [
+        {
+          "id": "10+",
+          "title": "Missão",
+          "text": "Nossa missão é mobilizar clientes, colaboradores e a sociedade para conectar pessoas e negócios, promovendo a inclusão digital e o desenvolvimento por meio de soluções inovadoras de tecnologia da informação e comunicação."
+        },
+        {
+          "id": "24/7",
+          "title": "Visão",
+          "text": "Como visão, buscamos ser referência em soluções integradas de tecnologia da informação e comunicação nos mercados em que atuamos de modo sustentável junto aos clientes e colaboradores."
+        },
+        {
+          "id": "c9623735-2029-4982-b570-cdf7bb60a2e3",
+          "title": "Valores",
+          "text": "Paixão por empreender\nResiliência\nInovação\nÉtica\nComprometimento\nAgilidade\nFoco no Cliente",
+          "items": [
+            { "id": "50319b8d-455e-4e94-8752-c75e751461f2", "text": "Item 1" },
+            { "id": "50319b8d-455e-4e94-8752-c75e751461f3", "text": "Item 2" },
+            { "id": "50319b8d-455e-4e94-8752-c75e751461f4", "text": "Item 3" }
+          ]
+        }
+      ]
+    },
+    "appDescription": {
+      "h1": "Baixe o App",
+      "appName": "Minha Mob",
+      "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "appImage": "static/media/export81991977-33DB-433C-A12E-E18F5A7E30AE-aef0426c-70be-4fc3-962a-b250caadd7b3.png",
+      "downloadLink": "https://play.google.com/store/games?device=windows",
+      "supportDownload": "https://www.youtube.com/",
+      "h3": "Conheça o aplicativo Minha Mob, o seu APP 100% turbinado. Uma infinidade de ferramentas para te auxiliar no seu dia a dia e ainda turbinar seu relacionamento com a Mob Telecom. Disponível para Android e IOS.",
+      "items": [
+        {
+          "id": "10+",
+          "title": "10+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "id": "24/7",
+          "title": "24/7",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "id": "13%",
+          "title": "13%",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "id": "250M+",
+          "title": "250M+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        }
+      ],
+      "srcImage": "static/media/export81991977-33DB-433C-A12E-E18F5A7E30AE-38c261fa-4f08-422f-b298-e7c01e6e1f06.png",
+      "downloadLinkAppStore": "https://apps.apple.com/br/app/minha-mob/id1488464332",
+      "downloadLinkPlayStore": "https://play.google.com/store/apps/details?id=totalcross.appmmob"
+    },
+    "pricingData": [
+      {
+        "id": "1e4783a1-99d0-4a45-99aa-c49396cdf1b8",
+        "name": "800 MEGA",
+        "price": "124,90",
+        "features": [
+          "Instalação Grátis",
+          "Wi-Fi Turbo",
+          "100% Fibra",
+          "HBO Max",
+          "Watch TV",
+          "Paramount Plus",
+          "Suporte 24HS"
+        ],
+        "srcImage": "static/media/IMG-20230426-WA0032-747544ab-4f9d-45bf-bb2b-cb7e16eaccbe.jpg"
+      },
+      {
+        "id": "0bb05d7b-d62e-45f2-9f0f-d390ec78f5ef",
+        "name": "700 MEGA",
+        "price": "114,90",
+        "features": [
+          "Instalação Grátis",
+          "Wi-Fi Turbo",
+          "100% Fibra",
+          "HBO Max",
+          "Watch TV",
+          "Paramount Plus",
+          "Suporte 24HS"
+        ],
+        "srcImage": "static/media/IMG-20230426-WA0034-3f13e81a-4c59-4264-9f3e-434711641fca.jpg"
+      },
+      {
+        "id": "be579ba4-a5cc-407a-9c34-51c43805a930",
+        "name": "600 MEGA",
+        "price": "109,90",
+        "features": [
+          "Instalação Grátis",
+          "Wi-Fi Turbo",
+          "100% Fibra",
+          "HBO Max",
+          "Watch TV",
+          "Paramount Plus",
+          "Suporte 24HS"
+        ],
+        "srcImage": "static/media/IMG-20230426-WA0031-abb5c2ab-d2cf-460c-82fc-240fc0518b7e.jpg"
+      },
+      {
+        "id": "2aa4c11e-7d5a-4591-8f08-af9007ca7692",
+        "name": "500 MEGA",
+        "price": "94,90",
+        "features": [
+          "Instalação Grátis",
+          "Wi-Fi Turbo",
+          "100% Fibra",
+          "Watch TV",
+          "Paramount Plus",
+          "Suporte 24HS"
+        ],
+        "srcImage": "static/media/IMG-20230426-WA0033-aab27386-c2b5-4e53-9adc-08a68ba29bd3.jpg"
+      },
+      {
+        "id": "2cabf9e4-638a-4142-a36c-ec7da3b53fda",
+        "name": "450 MEGA",
+        "price": "89,90",
+        "features": [
+          "Instalação Grátis",
+          "Wi-Fi Turbo",
+          "100% Fibra",
+          "Watch TV",
+          "Paramount Plus",
+          "Suporte 24HS"
+        ],
+        "srcImage": "static/media/IMG-20230426-WA0030-e3347d39-7bdc-4967-978a-a5dda22c8911.jpg"
+      }
+    ],
+    "FAQ": {
+      "h1": "Para Você",
+      "text": "Internet fibra óptica de alta velocidade, qualidade, confiabilidade e estabilidade garantida. Para conectar você aos negócios e trazer diversão para toda a familía. Confira nossas ofertas de Internet para sua região!",
+      "items": [
+        {
+          "id": "1",
+          "title": "O que é fibra óptica?",
+          "text": "A internet fibra óptica é uma tecnologia capaz de transmitir um volume grande de dados através de cabos preenchidos com fibras finas de plástico ou vidro. Por eles, a conexão utiliza feixes pulsantes de luz que permitem um sinal mais estável e com menor interferência."
+        },
+        {
+          "id": "2",
+          "title": "Qual é a diferença Wi-FI 2.4Ghz e 5Ghz?",
+          "text": "A diferença entre as frequências é a quantidade de ondas que o equipamento transmite por segundo e o alcance. A frequência 2.4 GHz tem maior alcance e atende uma área maior, mas é mais propensa a interferências. Já a 5 GHz tem um alcance menor e proporciona maior velocidade e qualidade de sinal."
+        },
+        {
+          "id": "3",
+          "title": "O que é a velocidade de Download?",
+          "text": "A velocidade de download de uma conexão com a Internet descreve a taxa na qual os dados são transferidos da Internet para o computador de um usuário. Ela é medida em em megabits por segundo (Mbps) e determina a quantidade de dados que você pode receber em um segundo."
+        },
+        {
+          "id": "4",
+          "title": "O que é a velocidade de Upload?",
+          "text": "A velocidade de upload de uma conexão com a Internet descreve a taxa na qual os dados são transferidos na direção oposta. Do computador de um usuário para a Internet, ou seja, do cliente para o servidor. Ela representa a quantidade de dados que você pode enviar em um determinado segundo."
+        }
+      ]
+    },
+    "footer": {
+      "whatsappNumber": "123123123123",
+      "logoSrc": "/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+      "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "socialMedia": [
+        {
+          "name": "Twitter",
+          "imageSrc": "/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+          "href": "https://twitter.com/MobTelecom"
+        },
+        {
+          "name": "Youtube",
+          "imageSrc": "/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+          "href": "https://www.youtube.com/@MobTelecomOficial"
+        },
+        {
+          "name": "Instagram",
+          "imageSrc": "/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+          "href": "https://www.instagram.com/mobtelecom"
+        }
+      ]
+    }
+  },
+  "enterprise": {
+    "banners": [
+      {
+        "id": "fa3eab01-b788-4639-a7be-1",
+        "src": "static/media/BANNER_WEB_04-bd0e734b-8116-49f6-961c-de0b53a65242.png"
+      },
+      {
+        "id": "fa3eab01-b788-4639-a7be-2",
+        "src": "static/media/BANNER SITE PAGAMENTOS-8ee64ed2-3d08-4943-b6b3-40e430eba064.png"
+      },
+      {
+        "id": "fa3eab01-b788-4639-a7be-3",
+        "src": "static/media/BANNER-SITE-TURBOMOB-DESKTOP-a687cadb-1ef7-4096-aa92-c3818ea0ea85.png"
+      }
+    ],
+    "header": { "h1": "TURBINE A SUA VIDA COM A MOB" },
+    "description": {
+      "h2": "LOREM",
+      "h1": "Para Sua Empresa",
+      "h3": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "items": [
+        {
+          "title": "10+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "24/7",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "13%",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "250M+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        }
+      ]
+    },
+    "appDescription": {
+      "h1": "Baixe o App",
+      "appName": "Minha Mob",
+      "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "appImage": "/static/media/minha-mob-cellphone.c7fe1a023964a3ae027f.png",
+      "downloadLink": "https://play.google.com/store/games?device=windows",
+      "supportDownload": "https://www.youtube.com/",
+      "h3": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "items": [
+        {
+          "title": "10+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "24/7",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "13%",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "250M+",
+          "text": "Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        }
+      ]
+    },
+    "pricingData": [
+      {
+        "id": 1,
+        "name": "Lite",
+        "price": "99",
+        "features": [
+          "unlimited build minutes",
+          "Lorem, ipsum dolor.",
+          "10TB Lorem, ipsum dolor."
+        ],
+        "srcImage": "static/media/aaatest (1)-2e3cbf01-e85b-4600-893c-2797354f6a3b.png"
+      },
+      {
+        "id": 2,
+        "name": "Enterprise",
+        "price": "299",
+        "features": [
+          "unlimited build minutes",
+          "Lorem, ipsum dolor.",
+          "50TB Lorem, ipsum dolor."
+        ]
+      },
+      {
+        "id": 3,
+        "name": "Hobby",
+        "price": "179",
+        "features": [
+          "unlimited build minutes",
+          "Lorem, ipsum dolor.",
+          "5TB Lorem, ipsum dolor."
+        ]
+      },
+      {
+        "id": "95dd0735-6d7b-459a-979a-6f659d2012a0",
+        "name": "Novo Plano",
+        "price": "122",
+        "features": [],
+        "srcImage": "static/media/Captura de Tela 2023-02-28 às 11-e27dc587-b23b-44ab-bfae-7eccce3c1587.png"
+      }
+    ],
+    "FAQ": {
+      "h1": "Para Você",
+      "text": "FAQ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "items": [
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        },
+        {
+          "title": "Lorem ipsum",
+          "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        }
+      ]
+    },
+    "footer": {
+      "whatsappNumber": "123123123123",
+      "logoSrc": "/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+      "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+      "socialMedia": [
+        {
+          "name": "Twitter",
+          "imageSrc": "/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+          "href": "https://twitter.com/"
+        },
+        {
+          "name": "Youtube",
+          "imageSrc": "/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+          "href": "https://www.youtube.com/"
+        },
+        {
+          "name": "Instagram",
+          "imageSrc": "/static/media/mob_logo_black.d782bc911ad4e943531e146d79f98fbd.svg",
+          "href": "https://www.instagram.com/"
+        }
+      ]
+    }
+  }
+}
